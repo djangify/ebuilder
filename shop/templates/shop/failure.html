@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="w-full bg-[color:var(--color-light)] py-16">
+  <div class="max-w-4xl mx-auto px-6">
+    <div class="bg-white rounded-xl shadow-md p-10 text-center max-w-2xl mx-auto">
+
+      <!-- Icon -->
+      <div class="mb-8 text-red-600">
+        <svg class="w-20 h-20 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+        </svg>
+      </div>
+
+      <!-- Title -->
+      <h1 class="text-3xl font-bold mb-4 text-[color:var(--color-font-main)]">
+        Payment Failed
+      </h1>
+
+      <!-- Message -->
+      <p class="text-lg text-[color:var(--color-font-main)]/80 mb-8">
+        {% if error_message %}
+          {{ error_message }}
+        {% else %}
+          Sorry, there was a problem processing your payment. Please try again.
+        {% endif %}
+      </p>
+
+      <!-- Buttons -->
+      <div class="flex flex-col sm:flex-row justify-center items-center gap-4">
+        <a href="{% url 'shop:checkout' %}" 
+           class="px-6 py-3 bg-[color:var(--color-accent)] text-white font-semibold rounded-lg hover:opacity-90 transition">
+          Try Again
+        </a>
+
+        <a href="{% url 'shop:cart' %}" 
+           class="px-6 py-3 border border-[color:var(--color-secondary)] text-[color:var(--color-secondary)] font-semibold rounded-lg hover:bg-[color:var(--color-secondary)] hover:text-white transition">
+          Return to Cart
+        </a>
+      </div>
+
+      <!-- Optional link -->
+      <div class="mt-8">
+        <a href="{% url 'shop:product_list' %}" 
+           class="text-[color:var(--color-secondary)] hover:text-[color:var(--color-accent)] underline transition">
+          Back to Shop
+        </a>
+      </div>
+
+    </div>
+  </div>
+</section>
+{% endblock %}

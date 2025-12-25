@@ -1,0 +1,36 @@
+{% if breadcrumbs or post %}
+<nav class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-3 mb-6" aria-label="Breadcrumb">
+    <ol class="flex items-center text-sm text-gray-600 gap-2">
+        <!-- Home -->
+        <li class="flex items-center">
+            <a href="{% url 'pages:home' %}" class="text-text hover:text-accent transition-colors">Home</a>
+            <span class="mx-2 text-[--color-accent]/60">›</span>
+        </li>
+
+        <!-- Generic breadcrumbs (if provided in context) -->
+        {% if breadcrumbs %}
+            {% for breadcrumb in breadcrumbs %}
+                {% if not forloop.last %}
+                    <li class="flex items-center">
+                        <a href="{{ breadcrumb.url }}" class="text-text hover:text-accent transition-colors">{{ breadcrumb.title }}</a>
+                        <span class="mx-2 text-[--color-accent]/60">›</span>
+                    </li>
+                {% else %}
+                    <li class="text-gray-700 font-medium">{{ breadcrumb.title }}</li>
+                {% endif %}
+            {% endfor %}
+        {% endif %}
+
+        <!-- Blog (if post context exists) -->
+        {% if post %}
+            {% if post.category %}
+                <li class="flex items-center">
+                    <a href="{% url 'blog:category' post.category.slug %}" class="text-text hover:text-accent transition-colors">{{ post.category.name }}</a>
+                    <span class="mx-2 text-[--color-accent]/60">›</span>
+                </li>
+            {% endif %}
+            <li class="text-accent font-medium">{{ post.title|truncatechars:40 }}</li>
+        {% endif %}
+    </ol>
+</nav>
+{% endif %}

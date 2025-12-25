@@ -1,0 +1,51 @@
+{% load static %}
+
+<section class="mt-10">
+  {% if member_resources %}
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+    {% for resource in member_resources %}
+    <article class="bg-white border border-[color:var(--color-accent)]/30 rounded-lg shadow-sm hover:shadow-md transition flex flex-col">
+      <a href="{{ resource.file.url }}" target="_blank" class="flex flex-col h-full">
+
+        <!-- Thumbnail -->
+        {% if resource.thumbnail %}
+          <img src="{{ resource.thumbnail.url }}" 
+               alt="Thumbnail for {{ resource.title }}" 
+               class="w-full h-52 object-contain bg-[color:var(--color-light)] rounded-t-md">
+        {% else %}
+          <div class="w-full h-52 flex items-center justify-center bg-[color:var(--color-light)] text-[color:var(--color-accent)]">
+            No Preview Available
+          </div>
+        {% endif %}
+
+        <!-- Text Content -->
+        <div class="p-5 flex flex-col flex-grow">
+          <h3 class="text-lg font-semibold text-[color:var(--color-primary)] mb-2">
+            {{ resource.title }}
+          </h3>
+          <p class="text-sm text-[color:var(--color-font-main)]/80 flex-grow">
+            {{ resource.description|truncatechars:90 }}
+          </p>
+
+          <!-- Download Link -->
+          <div class="mt-4 flex items-center text-[color:var(--color-secondary)] font-semibold text-sm hover:text-[color:var(--color-accent)] transition">
+            <svg xmlns="http://www.w3.org/2000/svg" 
+                 fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                 class="w-5 h-5 mr-2">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M9 19l3 3m0 0l3-3m-3 3V10" />
+            </svg>
+            Download PDF
+          </div>
+        </div>
+      </a>
+    </article>
+    {% endfor %}
+  </div>
+  {% else %}
+  <div class="text-center py-12">
+    <p class="text-[color:var(--color-font-main)]/70 mb-2">No resources available yet.</p>
+    <p class="text-[color:var(--color-font-main)]/70">Check back soon for free guides and templates!</p>
+  </div>
+  {% endif %}
+</section>

@@ -1,0 +1,43 @@
+{% if breadcrumbs or post %}
+<nav class="max-w-5xl mx-auto px-6 py-3 mb-8 text-sm text-[--color-font-main]" aria-label="Breadcrumb">
+  <ol class="flex flex-wrap items-center gap-2">
+    <!-- Home -->
+    <li class="flex items-center">
+      <a href="{% url 'blog:list' %}" class="text-[--color-secondary] hover:text-[--color-accent] transition">
+        Blogs
+      </a>
+      <span class="mx-2 text-[--color-accent]/60">›</span>
+    </li>
+
+    <!-- Dynamic Breadcrumbs -->
+    {% if breadcrumbs %}
+      {% for breadcrumb in breadcrumbs %}
+        {% if not forloop.last %}
+        <li class="flex items-center">
+          <a href="{{ breadcrumb.url }}" class="text-[--color-secondary] hover:text-[--color-accent] transition">
+            {{ breadcrumb.title }}
+          </a>
+          <span class="mx-2 text-[--color-accent]/60">›</span>
+        </li>
+        {% else %}
+        <li class="text-[--color-primary] font-medium">{{ breadcrumb.title }}</li>
+        {% endif %}
+      {% endfor %}
+    {% endif %}
+
+    <!-- If viewing a specific post -->
+    {% if post %}
+      {% if post.category %}
+      <li class="flex items-center">
+        <a href="{% url 'blog:category' post.category.slug %}"
+           class="text-[--color-secondary] hover:text-[--color-accent] transition">
+          {{ post.category.name }}
+        </a>
+        <span class="mx-2 text-[--color-accent]/60">›</span>
+      </li>
+      {% endif %}
+      <li class="text-[--color-primary] font-semibold">{{ post.title|truncatechars:40 }}</li>
+    {% endif %}
+  </ol>
+</nav>
+{% endif %}

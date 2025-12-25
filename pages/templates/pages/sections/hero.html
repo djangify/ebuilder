@@ -1,0 +1,61 @@
+
+<!-- HERO SECTION -->
+{% if hero %}
+<section 
+  id="hero"
+  class="relative w-full flex items-center justify-center text-center overflow-hidden"
+  role="banner"
+  aria-label="Hero Section"
+>
+  {% if hero.image %}
+    <div class="absolute inset-0 bg-cover bg-center" style="background-image: url('{{ hero.image.url }}');"></div>
+    <div class="absolute inset-0 bg-[var(--color-light)]/50"></div>
+  {% else %}
+    <div class="absolute inset-0 bg-[var(--color-light)]"></div>
+  {% endif %}
+
+  <div class="relative flex flex-col items-center justify-center text-center py-20 px-6 lg:py-28 max-w-5xl mx-auto z-10">
+    
+    <!-- Hero Banner (above title) -->
+    {% if hero_banner %}
+    <div class="mb-6">
+        <a href="{{ hero_banner.action_link }}"
+           class="inline-flex items-center px-4 py-2 rounded-full bg-[color:var(--color-light)] hover:bg-[color:var(--color-primary)] hover:text-white transition">
+            {% if hero_banner.badge_text %}
+                <span class="px-2 py-1 mr-2 text-xs font-semibold rounded bg-blue-600 text-white">
+                    {{ hero_banner.badge_text }}
+                </span>
+            {% endif %}
+            <span class="font-medium">{{ hero_banner.text }}</span>
+            {% if hero_banner.action_text %}
+                <span class="ml-2 text-sm underline">{{ hero_banner.action_text }} →</span>
+            {% endif %}
+        </a>
+    </div>
+    {% endif %}
+
+    <h1 class="text-4xl lg:text-5xl font-bold uppercase leading-relaxed mb-6 text-[var(--color-primary)]">
+      {{ hero.title }}
+    </h1>
+
+    {% if hero.subtitle %}
+      <p class="text-lg lg:text-xl leading-relaxed font-medium max-w-3xl text-[var(--color-font-main)] mb-6">
+        {{ hero.subtitle }}
+      </p>
+    {% endif %}
+
+    {% if hero.body %}
+      <div class="prose mx-auto">{{ hero.body|safe }}</div>
+    {% endif %}
+
+    {% if hero.button_text and hero.button_link %}
+      <a href="{{ hero.button_link }}"
+         class="inline-block uppercase bg-[var(--color-primary)] text-[var(--color-light)] px-10 py-5 rounded-md text-lg font-semibold shadow-md hover:bg-[var(--color-secondary)] transition-transform transform hover:scale-[1.02]">
+        {{ hero.button_text }}
+      </a>
+    {% endif %}
+    
+  </div>
+  
+</section>
+{% endif %}

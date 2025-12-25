@@ -1,0 +1,90 @@
+{% extends "base_email.html" %}
+
+{% block content %}
+<tr>
+  <td
+    style="
+      padding: 20px;
+      font-family: Arial, sans-serif;
+      color: var(--color-font-main, #2b2b2b);
+    "
+  >
+    <h1
+      style="
+        margin-top: 0;
+        color: var(--color-primary, #927397);
+        font-size: 24px;
+        font-weight: bold;
+      "
+    >
+      Reminder: Verify Your Email for {{ homepage_settings.business_name }}
+    </h1>
+
+    <p>Hello {{ user.first_name|default:user.email }},</p>
+
+    <p>
+      We noticed that you recently registered with <strong>{{ homepage_settings.business_name }}</strong> but
+      have not yet verified your email address.  
+     
+    </p>
+
+    <p>
+      To complete your registration and verify your email address, please click
+      the button below:
+    </p>
+
+    <p style="text-align: center; margin: 30px 0;">
+      <a
+        href="{{ verification_url }}"
+        style="
+          background-color: var(--color-primary, #927397);
+          color: var(--color-accent, #e7cbae);
+          padding: 12px 24px;
+          text-decoration: none;
+          border-radius: 4px;
+          font-weight: bold;
+          display: inline-block;
+          font-family: Arial, sans-serif;
+        "
+        >Verify Your Email</a
+      >
+    </p>
+
+    <p>
+      If the button above does not work, you can copy and paste the link below
+      into your browser:
+    </p>
+
+    <p
+      style="
+        word-break: break-all;
+        background-color: var(--color-light, #f8fafc);
+        border-left: 4px solid var(--color-accent, #e7cbae);
+        padding: 10px;
+        border-radius: 4px;
+        font-size: 14px;
+        color: var(--color-font-main, #2b2b2b);
+      "
+    >
+      {{ verification_url }}
+    </p>
+
+    <p>
+      This verification link will expire soon. If you did not register for an
+      account, please ignore this email.
+    </p>
+
+  
+
+    <p>
+      Best regards,<br />
+      <strong>{{ homepage_settings.business_name }}</strong><br />
+      <a
+        href="{{ site_url }}"
+        style="color: var(--color-secondary, #d6809c); text-decoration: none;"
+        >{{ site_url }}</a
+      >
+    </p>
+  </td>
+</tr>
+{% endblock %}

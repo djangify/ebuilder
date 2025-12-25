@@ -1,0 +1,20 @@
+{% if user.is_authenticated %}
+  <button
+    type="button"
+    class="favourite-btn w-full py-3 rounded-xl border font-semibold transition
+           {% if product.id in wishlist_items %}
+             bg-red-50 border-red-300
+           {% else %}
+             bg-white border-[color:var(--color-accent)]
+           {% endif %}"
+    data-action-url="{% url 'shop:wishlist_toggle' product.id %}"
+    data-csrf="{{ csrf_token }}"
+    data-product-slug="{{ product.slug }}"
+  >
+    {% if product.id in wishlist_items %}
+      ❤️ Remove from Wish List
+    {% else %}
+      🤍 Add to Wish List
+    {% endif %}
+  </button>
+{% endif %}

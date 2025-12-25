@@ -1,0 +1,145 @@
+<!-- shop/templates/shop/purchases.html -->
+{% extends "base.html" %}
+
+{% block content %}
+<section class="w-full py-12">
+  <div class="max-w-5xl mx-auto px-6">
+    <div class="bg-white rounded-xl border border-[color:var(--color-primary)] p-10">
+
+      <!-- Header -->
+      <h1 class="text-3xl font-bold text-[color:var(--color-primary)] mb-8">
+        My Purchases
+      </h1>
+
+      {% if orders %}
+      <div class="space-y-8">
+        {% for order in orders %}
+        <div class="border border-[color:var(--color-accent)]/40 rounded-lg shadow-sm hover:shadow-md transition">
+          <div class="p-6">
+            
+            <!-- Order Header -->
+            <div class="flex justify-between items-start mb-4">
+              <div>
+                <h2 class="text-xl font-semibold text-[color:var(--color-font-main)]">
+                  Order #{{ order.order_id }}
+                </h2>
+                <p class="text-sm text-[color:var(--color-font-main)]/70">
+                  Purchased on {{ order.created|date:"F j, Y" }}
+                </p>
+              </div>
+              <span class="px-3 py-1 text-sm font-semibold rounded-full 
+                {% if order.status == 'completed' %}bg-green-100 text-green-700
+                {% elif order.status == 'pending' %}bg-yellow-100 text-yellow-800
+                {% else %}bg-red-100 text-red-700{% endif %}">
+                {{ order.get_status_display }}
+              </span>
+            </div>
+
+            <!-- Items -->
+            <div class="divide-y divide-[color:var(--color-accent)]/20">
+              {% for item in order.items.all %}
+              <div class="py-4">
+                <div class="flex justify-between items-start">
+                  
+                  <!-- Left: Product info -->
+                  <div>
+                    <h3 class="text-[color:var(--color-font-main)] font-medium">
+                      {{ item.product.title }}
+                      {% if item.purchased_download %}
+                        <span class="text-sm text-[color:var(--color-font-main)]/60">
+                          ({{ item.purchased_download.label }})
+                        </span>
+                      {% endif %}
+                    </h3>
+                    <p class="text-sm text-[color:var(--color-font-main)]/70">
+                      Quantity: {{ item.quantity }}
+                    </p>
+                  </div>
+
+                  <!-- Right: Price -->
+                  <div class="text-right">
+                    <p class="font-semibold text-[color:var(--color-font-main)]">
+                      £{{ item.price|floatformat:2 }}
+                    </p>
+                  </div>
+                </div>
+
+                <!-- Download Link - Only show the purchased variant -->
+                {% if item.has_downloadable_content and order.status == 'completed' %}
+                <div class="mt-4 pt-4 border-t border-[color:var(--color-accent)]/10">
+                  <p class="text-sm text-[color:var(--color-font-main)]/70 mb-2">
+                    Downloads remaining: {{ item.downloads_remaining }}
+                  </p>
+                  
+                  <div class="flex flex-wrap gap-2">
+                    {% if item.purchased_download and item.purchased_download.file %}
+                      <!-- Show only the specific purchased download -->
+                      <a href="{% url 'shop:secure_download' order_item_id=item.id download_id=item.purchased_download.id %}"
+                         class="inline-flex items-center px-4 py-2 bg-[color:var(--color-primary)] text-white text-sm font-medium rounded hover:bg-[color:var(--color-accent)] transition">
+                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
+                        </svg>
+                        Download
+                      </a>
+                    {% elif not item.purchased_download %}
+                      <!-- Legacy orders or products with single download - show all -->
+                      {% for download in item.get_downloads %}
+                        {% if download.file %}
+                        <a href="{% url 'shop:secure_download' order_item_id=item.id download_id=download.id %}"
+                           class="inline-flex items-center px-4 py-2 bg-[color:var(--color-primary)] text-white text-sm font-medium rounded hover:bg-[color:var(--color-accent)] transition">
+                          <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
+                          </svg>
+                          Download
+                        </a>
+                        {% endif %}
+                      {% endfor %}
+                    {% endif %}
+                  </div>
+                </div>
+                {% elif order.status != 'completed' %}
+                <div class="mt-4 pt-4 border-t border-[color:var(--color-accent)]/10">
+                  <p class="text-sm text-amber-600">
+                    Downloads will be available once your order is completed.
+                  </p>
+                </div>
+                {% endif %}
+
+              </div>
+              {% endfor %}
+            </div>
+
+            <!-- Order Total -->
+            <div class="mt-4 pt-4 border-t border-[color:var(--color-accent)]/40 flex justify-between">
+              <span class="font-semibold text-[color:var(--color-font-main)]">Total</span>
+              <span class="font-bold text-[color:var(--color-primary)]">
+                £{{ order.get_total_cost|floatformat:2 }}
+              </span>
+            </div>
+
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+
+      {% else %}
+      <!-- No Orders -->
+      <div class="text-center py-12">
+        <svg class="w-16 h-16 mx-auto text-[color:var(--color-accent)]/50 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>
+        </svg>
+        <h2 class="text-xl font-semibold text-[color:var(--color-font-main)] mb-2">No purchases yet</h2>
+        <p class="text-[color:var(--color-font-main)]/70 mb-6">
+          Browse our shop to find products you'll love.
+        </p>
+        <a href="{% url 'shop:product_list' %}" 
+           class="inline-block px-6 py-3 bg-[color:var(--color-primary)] text-white font-semibold rounded-lg hover:bg-[color:var(--color-accent)] transition">
+          Browse Shop
+        </a>
+      </div>
+      {% endif %}
+
+    </div>
+  </div>
+</section>
+{% endblock %}

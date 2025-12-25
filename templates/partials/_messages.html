@@ -1,0 +1,39 @@
+{% if messages %}
+  <div
+    id="messages-container"
+    class="fixed top-6 left-1/2 -translate-x-1/2 z-50 w-[90%] max-w-xl space-y-3"
+  >
+    {% for message in messages %}
+      <div
+        class="
+          message-item
+          flex items-start gap-3
+          border px-4 py-3 rounded-xl shadow-md
+          transition-all duration-500 ease-out
+          opacity-100 translate-y-0
+          {% if message.tags == 'success' %}
+            bg-[color:var(--color-light)]
+            border-[color:var(--color-secondary)]
+            text-[color:var(--color-primary)]
+          {% elif message.tags == 'error' %}
+            bg-[color:var(--color-light)]
+            border-[color:var(--color-accent)]
+            text-[color:var(--color-dark)]
+          {% else %}
+            bg-[color:var(--color-light)]
+            border-[color:var(--color-primary)]
+            text-[color:var(--color-font-main)]
+          {% endif %}
+        "
+        role="alert"
+      >
+        <strong class="font-semibold shrink-0">
+          {% if message.tags == 'success' %}Success
+          {% elif message.tags == 'error' %}Error
+          {% else %}Notice{% endif %}
+        </strong>
+        <span>{{ message }}</span>
+      </div>
+    {% endfor %}
+  </div>
+{% endif %}

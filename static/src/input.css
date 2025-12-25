@@ -1,0 +1,176 @@
+@import "tailwindcss";
+
+/* -------------------------------
+   Global Typography + Link Styles
+---------------------------------- */
+@layer base {
+  h1 {
+    @apply text-4xl font-bold text-[color:var(--color-text)];
+  }
+
+  h2 {
+    @apply text-3xl font-semibold text-[color:var(--color-text)];
+  }
+
+  p {
+    @apply text-lg text-[color:var(--color-text)] leading-relaxed;
+  }
+
+  ul,
+  ol {
+    @apply text-lg text-[color:var(--color-text)] leading-relaxed list-inside;
+  }
+
+  li {
+    @apply text-lg text-[color:var(--color-text)] leading-relaxed;
+  }
+
+  a {
+    @apply text-[color:var(--color-accent)] hover:text-[color:var(--color-secondary)] transition-colors;
+  }
+}
+
+@layer components {
+
+  /* Typography styling similar to Tailwind Typography plugin */
+  .prose {
+    @apply max-w-none text-[color:var(--color-font-main)] leading-relaxed;
+  }
+
+  .prose p {
+    @apply mb-4 text-lg;
+  }
+
+  .prose h2,
+  .prose h3,
+  .prose h4 {
+    @apply mt-6 mb-2 font-semibold text-[color:var(--color-dark)];
+  }
+
+  .prose ul {
+    @apply list-disc list-inside mb-4 ml-4;
+  }
+
+  .prose ol {
+    @apply list-decimal list-inside mb-4 ml-4;
+  }
+
+  .prose li {
+    @apply mb-1;
+  }
+
+  .prose strong {
+    @apply font-semibold text-[color:var(--color-dark)];
+  }
+
+  .prose a {
+    @apply text-[color:var(--color-accent)] underline hover:text-[color:var(--color-secondary)];
+  }
+
+
+
+
+}
+
+
+/* -------------------------------
+   Tailwind v4 Theme Variables
+   (Djangify eBuilders brand colors)
+---------------------------------- */
+@theme {
+  --color-primary: #0f172a;
+  /* deep slate */
+  --color-primary-contrast: #ffffff;
+
+  --color-secondary: #e5e7eb;
+  /* light grey */
+  --color-secondary-contrast: #111827;
+
+  --color-accent: #d6c7b8;
+  /* warm sand */
+  --color-accent-contrast: #3b2f2f;
+
+
+  --color-dark: #475569;
+  --color-dark-contrast: #1e293b;
+
+  --color-light: #f8fafc;
+  --color-light-contrast: #e2e8f0;
+
+  /* Font */
+  --color-font-main: #2b2b2b;
+  --color-font-contrast: #1a1a1a;
+
+  /* Background options */
+  --color-bg-default: #ffffff;
+  --color-bg-contrast: #f1f5f9;
+
+  /* Extended palette for badges and alerts */
+  --color-badge-rose: #fecdd3;
+  /* light rose */
+  --color-badge-mint: #bbf7d0;
+  /* mint green */
+  --color-badge-yellow: #fef9c3;
+  /* soft yellow */
+  --color-badge-red-light: #fee2e2;
+  /* light red for SALE */
+  --color-badge-red-text: #7f1d1d;
+  /* readable red text */
+}
+
+/* Example usage:
+   text-[--color-primary-contrast]
+   bg-[--color-accent-contrast]
+   hover:text-[--color-font-main]
+*/
+/* -------------------------------
+   Global Utilities (optional)
+---------------------------------- */
+@layer utilities {
+  .fade-transition {
+    @apply transition-opacity duration-[2000ms] ease-in-out;
+  }
+}
+
+/* -------------------------------
+   Global Bullet Alignment Fix
+---------------------------------- */
+ul,
+ol {
+  list-style-position: outside !important;
+  padding-left: 1.5rem !important;
+  /* ensures space for bullets */
+}
+
+li {
+  text-indent: 0 !important;
+  /* prevents wrapped text indent */
+  margin-bottom: 0.25rem;
+}
+
+.prose ul,
+.prose ol {
+  list-style-position: outside !important;
+  padding-left: 1.5rem !important;
+  margin-bottom: 1rem;
+}
+
+.prose li {
+  margin-bottom: 0.25rem;
+  color: var(--color-font-main);
+}
+
+/* Fix misaligned bullets inside centered text blocks */
+.text-center ul,
+.text-center ol {
+  text-align: left !important;
+  margin-left: auto;
+  margin-right: auto;
+  list-style-position: outside;
+  padding-left: 1.5rem;
+}
+
+#messages-container {
+  top: 3.5rem !important;
+  /* pushes it slightly lower */
+}

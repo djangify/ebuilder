@@ -1,0 +1,64 @@
+{% elif block.images %}
+<section class="mt-16">
+    
+
+    {% if block.title %}
+        <h2 class="text-2xl font-semibold mb-10 text-center tracking-tight">
+            {{ block.title }}
+        </h2>
+    {% endif %}
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-2 auto-rows-[280px] mb-16">
+
+        {% for image in block.images.all %}
+            {% if image.published %}
+                {% cycle 'one' 'two' 'three' 'four' 'five' 'six' as position silent %}
+
+                <figure class="relative group overflow-hidden shadow-sm bg-[color:var(--color-light)]
+                    {% if position == 'one' %}
+                        sm:col-span-1 lg:col-span-3
+                    {% elif position == 'two' %}
+                        sm:col-span-2 lg:col-span-6
+                    {% elif position == 'three' %}
+                        sm:col-span-1 lg:col-span-3
+
+                    {% elif position == 'four' %}
+                        sm:col-span-2 lg:col-span-6
+                    {% elif position == 'five' %}
+                        sm:col-span-1 lg:col-span-3
+                    {% else %}
+                        sm:col-span-1 lg:col-span-3
+                    {% endif %}
+                ">
+
+                    <a
+                        href="{% url 'pages:gallery_image_modal' image.pk %}"
+                        hx-get="{% url 'pages:gallery_image_modal' image.pk %}"
+                        hx-target="#gallery-modal"
+                        hx-swap="innerHTML"
+                        hx-trigger="click"
+                        class="block w-full h-full cursor-zoom-in"
+                    >
+                        <img
+                            src="{{ image.image.url }}"
+                            alt="{{ image.alt_text|default:'' }}"
+                            class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                            loading="lazy"
+                        >
+                    </a>
+
+
+                    {% if image.caption %}
+                        <figcaption class="pointer-events-none absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/60 to-transparent">
+
+                            <span class="text-white text-lg font-medium">{{ image.caption }}</span>
+                        </figcaption>
+                    {% endif %}
+                </figure>
+
+            {% endif %}
+        {% endfor %}
+
+    </div>
+</section>
+{% endif %}

@@ -1,0 +1,43 @@
+{% extends "account/base_email.html" %}
+
+{% block title %}New Order #{{ order_id }}{% endblock %}
+
+{% block content %}
+<h2 style="color: #2b2b2b; margin-bottom: 20px;">New Order Received!</h2>
+
+<p><strong>Order ID:</strong> {{ order_id }}</p>
+<p><strong>Date:</strong> {{ date_created }}</p>
+<p><strong>Customer:</strong> {{ customer_name }}</p>
+<p><strong>Email:</strong> {{ customer_email }}</p>
+
+<h3 style="margin-top: 20px; margin-bottom: 10px;">Items Ordered:</h3>
+<table style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
+  <thead>
+    <tr style="background-color: #f5f5f5;">
+      <th style="text-align: left; padding: 10px; border-bottom: 1px solid #ddd;">Product</th>
+      <th style="text-align: center; padding: 10px; border-bottom: 1px solid #ddd;">Qty</th>
+      <th style="text-align: right; padding: 10px; border-bottom: 1px solid #ddd;">Price</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for item in items %}
+    <tr>
+      <td style="padding: 10px; border-bottom: 1px solid #eee;">{{ item.name }}</td>
+      <td style="text-align: center; padding: 10px; border-bottom: 1px solid #eee;">{{ item.quantity }}</td>
+      <td style="text-align: right; padding: 10px; border-bottom: 1px solid #eee;">£{{ item.price|floatformat:2 }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<p style="font-size: 18px; font-weight: bold; color: #2b2b2b;">
+  Total: £{{ total|floatformat:2 }}
+</p>
+
+<p style="margin-top: 30px;">
+  <a href="{{ site_url }}/admin/shop/order/" 
+     style="display: inline-block; padding: 12px 24px; background-color: #4a7c59; color: white; text-decoration: none; border-radius: 5px;">
+    View in Admin
+  </a>
+</p>
+{% endblock %}

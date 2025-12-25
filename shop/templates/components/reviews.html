@@ -1,0 +1,195 @@
+{% load widget_tweaks %}
+
+<section id="reviews"
+  class="mt-16 border border-gray-300 rounded-lg p-8">
+
+  <!-- HEADER -->
+  <header class="border-b border-gray-300 pb-4 mb-6">
+    <h3 class="text-2xl font-bold text-gray-900 mb-2">
+      Customer Reviews
+    </h3>
+
+    <p class="text-sm text-gray-600 mb-4">
+      Only verified buyers can leave a review. Your feedback helps others decide!
+    </p>
+
+    <!-- AVERAGE RATING -->
+    <div class="flex flex-wrap items-center gap-4">
+      <div class="flex items-center">
+        <span class="text-2xl mr-2 font-semibold text-yellow-500">
+          {{ product.average_rating|floatformat:1 }}
+        </span>
+
+        <div class="flex">
+          {% for i in "12345"|make_list %}
+            <svg
+              class="w-5 h-5 {% if forloop.counter <= product.average_rating %}text-yellow-400 fill-yellow-400{% else %}text-gray-300 fill-gray-300{% endif %}"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24">
+              <path d="M12 .587l3.668 7.431 8.2 1.192-5.934 5.782L19.868 24 12 19.896 4.132 24l2.934-9.008L1.132 9.21l8.2-1.192z"/>
+            </svg>
+          {% endfor %}
+        </div>
+      </div>
+
+      <span class="text-sm text-gray-600">
+        Based on {{ product.total_reviews }} review{{ product.total_reviews|pluralize }}
+      </span>
+    </div>
+  </header>
+
+  <!-- REVIEW FORM -->
+  {% if user.is_authenticated %}
+    {% if form %}
+      <form method="post" action="{% url 'shop:add_review' product.id %}" class="space-y-6">
+        {% csrf_token %}
+
+        <!-- RATING SELECTOR -->
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-2">
+            Rating
+          </label>
+
+          <div class="flex gap-1" id="star-rating">
+            {% for value in "12345"|make_list %}
+              <input type="radio" name="rating" id="rating{{ value }}" value="{{ value }}" class="sr-only" required>
+              <label for="rating{{ value }}"
+                class="cursor-pointer text-4xl transition-colors duration-150 text-gray-300"
+                data-value="{{ value }}">
+                ★
+              </label>
+            {% endfor %}
+          </div>
+        </div>
+
+        <!-- COMMENT BOX -->
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-2">
+            Comment
+          </label>
+
+          {{ form.comment|add_class:"w-full border border-gray-300 rounded-lg p-3 text-sm text-gray-900 focus:ring-2 focus:ring-blue-500 min-h-[120px]" }}
+        </div>
+
+        <!-- SUBMIT BUTTON -->
+        <button type="submit"
+          class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-lg transition">
+          Submit Review
+        </button>
+      </form>
+
+      <script>
+        (function() {
+          const container = document.getElementById('star-rating');
+          if (!container) return;
+          
+          const stars = container.querySelectorAll('label');
+          const inputs = container.querySelectorAll('input[type="radio"]');
+          
+          let selectedValue = 0;
+
+          // Highlight stars on hover
+          stars.forEach(star => {
+            star.addEventListener('mouseenter', function() {
+              const value = parseInt(this.dataset.value);
+              highlightStars(value);
+            });
+          });
+
+          // Reset to selected on mouse leave
+          container.addEventListener('mouseleave', function() {
+            highlightStars(selectedValue);
+          });
+
+          // Set selection on click
+          inputs.forEach(input => {
+            input.addEventListener('change', function() {
+              selectedValue = parseInt(this.value);
+              highlightStars(selectedValue);
+            });
+          });
+
+          function highlightStars(rating) {
+            stars.forEach(star => {
+              const value = parseInt(star.dataset.value);
+              if (value <= rating) {
+                star.classList.remove('text-gray-300');
+                star.classList.add('text-yellow-400');
+              } else {
+                star.classList.remove('text-yellow-400');
+                star.classList.add('text-gray-300');
+              }
+            });
+          }
+
+          // Initialize
+          highlightStars(0);
+        })();
+      </script>
+
+    {% else %}
+      <div class="p-4 bg-gray-50 rounded-lg text-gray-700">
+        You've already reviewed this product or need to purchase it first to leave a review.
+      </div>
+    {% endif %}
+
+  {% else %}
+    <div class="p-4 bg-gray-50 rounded-lg text-gray-700">
+      Please
+      <a href="{% url 'account_login' %}?next={{ request.path }}"
+        class="text-blue-600 hover:underline font-medium">
+        log in
+      </a>
+      to write a review.
+    </div>
+  {% endif %}
+
+  <!-- REVIEW LIST -->
+  <div class="mt-10 divide-y divide-gray-200">
+    {% for review in product.reviews.all %}
+      <article class="py-6">
+        <div class="flex justify-between items-start mb-2">
+          <div>
+
+            <!-- INDIVIDUAL RATING -->
+            <div class="flex">
+              {% for i in "12345"|make_list %}
+                <svg
+                  class="w-5 h-5 {% if forloop.counter <= review.rating %}text-yellow-400 fill-yellow-400{% else %}text-gray-300 fill-gray-300{% endif %}"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24">
+                  <path d="M12 .587l3.668 7.431 8.2 1.192-5.934 5.782L19.868 24 12 19.896 4.132 24l2.934-9.008L1.132 9.21l8.2-1.192z"/>
+                </svg>
+              {% endfor %}
+            </div>
+
+            <span class="text-sm text-gray-600 block mt-1">
+              by {{ review.user.first_name }}
+            </span>
+          </div>
+
+          <div class="text-xs text-gray-500">
+            {{ review.created|timesince }} ago
+          </div>
+        </div>
+
+        <p class="text-gray-700 text-sm leading-relaxed">
+          {{ review.comment }}
+        </p>
+
+        {% if review.verified_purchase %}
+          <span class="inline-flex items-center mt-2 px-2.5 py-0.5 rounded-full text-xs font-medium
+            bg-green-100 text-green-800">
+            Verified Purchase
+          </span>
+        {% endif %}
+      </article>
+
+    {% empty %}
+      <div class="text-center py-6 text-gray-500">
+        No reviews yet. Be the first to review this product!
+      </div>
+    {% endfor %}
+  </div>
+
+</section>

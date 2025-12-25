@@ -1,0 +1,101 @@
+<!-- blog/components/extras.html -->
+<div class="px-6 md:px-8 xl:px-0 pb-24 text-[color:var(--color-font-main)]">
+
+  <!-- Navigation -->
+  <nav class="mb-12 mt-4">
+    <div class="flex flex-col sm:flex-row justify-between items-center gap-6">
+      {% if previous_post %}
+      <a href="{{ previous_post.get_absolute_url }}"
+         class="group flex items-center text-[color:var(--color-primary)] hover:text-[color:var(--color-accent)] transition">
+        <svg class="mr-2 h-4 w-4 text-[color:var(--color-accent)]"
+             xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+             stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+        </svg>
+        <div>
+          <span class="block text-xs text-[color:var(--color-font-main)]/70">PREVIOUS:</span>
+          <span class="block text-sm">{{ previous_post.title|truncatechars:25 }}</span>
+        </div>
+      </a>
+      {% endif %}
+
+      {% if next_post %}
+      <a href="{{ next_post.get_absolute_url }}"
+         class="group flex items-center text-[color:var(--color-primary)] hover:text-[color:var(--color-accent)] transition">
+        <div class="text-right">
+          <span class="block text-xs text-[color:var(--color-font-main)]/70">NEXT:</span>
+          <span class="block text-sm">{{ next_post.title|truncatechars:25 }}</span>
+        </div>
+        <svg class="ml-2 h-4 w-4 text-[color:var(--color-accent)]"
+             xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+             stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+        </svg>
+      </a>
+      {% endif %}
+    </div>
+  </nav>
+
+  <!-- Category Link Pill -->
+  <div class="text-center my-8">
+    <a href="{{ post.category.get_absolute_url }}"
+       class="inline-block px-5 py-2 rounded-full border border-[color:var(--color-primary)] text-[color:var(--color-primary)] hover:bg-[color:var(--color-primary)] hover:text-white transition">
+      All articles in {{ post.category.name }}
+    </a>
+  </div>
+
+  <!-- Related Posts -->
+  <div class="mt-12 mb-16">
+    <h2 class="text-2xl font-bold text-[color:var(--color-primary)] mb-8 text-center">
+      Related Posts
+    </h2>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+      {% for related in related_posts|slice:":3" %}
+      <a href="{{ related.get_absolute_url }}"
+         class="group block bg-[color:var(--color-light)] border border-[color:var(--color-accent)] rounded-lg overflow-hidden shadow-sm hover:shadow-md transition">
+        <div class="h-48 w-full overflow-hidden bg-[color:var(--color-light)]">
+          {% if related.external_image_url %}
+          <img src="{{ related.external_image_url }}" alt="{{ related.title }}"
+               class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+          {% elif related.image %}
+          <img src="{{ related.image.url }}" alt="{{ related.title }}"
+               class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+          {% else %}
+          <div class="w-full h-full flex items-center justify-center text-[color:var(--color-accent)]/70">
+            No Image
+          </div>
+          {% endif %}
+        </div>
+        <div class="p-4">
+          <p class="text-lg text-[color:var(--color-font-main)] group-hover:text-[color:var(--color-accent)] transition">
+            {{ related.title|truncatechars:60 }}
+          </p>
+        </div>
+      </a>
+      {% empty %}
+      <div class="col-span-3 text-center py-8 text-[color:var(--color-font-main)]/60">
+        No related posts found
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  {% if related_posts|length > 3 %}
+  <div class="mt-8 mb-16">
+    <h3 class="text-xl font-semibold text-[color:var(--color-primary)] mb-4 text-center">
+      More from this category
+    </h3>
+    <ul class="max-w-2xl mx-auto list-disc list-inside space-y-2 text-[color:var(--color-font-main)]">
+      {% for related in related_posts|slice:"3:9" %}
+      <li>
+        <a href="{{ related.get_absolute_url }}"
+           class="text-[color:var(--color-secondary)] hover:text-[color:var(--color-accent)] underline transition">
+          {{ related.title }}
+        </a>
+      </li>
+      {% endfor %}
+    </ul>
+  </div>
+  {% endif %}
+</div>

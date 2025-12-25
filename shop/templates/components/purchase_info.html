@@ -1,0 +1,30 @@
+         <!-- You Purchased Info -->
+          {% if has_purchased and order_item %}
+          <div class="bg-[color:var(--color-light)] border border-[color:var(--color-primary)] text-[color:var(--color-dark)] font-semibold p-4 rounded mb-4">
+            ✅ You purchased this product on {{ order_item.order.created|date:"j M Y" }} (Order ID: {{ order_item.order.order_id }})
+          </div>
+          {% endif %}
+
+          <!-- Secure Purchase Info -->
+          <div class="mt-6 border-t border-[color:var(--color-accent)] pt-5">
+            <div class="flex flex-wrap justify-evenly items-center text-sm text-[color:var(--color-font-main)] gap-y-3 text-center sm:text-left">
+              
+              <!-- Secure Payment -->
+              <div class="flex items-center gap-1 whitespace-nowrap">
+                <span class="text-[color:var(--color-secondary)]">✔</span>
+                <span>Secure Payment</span>
+              </div>
+
+              <!-- Easy Downloads + Account -->
+              <div class="flex items-center gap-1 whitespace-nowrap">
+                <span class="text-[color:var(--color-accent)]">✔</span>
+                <span>
+                  Download product in your 
+                  <a href="#" 
+                    class="underline hover:text-[color:var(--color-secondary)] font-medium">
+                    account
+                  </a>
+                </span>
+              </div>
+            </div>
+          </div>

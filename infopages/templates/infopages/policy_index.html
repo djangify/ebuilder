@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Policies - {{ site.name }}{% endblock %}
+
+{% block content %}
+<section id="policies-section" class="w-full" aria-labelledby="policies-heading">
+  <div class="max-w-7xl mx-auto px-6 py-12">
+    <h1 id="policies-heading" class="text-4xl font-bold mb-8">
+      Policies
+    </h1>
+    <p class="text-[color:var(--color-font-main)]/80 mb-10 max-w-5xl">
+      These policies explain how {{ site.name }} operates, protects user information, and maintains a safe experience for everyone.
+    </p>
+
+    <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3" role="list">
+      {% for page in pages %}
+      <article id="policy-{{ page.slug }}" role="listitem" class="border border-[color:var(--color-accent)] rounded-lg p-6 hover:shadow-md transition-shadow">
+        <header>
+          <h2 id="title-{{ page.slug }}" class="text-xl font-semibold text-[color:var(--color-primary)] mb-4">
+            {{ page.title }}
+          </h2>
+        </header>
+        <p class="text-[color:var(--color-font-main)] mb-4 line-clamp-3">
+          {{ page.content|striptags|truncatewords:25 }}
+        </p>
+        <a href="{{ page.get_absolute_url }}"
+           aria-labelledby="title-{{ page.slug }}"
+           class="inline-flex items-center text-[color:var(--color-secondary)] hover:text-[color:var(--color-primary)] transition-colors">
+          Read {{ page.title }}
+          <svg class="w-4 h-4 ml-1" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+            <path fill-rule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+          </svg>
+        </a>
+      </article>
+      {% empty %}
+      <p>No policies have been added yet.</p>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endblock %}

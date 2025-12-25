@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Documentation{% endblock %}
+
+{% block content %}
+<div class="max-w-6xl mx-auto px-4 py-12">
+
+    <!-- Page header -->
+    <header class="mb-12">
+        <h1 class="text-4xl font-bold text-[color:var(--color-primary)] mb-2">
+            Documentation
+        </h1>
+        <p class="text-lg text-[color:var(--color-font-main)]">
+            Browse documentation by category or explore all articles.
+        </p>
+    </header>
+
+    <!-- Categories -->
+    {% if categories_with_counts %}
+    <section class="mb-16">
+        <h2 class="text-2xl font-semibold text-[color:var(--color-primary)] mb-6">
+            Categories
+        </h2>
+
+        <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+            {% for item in categories_with_counts %}
+            <div class="border border-[color:var(--color-accent)] p-6">
+
+                <h3 class="text-lg font-semibold text-[color:var(--color-primary)] mb-1">
+                    {{ item.category.name }}
+                </h3>
+
+                <p class="text-sm text-[color:var(--color-font-main)] mb-4">
+                    {{ item.doc_count }} article{{ item.doc_count|pluralize }}
+                </p>
+
+                {% if item.docs %}
+                <ul class="space-y-2 text-sm">
+                    {% for doc in item.docs|slice:":7" %}
+                    <li>
+                        <a href="{{ doc.get_absolute_url }}"
+                           class="text-[color:var(--color-secondary)]
+                                  hover:text-[color:var(--color-primary)]">
+                            {{ doc.title }}
+                        </a>
+                    </li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+
+                {% if item.doc_count > 7 %}
+                <p class="mt-4 text-xs">
+                    <a href="{% url 'infopages:category_detail' item.category.slug %}"
+                       class="text-[color:var(--color-secondary)] hover:underline">
+                        View all →
+                    </a>
+                </p>
+                {% endif %}
+
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+    {% endif %}
+
+    <!-- All Articles -->
+    <section>
+        <h2 class="text-2xl font-semibold text-[color:var(--color-primary)] mb-6">
+            All Articles
+        </h2>
+
+        {% if pages %}
+        <div class="space-y-4">
+            {% for page in pages %}
+            <a href="{{ page.get_absolute_url }}"
+               class="block border border-[color:var(--color-accent)]
+                      p-6 transition-colors
+                      hover:border-[color:var(--color-secondary)]">
+
+                <div class="flex items-center justify-between">
+                    <div>
+                        <h3 class="text-lg font-semibold text-[color:var(--color-primary)]">
+                            {{ page.title }}
+                        </h3>
+
+                        {% if page.category %}
+                        <p class="text-sm text-[color:var(--color-font-main)]">
+                            {{ page.category.name }}
+                        </p>
+                        {% endif %}
+                    </div>
+
+                    <span class="text-[color:var(--color-accent)]">→</span>
+                </div>
+            </a>
+            {% endfor %}
+        </div>
+        {% else %}
+        <p class="text-[color:var(--color-font-main)]">
+            No documentation articles available yet.
+        </p>
+        {% endif %}
+    </section>
+
+</div>
+{% endblock %}

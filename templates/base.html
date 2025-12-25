@@ -1,0 +1,194 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+ <head>
+    <!-- Preconnect & Prefetch -->
+  <link rel="preconnect" href="https://www.djangify.com" crossorigin>
+  <link rel="dns-prefetch" href="https://www.djangify.com">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Primary Meta Description -->
+  {% block meta_description %}
+  <meta name="description" content="Djangify helps creators and entrepreneurs build ecommerce sites that are self-owned, practical and ready to grow.">
+  {% endblock %}
+
+  <!-- Keywords -->
+  <meta name="keywords" content="{% block meta_keywords %}mini ecommerce site, ecommerce builder, ecommerce site builder, mini ecommerce store, AI search ready websites, Django ecommerce, digital product systems, build online shops, ecommerce setup, digital business guides{% endblock %}">
+
+  <!-- Open Graph / Social -->
+  {% block open_graph_tags %}
+  <meta property="og:title" content="Build Your Mini eCommerce Site with Djangify">
+  <meta property="og:description" content="Djangify helps creators and entrepreneurs build mini ecommerce sites that are practical and ready to grow.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="{{ request.build_absolute_uri }}">
+  <meta property="og:image" content="{% static 'images/djangify-logo.png' %}">
+  <meta property="fb:app_id" content="2433552923679047">
+  {% endblock %}
+
+  <!-- Canonical URL -->
+  <link rel="canonical" href="{{ request.build_absolute_uri }}">
+
+  <!-- Stylesheets -->
+  <link rel="preload" as="style" href="{% static 'css/output.css' %}">
+  <link rel="preload" as="style" href="{% static 'css/custom.css' %}">
+  <link rel="stylesheet" href="{% static 'css/output.css' %}" media="all" onload="this.onload=null;this.removeAttribute('media');">
+  <link rel="stylesheet" href="{% static 'css/custom.css' %}" media="print" onload="this.media='all'">
+  <noscript><link rel="stylesheet" href="{% static 'css/output.css' %}"></noscript>
+  <noscript><link rel="stylesheet" href="{% static 'css/custom.css' %}"></noscript>
+  <!-- Favicon -->
+  <link rel="icon" type="image/ico" href="{% static 'images/favicon.ico' %}">
+
+  <!-- Page Title -->
+  <title>{% block title %}Mini eCommerce Site Builder | {{ site.name }}{% endblock %}</title>
+
+    <!-- Alpine and HTMX CDN scripts -->
+  <script src="https://unpkg.com/htmx.org@1.9.12"></script>
+  <script src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+
+  
+
+
+  {% block extra_meta %}{% endblock %}
+  <!-- Website JSON-LD Schema -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "Djangify",
+    "url": "https://djangify.com/",
+    "description": "Djangify helps content creators and entrepreneurs build mini ecommerce sites. Simple, practical, and ready to grow.",
+    "publisher": {
+      "@type": "Organization",
+      "name": "Djangify",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://djangify.com/static/images/djangify-logo.png"
+      }
+    },
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": "https://djangify.com/shop/search/?q={search_term_string}",
+      "query-input": "required name=search_term_string"
+    }
+  }
+  </script>
+</head>
+
+  <body>
+     {% if messages %}
+      <section aria-label="Notifications" role="alert">
+          {% include 'partials/_messages.html' %}
+      </section>
+    {% endif %}
+   
+    {% if request.user.is_authenticated %}
+      {% include "accounts/includes/logged_in_public_header.html" %}
+    {% else %}
+      {% include "includes/navbar.html" %}
+    {% endif %}
+
+
+    {% block content %}
+    {% endblock %}
+
+    {% include "includes/footer.html" %}
+
+    
+ <!-- Cookie Consent -->
+<div
+  id="cookie-banner"
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby="cookie-title"
+  aria-hidden="true"
+  class="fixed bottom-0 inset-x-0 border-t border-[var(--color-secondary)] bg-[color:var(--color-light)] shadow-md z-50 hidden"
+>
+  <div class="max-w-5xl mx-auto px-6 py-6 text-center">
+    <h2 id="cookie-title" class="sr-only">Cookie Consent</h2>
+    <p class="mb-4">
+      We use cookies to enhance your experience. By continuing to visit this site you agree to our use of cookies.
+      <a href="{% url 'infopages:policy_detail' slug='cookie-policy' %}"
+         class="text-[color:var(--color-secondary-contrast)] hover:text-[color:var(--color-dark-contrast)] underline ml-1">
+        Cookie Policy
+      </a>
+    </p>
+    <div class="flex justify-center gap-4">
+      <button id="accept-cookies"
+              class="px-4 py-2 bg-[color:var(--color-primary)] text-[color:var(--color-light)] rounded-lg hover:bg-[color:var(--color-dark)] transition">
+        Accept
+      </button>
+      <button id="decline-cookies"
+              class="px-4 py-2 border border-[color:var(--color-accent)] text-[color:var(--color-font-main)] rounded-lg hover:bg-[color:var(--color-secondary)] hover:text-[color:var(--color-light)] transition">
+        Decline
+      </button>
+    </div>
+  </div>
+</div>
+<div id="gallery-modal" 
+     class="hidden fixed inset-0 bg-black/80 z-50 items-center justify-center"
+     hx-target="this"
+     hx-swap="innerHTML">
+</div>
+<!-- Cookie Consent Script (works first time, then gone) -->
+<script>
+(function () {
+  function ready(fn) {
+    if (document.readyState !== 'loading') { fn(); }
+    else { document.addEventListener('DOMContentLoaded', fn); }
+  }
+
+  ready(function () {
+    try {
+      var banner = document.getElementById('cookie-banner');
+      if (!banner) return;
+
+      var accept = document.getElementById('accept-cookies');
+      var decline = document.getElementById('decline-cookies');
+
+      // If already decided, remove banner entirely and bail
+      var decision = null;
+      try { decision = localStorage.getItem('cookieConsent'); } catch (e) {}
+      if (decision === 'accepted' || decision === 'declined') {
+        if (banner.parentNode) banner.parentNode.removeChild(banner);
+        return;
+      }
+
+      // Show the banner (ignore classes; force visible)
+      banner.style.display = 'block';
+      banner.setAttribute('aria-hidden', 'false');
+
+      function hideAndRemember(value) {
+        try { localStorage.setItem('cookieConsent', value); } catch (e) {}
+        // Remove from DOM so it *cannot* linger due to CSS
+        if (banner && banner.parentNode) {
+          banner.parentNode.removeChild(banner);
+        }
+      }
+
+      if (accept) accept.addEventListener('click', function (e) {
+        e.preventDefault();
+        hideAndRemember('accepted');
+      });
+
+      if (decline) decline.addEventListener('click', function (e) {
+        e.preventDefault();
+        hideAndRemember('declined');
+      });
+    } catch (err) {
+      // Fail-closed: if something unexpected happens, don't block the page
+      console.error('Cookie banner error:', err);
+    }
+  });
+})();
+</script>
+
+
+<script src="https://js.stripe.com/v3/"></script>
+<script src="{% static 'js/app.js' %}" defer></script>
+<script src="{% static 'js/messages.js' %}"defer></script>
+<script src="{% static 'js/gallery.js' %}"defer></script>
+<div id="gallery-modal"></div>
+
+  </body>
+</html>

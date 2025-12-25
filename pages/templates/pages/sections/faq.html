@@ -1,0 +1,13 @@
+<section class="py-16">
+    <div class="max-w-4xl mx-auto px-6">
+
+        {% if section.title %}
+        <h2 class="text-3xl font-bold mb-6">{{ section.title }}</h2>
+        {% endif %}
+
+        <div class="space-y-6">
+            {{ section.body|safe }}
+        </div>
+
+    </div>
+</section>

@@ -1,0 +1,68 @@
+<!--core/templates/core/components-->
+{% load static %}
+{% load video_tags %}
+
+<!-- Latest Blog Posts Section -->
+<section class="w-full py-8">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+
+    <!-- Blog Section Title and Intro -->
+    <a href="{% url 'blog:list' %}" class="hover:text-[color:var(--color-secondary)] transition-colors">
+      <h2 class="text-3xl sm:text-4xl lg:text-4xl font-semibold tracking-tight text-[color:var(--color-font-main)] mb-2">
+        {{ homepage_settings.blog_section_title }}
+      </h2>
+    </a>
+
+    <p class="text-[color:var(--color-font-main)] mb-8 max-w-3xl mx-auto leading-relaxed">
+      {{ homepage_settings.blog_section_intro|safe }}
+    </p>
+
+    {% if blog_posts %}
+      <div class="grid grid-cols-1 md:grid-cols-3 mt-8 gap-8">
+        {% for post in blog_posts %}
+          <article class="flex flex-col justify-between border border-[color:var(--color-accent)] rounded-xl shadow-sm overflow-hidden hover:shadow-lg transition-all duration-300 hover:-translate-y-1 bg-white min-h-[460px]">
+
+            <!-- Thumbnail -->
+            <a href="{{ post.get_absolute_url }}" class="block overflow-hidden">
+              <div class="h-48">
+                {% if post.image %}
+                  <img src="{{ post.image.url }}" alt="{{ post.title }}" class="w-full h-full object-cover transition-transform duration-500 hover:scale-105">
+                {% elif post.external_image_url %}
+                  <img src="{{ post.external_image_url }}" alt="{{ post.title }}" class="w-full h-full object-cover transition-transform duration-500 hover:scale-105">
+                {% elif post.youtube_url %}
+                  {% with post.youtube_url|youtube_id as video_id %}
+                    <img src="https://img.youtube.com/vi/{{ video_id }}/maxresdefault.jpg"
+                         alt="{{ post.title }}"
+                         class="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
+                         onerror="this.onerror=null; this.src='https://img.youtube.com/vi/{{ video_id }}/hqdefault.jpg';">
+                  {% endwith %}
+                {% endif %}
+              </div>
+            </a>
+
+            <!-- Post Content -->
+            <div class="flex flex-col flex-grow p-6 text-left">
+            <div class="flex-grow mb-4 min-h-[140px] max-h-[140px] overflow-hidden">
+              <h3 class="text-xl font-semibold mb-3 text-[color:var(--color-dark)]">
+                {{ post.title }}
+              </h3>
+              <p class="text-base leading-relaxed text-[color:var(--color-font-main)]">
+                {{ post.content|safe|truncatewords:20 }}
+              </p>
+            </div>
+
+            <div class="mt-auto pt-2">
+              <a href="{{ post.get_absolute_url }}"
+                class="inline-block text-[color:var(--color-primary)] font-medium uppercase text-sm tracking-wide hover:text-[color:var(--color-secondary)] transition-colors"
+                aria-label="Continue reading {{ post.title }}">
+                Continue Reading →
+              </a>
+            </div>
+          </div>
+
+          </article>
+        {% endfor %}
+      </div>
+    {% endif %}
+  </div>
+</section>

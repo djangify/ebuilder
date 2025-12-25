@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% load instance_utils %}
+{% block content %}
+
+
+{% if hero %}
+    {% include "pages/sections/hero.html" %}
+{% endif %}
+
+<!-- PAGE SECTIONS (dynamic sections from PageSection model) -->
+
+{% for block in content_blocks %}
+    {% if block|is_pagesection %}
+        {% include "pages/sections/"|add:block.section_type|add:".html" with section=block %}
+    {% elif block|is_threecolumn %}
+        {% include "pages/sections/content_blocks.html" with block=block %}
+    {% elif block.images %}
+        {% include "pages/sections/gallery.html" with gallery_items=block.images.all %}
+    {% endif %}
+{% endfor %}
+
+{% if featured_products %}
+    {% include "pages/sections/featured_products.html" %}
+{% endif %}
+
+{% if blog_posts %}
+    {% include "pages/sections/blog_posts.html" %}
+{% endif %}
+
+{% endblock %}

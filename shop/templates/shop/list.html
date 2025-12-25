@@ -1,0 +1,309 @@
+<!--ebuilder/shop/templates/shop/list.html-->
+{% extends "base.html" %}
+{% load static %}
+{% block title %}ebuilder Shop – Digital Bookkeeping Tools & Resources{% endblock %}
+
+
+
+{% block extra_head %}
+<!-- Canonical -->
+<link rel="canonical" href="{{ request.build_absolute_uri }}">
+
+<!-- AI Search Metadata -->
+<meta name="ai-page-type" content="shop-list" />
+<meta name="ai-topics" content="digital downloads" />
+
+<!-- JSON-LD ItemList -->
+{% comment %} <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  "name": "ebuilder Shop Product List",
+  "url": "{{ request.build_absolute_uri }}",
+  "itemListElement": [
+    {% for product in products %}
+    {
+      "@type": "ListItem",
+      "position": {{ forloop.counter }},
+      "url": "{{ product.get_absolute_url }}"
+    }{% if not forloop.last %},{% endif %}
+    {% endfor %}
+  ]
+}
+</script> {% endcomment %}
+{% endblock %}
+
+{% block content %}
+
+<!-- Hero Section -->
+     
+  <header class="relative overflow-hidden bg-gradient-to-br from-[color:var(--color-light)] via-white to-[color:var(--color-light)]">
+    
+    {# Background pattern #}
+     <div class="absolute inset-0 opacity-[0.02]" style="background-image: url('data:image/svg+xml,%3Csvg width=&quot;40&quot; height=&quot;40&quot; viewBox=&quot;0 0 40 40&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot;%3E%3Cpath d=&quot;M20 20.5V18H0v-2h20v-2.5a2.5 2.5 0 015 0V16h15v2H25v2.5a2.5 2.5 0 01-5 0z&quot; fill=&quot;%23000&quot; fill-opacity=&quot;1&quot; fill-rule=&quot;evenodd&quot;/%3E%3C/svg%3E');"></div> 
+    
+    <div class="relative w-full max-w-6xl mx-auto px-6 md:px-10 lg:px-16 py-16 md:py-24">
+      
+      <div class="max-w-3xl">
+        <p class="uppercase text-sm tracking-widest text-[color:var(--color-accent)] mb-3 font-medium">
+          My Products
+        </p>
+        
+        <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold text-[color:var(--color-primary)] mb-6 leading-tight">
+          The Shop
+        </h1>
+        
+        <p class="text-xl text-[color:var(--color-font-main)] leading-relaxed mb-8">
+          A collection of digital downloads.
+        </p>
+        
+        
+      </div>
+      
+    </div>
+  </header>
+
+
+<!-- Main Content -->
+<div class="w-full bg-[color:var(--color-light)] py-12 md:py-16">
+  <div class="w-full max-w-6xl mx-auto px-6 md:px-10 lg:px-16">
+
+    <!-- Category Filter Section -->
+    <div class="mb-12">
+      <!-- Mobile Filter Button -->
+      <button id="filterToggle" 
+              data-collapse-toggle="categories-grid"
+              class="lg:hidden w-full mb-4 px-5 py-3 bg-white text-[color:var(--color-primary)] rounded-xl shadow-md flex items-center justify-between font-semibold border border-[color:var(--color-accent)]/20">
+        <span class="flex items-center gap-2">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"/>
+          </svg>
+          Filter by Category
+        </span>
+        <svg class="w-5 h-5 transition-transform" id="filterIcon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+        </svg>
+      </button>
+
+      <!-- Categories Grid -->
+      <div id="categories-grid" class="hidden lg:block">
+        <div class="flex flex-wrap justify-center gap-3">
+          <!-- All Products Tab -->
+          <a href="{% url 'shop:product_list' %}" 
+             class="px-5 py-2.5 rounded-full font-medium transition-all duration-300 {% if not current_category %}bg-[color:var(--color-primary)] text-white shadow-lg{% else %}bg-white text-[color:var(--color-primary)] hover:bg-[color:var(--color-primary)] hover:text-white shadow-md{% endif %}">
+            All Products
+          </a>
+          
+          <!-- Dynamic Category Tabs -->
+          {% for category in categories %}
+          <a href="{{ category.get_absolute_url }}" 
+             class="px-5 py-2.5 rounded-full font-medium transition-all duration-300 {% if current_category and current_category.id == category.id %}bg-[color:var(--color-primary)] text-white shadow-lg{% else %}bg-white text-[color:var(--color-primary)] hover:bg-[color:var(--color-primary)] hover:text-white shadow-md{% endif %}">
+            {{ category.name }}
+          </a>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+
+    <!-- Results Count -->
+    {% if products %}
+    <p class="text-[color:var(--color-font-main)]/70 text-center mb-8">
+      Showing {{ products|length }} product{% if products|length != 1 %}s{% endif %}
+      {% if current_category %}in <span class="font-semibold text-[color:var(--color-primary)]">{{ current_category.name }}</span>{% endif %}
+      {% if request.GET.q %}matching "<span class="font-semibold text-[color:var(--color-primary)]">{{ request.GET.q }}</span>"{% endif %}
+    </p>
+
+    <!-- Product Grid -->
+    <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+
+      {% for product in products %}
+      <div class="group bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-1 flex flex-col">
+
+        <!-- Product Image -->
+        <a href="{{ product.get_absolute_url }}" class="block relative overflow-hidden">
+          {% if product.get_image_url %}
+          <div class="aspect-square bg-gray-50">
+            <img 
+              src="{{ product.get_image_url }}" 
+              alt="Product image for {{ product.title }}"
+              class="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300"
+            />
+          </div>
+          {% else %}
+          <div class="aspect-square flex items-center justify-center bg-gradient-to-br from-[color:var(--color-light)] to-gray-100">
+            <svg class="w-16 h-16 text-[color:var(--color-accent)]/40" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+            </svg>
+          </div>
+          {% endif %}
+          
+          <!-- Hover overlay -->
+          <div class="absolute inset-0 bg-[color:var(--color-primary)]/0 group-hover:bg-[color:var(--color-primary)]/10 transition-colors duration-300 flex items-center justify-center">
+            <span class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-white text-[color:var(--color-primary)] px-4 py-2 rounded-full font-semibold text-sm shadow-lg">
+              View Details
+            </span>
+          </div>
+        </a>
+
+        <!-- Product Info -->
+        <div class="p-5 flex flex-col flex-grow">
+          <!-- Title -->
+          <a href="{{ product.get_absolute_url }}">
+            <h3 class="font-bold text-lg text-[color:var(--color-font-main)] hover:text-[color:var(--color-accent)] transition-colors mb-2 line-clamp-2">
+              {{ product.title }}
+            </h3>
+          </a>
+
+          <!-- Description -->
+          <p class="text-sm text-[color:var(--color-font-main)]/70 leading-relaxed mb-4 flex-grow line-clamp-3">
+            {{ product.description|striptags|truncatewords:25|safe }}
+          </p>
+
+          <!-- Reviews -->
+          {% if product.average_rating %}
+          <div class="flex items-center gap-2 mb-4">
+            <div class="flex items-center">
+              {% for i in "12345"|make_list %}
+              <svg class="w-4 h-4 {% if forloop.counter <= product.average_rating %}text-amber-400{% else %}text-gray-200{% endif %}" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+              </svg>
+              {% endfor %}
+            </div>
+            <span class="text-xs text-[color:var(--color-font-main)]/60">({{ product.reviews.count }})</span>
+          </div>
+          {% endif %}
+
+          <!-- Price & CTA -->
+          <div class="flex items-center justify-between pt-4 border-t border-gray-100">
+            <div>
+              <span class="text-xl text-semibold text-[color:var(--color-font-main)]">£{{ product.current_price|floatformat:2 }}</span>
+            </div>
+            <a href="{{ product.get_absolute_url }}" class="inline-flex items-center gap-1 px-4 py-2 bg-[color:var(--color-primary)] text-white text-sm font-semibold rounded-lg hover:bg-[color:var(--color-accent)] transition-colors">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+              </svg>
+              View
+            </a>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+
+    <!-- Pagination -->
+    {% if products.has_other_pages %}
+    <div class="mt-16">
+      <nav class="flex justify-center items-center gap-2" aria-label="Pagination">
+        {% if products.has_previous %}
+        <a href="?page={{ products.previous_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}"
+           class="inline-flex items-center gap-2 px-5 py-2.5 text-sm font-semibold border-2 border-[color:var(--color-primary)] text-[color:var(--color-primary)] rounded-lg hover:bg-[color:var(--color-primary)] hover:text-white transition-colors">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+          </svg>
+          Previous
+        </a>
+        {% endif %}
+        
+        <div class="flex items-center gap-1">
+          {% for num in products.paginator.page_range %}
+            {% if products.number == num %}
+            <span class="w-10 h-10 flex items-center justify-center text-sm font-bold rounded-lg bg-[color:var(--color-primary)] text-white">
+              {{ num }}
+            </span>
+            {% elif num > products.number|add:'-3' and num < products.number|add:'3' %}
+            <a href="?page={{ num }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}"
+               class="w-10 h-10 flex items-center justify-center text-sm font-medium rounded-lg bg-white text-[color:var(--color-primary)] hover:bg-[color:var(--color-primary)] hover:text-white transition-colors shadow-md">
+              {{ num }}
+            </a>
+            {% endif %}
+          {% endfor %}
+        </div>
+        
+        {% if products.has_next %}
+        <a href="?page={{ products.next_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}"
+           class="inline-flex items-center gap-2 px-5 py-2.5 text-sm font-semibold border-2 border-[color:var(--color-primary)] text-[color:var(--color-primary)] rounded-lg hover:bg-[color:var(--color-primary)] hover:text-white transition-colors">
+          Next
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+          </svg>
+        </a>
+        {% endif %}
+      </nav>
+      
+      <!-- Page indicator -->
+      <p class="text-center text-sm text-[color:var(--color-font-main)]/60 mt-4">
+        Page {{ products.number }} of {{ products.paginator.num_pages }}
+      </p>
+    </div>
+    {% endif %}
+
+    {% else %}
+    <!-- Empty State -->
+    <div class="text-center py-16">
+      <div class="w-24 h-24 mx-auto mb-6 rounded-full bg-[color:var(--color-accent)]/10 flex items-center justify-center">
+        <svg class="w-12 h-12 text-[color:var(--color-accent)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+        </svg>
+      </div>
+      <h3 class="text-xl font-bold text-[color:var(--color-primary)] mb-2">No products found</h3>
+      <p class="text-[color:var(--color-font-main)]/70 mb-6">
+        {% if request.GET.q %}
+        We couldn't find any products matching "{{ request.GET.q }}".
+        {% else %}
+        No products available in this category yet.
+        {% endif %}
+      </p>
+      <a href="{% url 'shop:product_list' %}" class="inline-flex items-center gap-2 px-6 py-3 bg-[color:var(--color-primary)] text-white font-semibold rounded-lg hover:bg-[color:var(--color-accent)] transition-colors">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+        </svg>
+        View All Products
+      </a>
+    </div>
+    {% endif %}
+
+  </div>
+</div>
+
+<!-- Trust Section -->
+<div class="w-full bg-white py-12">
+  <div class="w-full max-w-4xl mx-auto px-6 md:px-10 lg:px-16">
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+      <div class="flex flex-col items-center">
+        <div class="w-12 h-12 rounded-full bg-emerald-100 flex items-center justify-center mb-3">
+          <svg class="w-6 h-6 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
+          </svg>
+        </div>
+        <p class="text-sm font-semibold text-[color:var(--color-primary)]">Instant Download</p>
+      </div>
+      <div class="flex flex-col items-center">
+        <div class="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center mb-3">
+          <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+          </svg>
+        </div>
+        <p class="text-sm font-semibold text-[color:var(--color-primary)]">Secure Payment</p>
+      </div>
+      <div class="flex flex-col items-center">
+        <div class="w-12 h-12 rounded-full bg-purple-100 flex items-center justify-center mb-3">
+          <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+          </svg>
+        </div>
+        <p class="text-sm font-semibold text-[color:var(--color-primary)]">Email Support</p>
+      </div>
+      <div class="flex flex-col items-center">
+        <div class="w-12 h-12 rounded-full bg-amber-100 flex items-center justify-center mb-3">
+          <div class="w-10 h-10 rounded-full bg-amber-100 flex items-center justify-center">
+            <span class="text-amber-600 text-xl font-bold leading-none">£</span>
+          </div>
+        </div>
+        <p class="text-sm font-semibold text-[color:var(--color-primary)]">One-Time Purchase</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,55 @@
+# build output
+dist/
+# generated types
+.astro/
+
+# dependencies
+node_modules/
+
+# logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+
+# environment variables
+.env
+.env.production
+.env.local
+.env.tdstage
+
+# macOS-specific files
+.DS_Store
+
+# jetbrains setting folder
+.idea/
+.htaccess/
+.vscode/
+.venv/
+stderr.log
+staticfiles/
+
+.json
+media/
+ZOME/
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+ZOME/
+clean_json.py
+export_all.py
+
+db.sqlite3
+**/db.sqlite3
+data/media/*
+data/db/
+!data/media/.gitkeep
+!data/db/.gitkeep
+static/images
+/static/images
+package-lock.json
+package.json
+ruff.toml

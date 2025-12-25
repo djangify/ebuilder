@@ -1,0 +1,130 @@
+{% load static %}
+<div class="px-6 md:px-16 py-12 text-[color:var(--color-font-main)] bg-[color:var(--color-light)] space-y-16">
+
+  <!-- Shop Heading -->
+  <header class="text-center space-y-4">
+    <h1 class="text-4xl font-bold text-[color:var(--color-primary)] mt-8 mb-2">
+      Digital Business Guides for Creators and Freelancers
+    </h1>
+    <h2 class="text-xl font-semibold text-[color:var(--color-primary)] leading-normal mb-8">
+      Practical guides and toolkits to support your local and online business.
+    </h2>
+  </header>
+
+  <!-- Shop Filters -->
+  <section class="bg-[color:var(--color-light)]  p-6 mx-auto mb-12 max-w-xl">
+    <form method="get" action="." class="flex items-center max-w-md mx-auto border border-[color:var(--color-accent)] rounded-md overflow-hidden">
+      <label for="search" class="sr-only">Search products</label>
+      <input
+        type="text"
+        name="q"
+        id="search"
+        placeholder="Search guides and services..."
+        value="{{ request.GET.q }}"
+        class="flex-1 px-4 py-2 text-sm text-[color:var(--color-font-main)] bg-[color:var(--color-light)] focus:outline-none"
+      />
+      <button
+        type="submit"
+        class="px-5 py-2 text-sm font-semibold bg-[color:var(--color-light)] text-[color:var(--color-primary)] border-l border-[color:var(--color-accent)] hover:bg-[color:var(--color-secondary)] hover:text-[color:var(--color-light)] transition"
+      >
+        Search
+      </button>
+    </form>
+  </section>
+
+  <!-- Category Pills -->
+  <div class="flex flex-wrap justify-center gap-3 mb-12">
+    <a href="{{ HOME_URL }}"
+       class="px-4 py-2 rounded-md text-sm font-semibold border border-[color:var(--color-accent)] text-[color:var(--color-accent)] bg-[color:var(--color-light)] hover:bg-[color:var(--color-secondary)] hover:text-[color:var(--color-light)] transition {% if not current_category %}bg-[color:var(--color-accent)] text-[color:var(--color-light)]{% endif %}">
+       All Products
+    </a>
+    {% for category in categories %}
+    <a href="{{ category.get_absolute_url }}"
+       class="px-4 py-2 rounded-md text-sm font-semibold border border-[color:var(--color-accent)] text-[color:var(--color-accent)] bg-[color:var(--color-light)] hover:bg-[color:var(--color-secondary)] hover:text-[color:var(--color-light)] transition {% if current_category and current_category.id == category.id %}bg-[color:var(--color-accent)] text-[color:var(--color-light)]{% endif %}">
+       {{ category.name }}
+    </a>
+    {% endfor %}
+  </div>
+
+  <!-- Product Grid -->
+  {% if products %}
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-4 gap-6">
+    {% for product in products %}
+    <div class="bg-[color:var(--color-light)] border border-[color:var(--color-light)] rounded-xl shadow-sm hover:shadow-lg flex flex-col overflow-hidden transition">
+      <a href="{{ product.get_absolute_url }}">
+        {% if product.get_image_url %}
+        <img src="{{ product.get_image_url }}" alt="product image for {{ product.title }}"
+        width="700" height="900" 
+        loading="lazy" decoding="async"     
+        class="w-full h-[200px] object-contain bg-[color:var(--color-light)] p-4 rounded-t-xl" />
+        {% else %}
+        <div class="w-full h-[200px] flex items-center justify-center bg-[color:var(--color-light)] text-[color:var(--color-accent)] rounded-t-xl">
+          No Image Available
+        </div>
+        {% endif %}
+      </a>
+
+      <div class="p-4 flex flex-col flex-1">
+        <h2 class="text-base font-semibold text-[color:var(--color-accent)] mb-2 min-h-[2.5rem] leading-snug">
+          <a href="{{ product.get_absolute_url }}">{{ product.title }}</a>
+        </h2>
+        <p class="text-sm text-[color:var(--color-font-main)] leading-relaxed flex-grow mb-4">
+          {{ product.description|striptags|truncatewords:26 }}
+        </p>
+        <div class="flex justify-between items-center mt-auto pt-3 border-t border-[color:var(--color-accent)]">
+          <span class="text-[color:var(--color-primary)] font-bold text-sm">
+            £{{ product.current_price|floatformat:2 }}
+          </span>
+          <div class="flex items-center space-x-1 text-yellow-500">
+            {% if product.average_rating %}
+              {% for i in "12345"|make_list %}
+              <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M10 15l-5.878 3.09 1.123-6.545L.49 6.91l6.562-.954L10 0l2.948 5.956 6.562.954-4.755 4.635 1.123 6.545z"
+                      {% if forloop.counter <= product.average_rating %}
+                      class="fill-current"
+                      {% else %}
+                      class="text-[color:var(--color-accent)]"
+                      {% endif %}></path>
+              </svg>
+              {% endfor %}
+              <span class="text-xs text-[color:var(--color-accent)]">({{ product.reviews.count }})</span>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+
+  <!-- Pagination -->
+  {% if products.has_other_pages %}
+  <div class="mt-12">
+    <nav class="flex justify-center flex-wrap gap-2">
+      {% if products.has_previous %}
+      <a href="?page={{ products.previous_page_number }}"
+         class="px-4 py-2 text-sm border border-[color:var(--color-accent)] rounded-md bg-[color:var(--color-light)] hover:bg-[color:var(--color-secondary)] hover:text-[color:var(--color-light)] transition">
+         Previous
+      </a>
+      {% endif %}
+      {% for num in products.paginator.page_range %}
+        {% if products.number == num %}
+        <span class="px-4 py-2 text-sm rounded-md bg-[color:var(--color-accent)] text-[color:var(--color-light)] border border-[color:var(--color-accent)]">{{ num }}</span>
+        {% else %}
+        <a href="?page={{ num }}"
+           class="px-4 py-2 text-sm rounded-md border border-[color:var(--color-accent)] bg-[color:var(--color-light)] hover:bg-[color:var(--color-secondary)] hover:text-[color:var(--color-light)] transition">
+           {{ num }}
+        </a>
+        {% endif %}
+      {% endfor %}
+      {% if products.has_next %}
+      <a href="?page={{ products.next_page_number }}"
+         class="px-4 py-2 text-sm border border-[color:var(--color-accent)] rounded-md bg-[color:var(--color-light)] hover:bg-[color:var(--color-secondary)] hover:text-[color:var(--color-light)] transition">
+         Next
+      </a>
+      {% endif %}
+    </nav>
+  </div>
+  {% endif %}
+  {% endif %}
+</div>
+{% endblock %}

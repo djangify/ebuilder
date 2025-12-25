@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="max-w-2xl mx-auto my-12 px-4">
+  <div class="bg-[color:var(--color-bg-default)] shadow-md rounded-lg overflow-hidden border border-[color:var(--color-accent)]">
+    <div class="bg-[color:var(--color-light)] border-b border-[color:var(--color-accent)] px-6 py-4">
+      <div class="flex items-center">
+        <div class="flex-shrink-0">
+          <svg
+            class="h-12 w-12 text-[color:var(--color-secondary)]"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+            />
+          </svg>
+        </div>
+        <div class="ml-4">
+          <h1
+            class="text-2xl font-bold text-[color:var(--color-primary-contrast)]"
+          >
+            Email Successfully Verified
+          </h1>
+          <p class="text-[color:var(--color-secondary-contrast)]">
+            Your account is now active!
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="px-6 py-8 text-[color:var(--color-font-main)]">
+      <p class="mb-4">
+        Thank you for verifying your email address. Your account is now fully
+        activated, and you can enjoy all the features of {{ homepage_settings.business_name }}.
+      </p>
+
+      <div
+        class="mt-8 flex flex-col sm:flex-row sm:justify-center gap-5 text-center"
+      >
+        
+        <a
+          href="{% url 'account_login' %}"
+          class="bg-[color:var(--color-accent)] text-[color:var(--color-dark)] font-medium py-2 px-6 rounded-md hover:bg-[color:var(--color-accent-contrast)] hover:text-[color:var(--color-light)] transition-colors"
+        >
+          Go to Profile
+        </a>
+      </div>
+
+      <p class="mt-8 text-sm text-[color:var(--color-font-main)] text-center">
+        We are excited to include you as a part of our community.
+      </p>
+    </div>
+  </div>
+</div>
+{% endblock %}

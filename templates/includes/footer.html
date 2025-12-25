@@ -1,0 +1,125 @@
+{% load static %}
+
+<footer class="bg-[color:var(--color-light)] border-t border-gray-200 mt-16">
+  <div class="max-w-7xl mx-auto px-6 py-12 text-center space-y-6">
+
+    <!-- Navigation Links -->
+    <nav aria-label="Footer navigation">
+      <ul class="flex flex-wrap justify-center gap-6 text-sm text-[color:var(--color-font-main)]">
+
+        <!-- Dynamic Pages (Footer filtering) -->
+        {% for p in published_pages %}
+          {% if p.show_in_footer %}
+          <li>
+            <a href="{{ p.get_absolute_url }}"
+               class="hover:text-[color:var(--color-secondary)] transition">
+              {{ p.title }}
+            </a>
+          </li>
+          {% endif %}
+        {% endfor %}
+
+        <!-- Shop (always shown) -->
+        <li>
+          <a href="{% url 'shop:product_list' %}"
+             class="hover:text-[color:var(--color-secondary)] transition">
+            Shop
+          </a>
+        </li>
+
+        <!-- Policies -->
+        <li>
+          <a href="{% url 'infopages:policy_index' %}"
+             class="hover:text-[color:var(--color-secondary)] transition">
+            Policies
+          </a>
+        </li>
+
+        <!-- Blog -->
+        <li>
+          <a href="{% url 'blog:list' %}"
+             class="hover:text-[color:var(--color-secondary)] transition">
+            Blog
+          </a>
+        </li>
+
+        <!-- Auth -->
+        {% if not request.user.is_authenticated %}
+          <li>
+            <a href="{% url 'account_signup' %}"
+               class="hover:text-[color:var(--color-secondary)] transition">
+              Register
+            </a>
+          </li>
+          <li>
+            <a href="{% url 'account_login' %}"
+               class="hover:text-[color:var(--color-secondary)] transition">
+              Login
+            </a>
+          </li>
+        {% else %}
+          <li>
+            <a href="{% url 'account_logout' %}"
+               class="hover:text-[color:var(--color-secondary)] transition">
+              Logout
+            </a>
+          </li>
+        {% endif %}
+      </ul>
+    </nav>
+
+    <!-- Footer Bottom Row -->
+    <div class="flex flex-col md:flex-row items-center justify-between mt-8 border-t border-gray-200 pt-6">
+
+      <!-- Copyright -->
+      <p class="text-sm text-[color:var(--color-font-main)] mb-4 md:mb-0">
+        {% if homepage_settings.copyright_text %}
+          &copy; 2025 {{ homepage_settings.copyright_text }}
+        {% else %}
+          &copy; 2025 {{ homepage_settings.business_name }}. All rights reserved.
+        {% endif %}
+      </p>
+
+        <!-- eBuilder Branding (only shown without license) -->
+        {% if not EBUILDER_LICENSE_KEY %}
+        <div class="ebuilder-branding px-4 text-center py-4 bg-gray-100 border-t border-gray-200">
+            <a href="https://www.djangify.com" 
+              target="_blank" 
+              rel="noopener"
+              class="text-sm text-semibold text-gray-500 hover:text-gray-700">
+                Powered by Djangify eBuilder
+            </a>
+        </div>
+        {% endif %}
+      <!-- Social Media -->
+      {% if social_links %}
+      <div class="flex items-center space-x-4 my-4" aria-label="Social media">
+        {% for name, url in social_links %}
+        {% with name|lower as social %}
+        <a href="{{ url }}" target="_blank" rel="noopener noreferrer"
+           class="inline-flex items-center justify-center hover:opacity-80 transition-opacity"
+           aria-label="{{ name }}">
+          {% if "facebook" in social %}
+            <img src="{% static 'images/social/facebook.png' %}" alt="Facebook" width="25" height="25">
+          {% elif "instagram" in social %}
+            <img src="{% static 'images/social/instagram.png' %}" alt="Instagram" width="25" height="25">
+          {% elif "linkedin" in social %}
+            <img src="{% static 'images/social/linkedin.png' %}" alt="LinkedIn" width="25" height="25">
+          {% elif "twitter" in social or "x" in social %}
+            <img src="{% static 'images/social/x.png' %}" alt="X" width="25" height="25">
+          {% elif "pinterest" in social %}
+            <img src="{% static 'images/social/pinterest.png' %}" alt="Pinterest" width="25" height="25">
+          {% elif "tiktok" in social %}
+            <img src="{% static 'images/social/tiktok.png' %}" alt="TikTok" width="25" height="25">
+          {% else %}
+            <img src="{% static 'images/social/link.png' %}" alt="{{ name }}" width="25" height="25">
+          {% endif %}
+        </a>
+        {% endwith %}
+        {% endfor %}
+      </div>
+      {% endif %}
+
+    </div>
+  </div>
+</footer>

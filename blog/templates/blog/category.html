@@ -1,0 +1,93 @@
+<!--blog/category.html-->
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<section class="px-6 md:px-16 py-12 bg-[--color-light] text-[--color-font-main]">
+  <div class="max-w-7xl mx-auto">
+    <!-- Category Header -->
+    <div class="mb-10 text-center">
+      <h1 class="text-3xl font-bold text-[--color-primary] mb-3">{{ category.name }}</h1>
+      <a href="{% url 'blog:list' %}" class="text-[--color-secondary] hover:text-[--color-accent] underline transition">
+        ← Back to Blog
+      </a>
+    </div>
+
+    <!-- Posts Grid -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+      {% for post in posts %}
+      <article class="bg-white border border-[--color-accent]/30 rounded-md overflow-hidden shadow-sm hover:shadow transition flex flex-col">
+
+      <!-- IMAGE -->
+      <a href="{{ post.get_absolute_url }}">
+        {% if post.external_image_url %}
+          <img src="{{ post.external_image_url }}" alt="{{ post.title }}" class="w-full h-56 object-cover">
+        {% elif post.get_image_url %}
+          <img src="{{ post.get_image_url }}" alt="{{ post.title }}" class="w-full h-56 object-cover">
+        {% elif post.youtube_url %}
+          <img src="https://img.youtube.com/vi/{{ post.get_youtube_video_id }}/maxresdefault.jpg"
+              alt="{{ post.title }}" class="w-full h-56 object-cover"
+              onerror="this.onerror=null; this.src='https://img.youtube.com/vi/{{ post.get_youtube_video_id }}/hqdefault.jpg';">
+        {% else %}
+          <div class="w-full h-56 bg-[--color-light]/50 flex items-center justify-center text-[--color-accent]">
+            No Image Available
+          </div>
+        {% endif %}
+      </a>
+
+      <!-- TEXT AREA -->
+      <div class="p-6 flex flex-col flex-grow">
+        <h2 class="text-lg font-semibold text-[--color-primary] mb-2 leading-snug">
+          <a href="{{ post.get_absolute_url }}">{{ post.title }}</a>
+        </h2>
+
+        <p class="text-[--color-font-main]/80 text-sm mb-4">
+          {{ post.publish_date|date:"F j, Y" }}
+        </p>
+      </div>
+
+      <!-- FULL-WIDTH FOOTER -->
+      <div class="w-full bg-[--color-light] py-4 flex justify-center">
+        <a href="{{ post.get_absolute_url }}"
+          class="px-4 py-2 border border-[--color-primary]
+                  text-[--color-primary] font-semibold text-sm rounded
+                  hover:bg-[--color-primary] hover:text-white transition">
+          Read Full Article →
+        </a>
+      </div>
+    </article>
+
+      {% empty %}
+      <div class="col-span-3 text-center py-12 bg-white rounded-lg">
+        <p class="text-[--color-font-main]/70">New posts coming soon.</p>
+      </div>
+      {% endfor %}
+    </div>
+
+    <!-- Pagination -->
+    {% if posts.has_other_pages %}
+    <div class="flex justify-center items-center gap-2 mt-12 flex-wrap">
+      {% if posts.has_previous %}
+        <a href="?page={{ posts.previous_page_number }}" class="px-4 py-2 border border-[--color-primary] text-[--color-primary] rounded hover:bg-[color:var(--color-primary)] hover:text-white transition">
+          Previous
+        </a>
+      {% endif %}
+
+      {% for i in posts.paginator.page_range %}
+        {% if posts.number == i %}
+          <span class="px-4 py-2 bg-[color:var(--color-primary)] text-white border border-[--color-primary] rounded">{{ i }}</span>
+        {% else %}
+          <a href="?page={{ i }}" class="px-4 py-2 border border-[--color-primary] text-[--color-primary] rounded hover:bg-[color:var(--color-primary)] hover:text-white transition">{{ i }}</a>
+        {% endif %}
+      {% endfor %}
+
+      {% if posts.has_next %}
+        <a href="?page={{ posts.next_page_number }}" class="px-4 py-2 border border-[--color-primary] text-[--color-primary] rounded hover:bg-[color:var(--color-primary)] hover:text-white transition">
+          Next
+        </a>
+      {% endif %}
+    </div>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}

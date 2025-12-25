@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Page Not Found – 404 Error{% endblock %}
+
+{% block content %}
+<section class="min-h-[70vh] flex flex-col justify-center items-center bg-[color:var(--color-light)] text-[color:var(--color-font-main)] px-6 py-16 text-center">
+  <h1 class="text-7xl font-bold text-[color:var(--color-primary)] mb-4">404</h1>
+  <h2 class="text-2xl font-semibold mb-4">Page Not Found</h2>
+  <p class="text-lg mb-10">The page you’re looking for doesn’t exist or may have been moved.</p>
+
+  <div class="flex flex-col sm:flex-row gap-4 justify-center mb-12">
+    <a href="/" class="inline-flex items-center px-6 py-3 rounded-md border-2 border-[color:var(--color-accent)] text-[color:var(--color-accent)] hover:bg-[color:var(--color-accent)] hover:text-white transition">
+      Vist Home Page
+    </a>
+    <a href="/portfolio/" class="inline-flex items-center px-6 py-3 rounded-md border-2 border-[color:var(--color-primary)] text-[color:var(--color-primary)] hover:bg-[color:var(--color-primary)] hover:text-white transition">
+      Visit Portfolio Page
+    </a>
+  </div>
+
+  {% if category_posts %}
+  <div class="w-full max-w-6xl mx-auto text-left">
+    <h2 class="text-2xl font-bold mb-8 text-center">
+      {% if selected_category %}
+        Popular {{ selected_category.name }} Articles
+      {% else %}
+        You might be interested in these articles
+      {% endif %}
+    </h2>
+
+    <div class="grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
+      {% for post in category_posts %}
+      <article class="rounded-lg shadow-lg overflow-hidden flex flex-col bg-[color:var(--color-light)] border border-[color:var(--color-accent)]/30">
+        <a href="{{ post.get_absolute_url }}" class="block h-48 overflow-hidden">
+          {% if post.get_image_url %}
+            <img src="{{ post.get_image_url }}" alt="{{ post.title }}" class="w-full h-full object-cover">
+          {% elif post.youtube_url %}
+            <img src="https://img.youtube.com/vi/{{ post.get_youtube_video_id }}/hqdefault.jpg" alt="{{ post.title }}" class="w-full h-full object-cover">
+          {% else %}
+            <div class="w-full h-full bg-[color:var(--color-accent)]/10 flex items-center justify-center">
+              <span class="text-[color:var(--color-accent)] text-sm">No Image Available</span>
+            </div>
+          {% endif %}
+        </a>
+
+        <div class="p-8 flex flex-col flex-grow space-y-4">
+            <h3 class="text-lg font-semibold text-[color:var(--color-font-main)] leading-snug">{{ post.title }}</h3>
+            <a href="{{ post.get_absolute_url }}" class="mt-auto pt-4 text-[color:var(--color-accent)] hover:text-[color:var(--color-primary)] inline-flex items-center">
+                Read Full Article →
+            </a>
+        </div>
+      </article>
+      {% endfor %}
+    </div>
+
+    {% if selected_category %}
+    <div class="text-center mt-10">
+      <a href="{% url 'blog:category' selected_category.slug %}" 
+         class="inline-flex items-center px-6 py-3 rounded-full border-2 border-[color:var(--color-accent)] text-[color:var(--color-accent)] hover:bg-[color:var(--color-accent)] hover:text-white transition">
+        See all {{ selected_category.name }} articles
+      </a>
+    </div>
+    {% endif %}
+  </div>
+  {% endif %}
+</section>
+{% endblock %}

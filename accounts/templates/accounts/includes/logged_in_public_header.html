@@ -1,0 +1,139 @@
+{% load static %}
+
+<header class="w-full bg-white border-b border-[color:var(--color-accent)]/30">
+  <nav class="flex items-center justify-between px-4 py-3 max-w-7xl mx-auto">
+
+    <!-- Logo + Name -->
+    <a href="/" class="flex items-center gap-2" aria-label="{{ homepage_settings.business_name|default:'Home' }}">
+      {% if homepage_settings.logo_image %}
+        <img src="{{ homepage_settings.logo_image.url }}"
+             alt="{{ homepage_settings.business_name }} logo"
+             class="h-8 w-auto object-contain"
+             loading="lazy">
+      {% else %}
+        <img src="{% static 'images/placeholder-logo.png' %}"
+             alt="{{ homepage_settings.business_name }}"
+             class="h-8 w-auto object-contain opacity-70"
+             loading="lazy">
+      {% endif %}
+      <span class=" sm:flex text-[color:var(--color-font-main)] font-semibold uppercase tracking-wide">
+        {{ homepage_settings.business_name }}
+      </span>
+    </a>
+
+    <!-- Right Side -->
+    <div class="flex items-center gap-4">
+
+      <!-- Cart -->
+      <a href="{% url 'shop:cart_detail' %}"
+         class="relative text-[color:var(--color-font-main)] hover:text-[color:var(--color-secondary)] transition"
+         aria-label="View cart">
+        <svg xmlns="http://www.w3.org/2000/svg"
+             class="w-6 h-6"
+             fill="none"
+             viewBox="0 0 24 24"
+             stroke="currentColor">
+          <path stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="1.5"
+                d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-1.2 6h12.4M10 21a1 1 0 11-2 0 1 1 0zm8 0a1 1 0 11-2 0 1 1 0z" />
+        </svg>
+        {% with total_items=cart|length %}
+          {% if total_items > 0 %}
+            <span class="absolute -top-2 -right-2 bg-red-600 text-white text-xs rounded-full px-1">
+              {{ total_items }}
+            </span>
+          {% endif %}
+        {% endwith %}
+      </a>
+
+      <!-- User Dropdown -->
+      <div class="relative">
+        <button id="user-menu-button"
+                type="button"
+                aria-label="Toggle user menu"
+                aria-expanded="false"
+                aria-controls="user-dropdown"
+                class="flex items-center gap-1 text-[color:var(--color-font-main)] hover:text-[color:var(--color-secondary)] transition">
+          <span class="font-medium hidden sm:inline">Menu</span>
+          <svg xmlns="http://www.w3.org/2000/svg"
+               class="chevron-icon w-4 h-4 transition-transform duration-200"
+               fill="none"
+               viewBox="0 0 24 24"
+               stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+          </svg>
+        </button>
+
+        <!-- Dropdown Menu -->
+        <div id="user-dropdown"
+             class="absolute right-0 mt-2 hidden w-48 rounded-lg shadow-md border border-[color:var(--color-accent)]/30 bg-white z-50"
+             style="display: none;">
+          <a href="{% url 'accounts:dashboard' %}" class="block py-2 px-4 hover:bg-[color:var(--color-light)] transition rounded-t-lg">Dashboard</a>
+          <a href="{% url 'shop:purchases' %}" class="block py-2 px-4 hover:bg-[color:var(--color-light)] transition">My Orders</a>
+          <a href="{% url 'accounts:profile' %}" class="block py-2 px-4 hover:bg-[color:var(--color-light)] transition">Profile Info</a>
+          <a href="{% url 'shop:product_list' %}" class="block py-2 px-4 hover:bg-[color:var(--color-light)] transition">Shop</a>
+          <a href="{% url 'accounts:support' %}" class="block py-2 px-4 hover:bg-[color:var(--color-light)] transition">Support</a>
+          <a href="{% url 'account_logout' %}" class="block py-2 px-4 text-red-600 hover:bg-red-50 rounded-b-lg font-medium transition">Sign out</a>
+        </div>
+      </div>
+
+      <!-- Mobile Menu Toggle -->
+      <button id="mobile-menu-toggle"
+              class="md:hidden flex flex-col justify-between w-6 h-5 focus:outline-none"
+              aria-label="Toggle mobile menu"
+              aria-expanded="false"
+              aria-controls="mobile-menu">
+        <span class="block h-0.5 w-full bg-[color:var(--color-font-main)] rounded"></span>
+        <span class="block h-0.5 w-full bg-[color:var(--color-font-main)] rounded"></span>
+        <span class="block h-0.5 w-full bg-[color:var(--color-font-main)] rounded"></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Mobile Dropdown -->
+  <div id="mobile-menu"
+       class="hidden flex-col items-center bg-[color:var(--color-light)] border-t border-[color:var(--color-accent)] py-4 space-y-3 md:hidden">
+    <a href="{% url 'accounts:dashboard' %}" class="block w-full text-center py-2">Dashboard</a>
+    <a href="{% url 'shop:purchases' %}" class="block w-full text-center py-2">My Orders</a>
+    <a href="{% url 'accounts:profile' %}" class="block w-full text-center py-2">Profile Info</a>
+    <a href="{% url 'shop:product_list' %}" class="block w-full text-center py-2">Shop</a>
+    <a href="{% url 'accounts:support' %}" class="block w-full text-center py-2">Support</a>
+    <a href="{% url 'account_logout' %}" class="block w-full text-center py-2 text-red-600">Sign Out</a>
+  </div>
+</header>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const dropdown = document.getElementById("user-dropdown");
+    const button = document.getElementById("user-menu-button");
+    const chevron = button.querySelector(".chevron-icon");
+    const mobileToggle = document.getElementById("mobile-menu-toggle");
+    const mobileMenu = document.getElementById("mobile-menu");
+
+    // User dropdown toggle
+    button.addEventListener("click", (e) => {
+      e.stopPropagation();
+      const expanded = button.getAttribute("aria-expanded") === "true";
+      button.setAttribute("aria-expanded", !expanded);
+      dropdown.classList.toggle("hidden");
+      dropdown.style.display = expanded ? "none" : "block";
+      chevron.classList.toggle("rotate-180");
+    });
+
+    document.addEventListener("click", (event) => {
+      if (!dropdown.contains(event.target) && !button.contains(event.target)) {
+        dropdown.classList.add("hidden");
+        dropdown.style.display = "none";
+        chevron.classList.remove("rotate-180");
+      }
+    });
+
+    // Mobile menu toggle
+    mobileToggle.addEventListener("click", () => {
+      mobileMenu.classList.toggle("hidden");
+      const expanded = mobileToggle.getAttribute("aria-expanded") === "true";
+      mobileToggle.setAttribute("aria-expanded", !expanded);
+    });
+  });
+</script>

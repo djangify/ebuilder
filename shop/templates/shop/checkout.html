@@ -1,0 +1,158 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="w-full bg-[color:var(--color-light)] py-12">
+  <div class="max-w-5xl mx-auto px-4">
+    <div class="bg-white rounded-xl border border-[color:var(--color-primary)] shadow-md p-10 max-w-3xl mx-auto">
+
+      <!-- Page Title -->
+      <h1 class="text-2xl font-bold text-[color:var(--color-primary)] mb-8">Checkout</h1>
+
+      <!-- Order Summary -->
+      <div class="border border-gray-200 rounded-lg p-6 mb-8">
+        <h2 class="text-xl font-semibold text-[color:var(--color-font-main)] mb-4">Order Summary</h2>
+        <div class="divide-y divide-gray-200">
+          {% for item in cart %}
+          <div class="py-4 flex justify-between">
+            <div>
+              <h3 class="text-[color:var(--color-font-main)] font-medium">{{ item.product.title }}</h3>
+              <p class="text-sm text-gray-500">Quantity: {{ item.quantity }}</p>
+            </div>
+            <div class="text-right font-semibold text-[color:var(--color-font-main)]">
+              £{{ item.total_price|floatformat:2 }}
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+        <div class="mt-6 pt-6 border-t border-gray-200 flex justify-between text-lg font-semibold text-[color:var(--color-font-main)]">
+          <span>Total</span>
+          <span>£{{ cart.get_total_price|floatformat:2 }}</span>
+        </div>
+      </div>
+
+      {% if is_guest %}
+      <!-- /Register -->
+      <div class="bg-white border border-yellow-300 rounded-lg shadow-sm p-6 mb-8">
+        <h2 class="text-xl font-semibold text-gray-800 mb-3">Register or Login</h2>
+        <p class="text-[color:var(--color-font-main)]">
+          Your downloads will be available in your account area.
+          Please
+          <a href="{% url 'account_signup' %}" class="text-[color:var(--color-secondary)] font-semibold hover:underline">Register</a>
+          or
+          <a href="{% url 'account_login' %}" class="text-[color:var(--color-secondary)] font-semibold hover:underline">Login</a>
+          before completing this purchase.
+        </p>
+      </div>
+      {% endif %}
+
+      <!-- Customer Details -->
+      <div class="bg-gray-50 border border-[color:var(--color-accent)]/30 rounded-lg p-6 mb-8">
+        <h2 class="text-lg font-semibold mb-2 text-[color:var(--color-font-main)]">Customer Details</h2>
+        <p class="text-md text-[color:var(--color-font-main)]">
+          <strong>Name:</strong> {{ request.user.first_name }} {{ request.user.last_name }}<br>
+          <strong>Username:</strong> {{ request.user.username }}<br>
+          <strong>Email:</strong> {{ request.user.email }}
+        </p>
+        <p class="mt-2 text-xs text-gray-500 italic">These details will be used for your order and receipt.</p>
+      </div>
+
+      <!-- Payment Form -->
+      <div class="border border-gray-200 rounded-lg p-6 shadow-sm">
+        <h2 class="text-xl font-semibold mb-4 text-[color:var(--color-font-main)]">Payment Details</h2>
+        <form id="payment-form" class="space-y-4">
+          {% csrf_token %}
+          <div>
+            <div id="card-element" class="border border-gray-300 rounded-md p-3 mb-4">
+              <!-- Stripe Elements will mount here -->
+            </div>
+            <div>
+              <label for="postal-code" class="block text-sm font-medium text-gray-700 mb-1">Zip/Postcode</label>
+              <input type="text" id="postal-code"
+                     class="w-full border border-gray-300 rounded-md px-3 py-2 text-sm"
+                     placeholder="Enter your zip or postcode">
+            </div>
+            <div id="card-errors" class="text-red-600 text-sm mt-2" role="alert"></div>
+          </div>
+
+          <button type="submit" id="submit-button"
+                  class="w-full md:w-auto px-6 py-3 bg-[color:var(--color-primary)] text-white font-semibold rounded-lg hover:opacity-90 transition">
+            Pay £{{ cart.get_total_price|floatformat:2 }}
+          </button>
+        </form>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- Stripe JS -->
+<script src="https://js.stripe.com/v3/"></script>
+<script>
+  const stripe = Stripe("{{ STRIPE_PUBLIC_KEY|escapejs }}");
+
+  const elements = stripe.elements();
+
+  const style = {
+    base: {
+      fontSize: '16px',
+      color: '#111827',
+      fontFamily: 'Poppins, sans-serif',
+      '::placeholder': { color: '#9ca3af' },
+    },
+    invalid: {
+      color: '#dc2626',
+      iconColor: '#dc2626',
+    }
+  };
+
+  const card = elements.create("card", { style: style, hidePostalCode: true });
+  card.mount("#card-element");
+
+  const form = document.getElementById("payment-form");
+  const submitButton = document.getElementById("submit-button");
+  const errorElement = document.getElementById("card-errors");
+
+  card.addEventListener("change", (event) => {
+    errorElement.textContent = event.error ? event.error.message : "";
+  });
+
+  form.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    submitButton.disabled = true;
+    errorElement.textContent = "";
+
+    const clientSecret = "{{ client_secret|escapejs }}";
+    if (!clientSecret) {
+      errorElement.textContent = "Missing client secret. Please refresh the page.";
+      submitButton.disabled = false;
+      return;
+    }
+
+    try {
+      const { paymentIntent, error } = await stripe.confirmCardPayment(clientSecret, {
+        payment_method: {
+          card: card,
+          billing_details: {
+            name: "{{ request.user.first_name }} {{ request.user.last_name }}",
+            email: "{{ request.user.email }}",
+          },
+        },
+      });
+
+      if (error) {
+        errorElement.textContent = error.message;
+        submitButton.disabled = false;
+      } else if (paymentIntent && paymentIntent.status === "succeeded") {
+        window.location.href = "{% url 'shop:payment_success' %}?payment_intent=" + paymentIntent.id;
+      } else {
+        errorElement.textContent = "Payment did not succeed. Please try again.";
+        submitButton.disabled = false;
+      }
+    } catch (err) {
+      console.error("Payment error:", err);
+      errorElement.textContent = err.message || "Unexpected error. Please try again.";
+      submitButton.disabled = false;
+    }
+  });
+</script>
+{% endblock %}

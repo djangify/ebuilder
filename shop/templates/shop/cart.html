@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="w-full bg-[color:var(--color-light)] py-12">
+  <div class="max-w-5xl mx-auto px-4 mb-16">
+    <div class="bg-white rounded-xl shadow-md p-8 max-w-3xl mx-auto">
+
+      <!-- Heading -->
+      <h1 class="text-2xl font-bold text-[color:var(--color-primary)] mb-8">
+        Shopping Cart
+      </h1>
+
+      {% if cart %}
+      <!-- Cart Items -->
+      <div class="flex flex-col gap-6">
+        {% for item in cart %}
+        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 border border-gray-200 rounded-lg p-4">
+          
+          <!-- Product Info -->
+          <div class="flex items-start gap-4">
+            <img src="{{ item.product.get_image_url }}" 
+                 alt="cart item - {{ item.product.title }}" 
+                 class="w-20 h-20 object-cover rounded-md">
+            <div>
+              <h3 class="text-base font-semibold text-[color:var(--color-font-main)] mb-1">
+                {{ item.product.title }}
+                {% if item.download %}
+                  <span class="text-sm font-normal text-gray-500">
+                    ({{ item.download.label }})
+                  </span>
+                {% endif %}
+              </h3>
+              <p class="text-sm text-gray-600">Price: £{{ item.price|floatformat:2 }}</p>
+            </div>
+          </div>
+
+          <!-- Actions -->
+          <div class="flex items-center gap-4">
+            <form method="post" action="{% url 'shop:cart_update' item.product.id %}" class="flex items-center gap-2">
+              {% csrf_token %}
+              {% if item.download %}
+              <input type="hidden" name="download_id" value="{{ item.download.id }}">
+              {% endif %}
+              <input 
+                type="number" 
+                name="quantity" 
+                value="{{ item.quantity }}" 
+                min="1" 
+                max="99"
+                class="w-14 border border-gray-300 rounded-md text-center text-sm py-1"
+              >
+              <button type="submit" class="text-[color:var(--color-secondary)] text-sm hover:underline">Update</button>
+            </form>
+
+            <span class="font-semibold text-[color:var(--color-primary)]">
+              £{{ item.total_price|floatformat:2 }}
+            </span>
+
+            <form method="post" action="{% url 'shop:cart_remove' item.product.id %}">
+              {% csrf_token %}
+              {% if item.download %}
+              <input type="hidden" name="download_id" value="{{ item.download.id }}">
+              {% endif %}
+              <button type="submit" class="text-red-600 text-sm hover:underline">Remove</button>
+            </form>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+
+      <!-- Summary Section -->
+      <div class="mt-10 bg-gray-50 rounded-lg p-6 flex flex-col gap-4">
+        <div class="flex justify-between items-center text-[color:var(--color-font-main)] text-sm md:text-base">
+          <p>Total Items: <strong>{{ cart|length }}</strong></p>
+          <p>Total: <strong>£{{ cart.get_total_price|floatformat:2 }}</strong></p>
+        </div>
+
+        <!-- Buttons -->
+        <div class="flex flex-col md:flex-row justify-end gap-4 mt-4">
+          <a href="{% url 'shop:product_list' %}"
+             class="w-full md:w-auto px-6 py-3 border border-gray-300 rounded-lg text-[color:var(--color-primary)] bg-white hover:bg-[color:var(--color-accent)] text-center transition">
+            Continue Shopping
+          </a>
+          <a href="{% url 'shop:checkout' %}"
+             class="w-full md:w-auto px-6 py-3 rounded-lg bg-[color:var(--color-primary)] text-white font-semibold hover:opacity-90 text-center transition">
+            Proceed to Checkout
+          </a>
+        </div>
+      </div>
+      {% else %}
+      <!-- Empty Cart -->
+      <div class="text-center py-8 text-[color:var(--color-font-main)]">
+        <p>Your cart is empty.</p>
+        <a href="{% url 'shop:product_list' %}" 
+           class="inline-block mt-4 px-6 py-3 bg-[color:var(--color-secondary)] text-white rounded-lg hover:bg-[color:var(--color-primary)] transition">
+          Continue Shopping
+        </a>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+</section>
+{% endblock %}

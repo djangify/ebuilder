@@ -1,0 +1,99 @@
+<!-- Content Blocks – Featured Card Style -->
+<section class="py-16 md:py-24 bg-white">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+
+            {% if block.col_1_title or block.col_1_body %}
+            <div class="bg-white rounded-xl p-8 shadow-lg border-2 border-[color:var(--color-accent)]
+                        hover:border-[color:var(--color-primary)]
+                        transition-all duration-300 hover:shadow-xl">
+
+                {% if block.col_1_image %}
+                <div class="w-14 h-14 mx-auto bg-[color:var(--color-accent)]/10 rounded-lg flex items-center justify-center mb-6 overflow-hidden">
+                    <img
+                        src="{{ block.col_1_image.url }}"
+                        alt="{{ block.col_1_title }}"
+                        class="w-8 h-8 object-contain"
+                    >
+                </div>
+                {% endif %}
+
+                {% if block.col_1_title %}
+                <h3 class="text-xl font-bold text-[color:var(--color-primary)] mb-3">
+                    {{ block.col_1_title }}
+                </h3>
+                {% endif %}
+
+                {% if block.col_1_body %}
+                <div class="text-[color:var(--color-text-muted)] leading-relaxed prose prose-sm max-w-none">
+                    {{ block.col_1_body|safe }}
+                </div>
+                {% endif %}
+            </div>
+            {% endif %}
+
+
+            {% if block.col_2_title or block.col_2_body %}
+            <div class="bg-white rounded-xl p-8 shadow-lg border-2 border-[color:var(--color-accent)]
+                        hover:border-[color:var(--color-primary)]
+                        transition-all duration-300 hover:shadow-xl">
+
+                {% if block.col_2_image %}
+                <div class="w-14 h-14 mx-auto bg-[color:var(--color-accent)]/10 rounded-lg flex items-center justify-center mb-6 overflow-hidden">
+                    <img
+                        src="{{ block.col_2_image.url }}"
+                        alt="{{ block.col_2_title }}"
+                        class="w-8 h-8 object-contain"
+                    >
+                </div>
+                {% endif %}
+
+                {% if block.col_2_title %}
+                <h3 class="text-xl font-bold text-[color:var(--color-primary)] mb-3">
+                    {{ block.col_2_title }}
+                </h3>
+                {% endif %}
+
+                {% if block.col_2_body %}
+                <div class="text-[color:var(--color-text-muted)] leading-relaxed prose prose-sm max-w-none">
+                    {{ block.col_2_body|safe }}
+                </div>
+                {% endif %}
+            </div>
+            {% endif %}
+
+
+            {% if block.col_3_title or block.col_3_body %}
+            <div class="bg-white rounded-xl p-8 shadow-lg border-2 border-[color:var(--color-accent)]
+                        hover:border-[color:var(--color-primary)]
+                        transition-all duration-300 hover:shadow-xl">
+
+                {% if block.col_3_image %}
+                <div class="w-14 h-14 mx-auto bg-[color:var(--color-accent)]/10 rounded-lg flex items-center justify-center mb-6 overflow-hidden">
+                    <img
+                        src="{{ block.col_3_image.url }}"
+                        alt="{{ block.col_3_title }}"
+                        class="w-8 h-8 object-contain"
+                    >
+                </div>
+                {% endif %}
+
+                {% if block.col_3_title %}
+                <h3 class="text-xl font-bold text-[color:var(--color-primary)] mb-3">
+                    {{ block.col_3_title }}
+                </h3>
+                {% endif %}
+
+                {% if block.col_3_body %}
+                <div class="text-[color:var(--color-text-muted)] leading-relaxed prose prose-sm max-w-none">
+                    {{ block.col_3_body|safe }}
+                </div>
+                {% endif %}
+            </div>
+            {% endif %}
+
+        </div>
+
+    </div>
+</section>

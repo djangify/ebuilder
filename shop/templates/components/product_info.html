@@ -1,0 +1,49 @@
+<!-- shop/templates/components/product_info.html -->
+<!-- Shows buy buttons for published products using ProductDownload labels, or Coming Soon message -->
+
+{% if product.is_coming_soon %}
+
+  <div class="bg-amber-100 border border-amber-200 rounded-sm p-6 text-center">
+    <p class="text-lg font-semibold text-amber-800">Coming Soon</p>
+    <p class="text-sm text-amber-700 mt-1">This product is not yet available for purchase.</p>
+  </div>
+
+{% elif product.has_downloads %}
+
+  {% for download in product.downloads.all %}
+    <form
+      method="post"
+      action="{% url 'shop:cart_add' product.id %}"
+      class="flex items-center justify-between gap-4 mb-4"
+    >
+      {% csrf_token %}
+      <input type="hidden" name="download_id" value="{{ download.id }}">
+
+      <div class="flex items-center gap-3">
+        <label class="text-sm font-medium text-[color:var(--color-font-main)]">
+          Qty:
+        </label>
+        <input
+          type="number"
+          name="quantity"
+          value="1"
+          min="1"
+          max="10"
+          class="w-16 px-3 py-2 border border-[color:var(--color-accent)] rounded text-center"
+        />
+      </div>
+
+      <button
+        type="submit"
+        class="flex-1 bg-[color:var(--color-primary)] hover:bg-[color:var(--color-accent)] text-white font-bold py-3 px-6 rounded-sm transition duration-300 hover:scale-105 shadow-sm"
+      >
+        {{ download.label }}
+      </button>
+    </form>
+  {% endfor %}
+
+{% else %}
+
+  <!-- No downloads available -->
+
+{% endif %}

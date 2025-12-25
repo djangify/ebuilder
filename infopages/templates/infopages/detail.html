@@ -1,0 +1,98 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}{{ page.title }} - {{ site.name }}{% endblock %}
+
+
+{% block content %}
+<main id="main-content" role="main" class="w-full mt-16" aria-labelledby="page-heading">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <article id="info-page-{{ page.slug }}"
+  class="prose prose-lg max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"
+  itemscope itemtype="https://schema.org/Article">
+
+  
+{% include "includes/_breadcrumb_infopage.html" %}
+      <!-- Header -->
+      <header>
+        
+        <h1 id="page-heading"
+            itemprop="headline"
+            class="text-4xl font-bold text-[color:var(--color-font-main)] mb-6">
+          {{ page.title }}
+        </h1>
+        <p class="text-sm text-[color:var(--color-font-main)]/70 mb-8" itemprop="dateModified">
+          Last updated: {{ page.last_updated|date:"F Y" }}
+        </p>
+      </header>
+
+      <!-- Auto-generated Table of Contents -->
+      {% if toc %}
+      <nav aria-label="Table of contents"
+          class="mb-8 bg-[color:var(--color-light)] border border-[color:var(--color-accent)] p-6 rounded-lg shadow-sm">
+        <h2 class="text-xl font-semibold mb-4 text-[color:var(--color-primary)]">Contents</h2>
+        <ol class="space-y-2">
+          {% for item in toc %}
+            <li>
+              <a href="#{{ item.id }}"
+                class="text-[color:var(--color-secondary)] hover:text-[color:var(--color-primary)] transition-colors">
+                {{ item.title }}
+              </a>
+            </li>
+          {% endfor %}
+        </ol>
+      </nav>
+      {% endif %}
+
+      <!-- Page Content -->
+      <div id="page-content" class="prose" itemprop="articleBody">
+        {{ rendered_content|safe }}
+      </div>
+      
+
+      <!-- Footer Navigation -->
+      <footer class="mt-12 border-t border-[color:var(--color-accent)] pt-6">
+        <nav aria-label="Back to section">
+          {% if page.page_type == "policy" %}
+            <a href="{% url 'infopages:policy_index' %}"
+              class="text-[color:var(--color-secondary)] hover:text-[color:var(--color-primary)] underline transition-colors">
+              Back to Policies
+            </a>
+          {% elif page.page_type == "doc" %}
+            <a href="{% url 'infopages:docs_index' %}"
+              class="text-[color:var(--color-secondary)] hover:text-[color:var(--color-primary)] underline transition-colors">
+              Back to Documentation
+            </a>
+          {% endif %}
+        </nav>
+      </footer>
+      <!-- Related Pages Content -->
+       
+      {% if related_pages %}
+        <div class="mt-10 border-t border-[color:var(--color-accent)] pt-8">
+          {% if page.category %}
+            <h2 class="text-2xl font-semibold text-[color:var(--color-primary)] mb-4">
+              More in this category: {{ page.category.name }}
+            </h2>
+          {% else %}
+            <h2 class="text-2xl font-semibold text-[color:var(--color-primary)] mb-4">
+              Related Pages
+            </h2>
+          {% endif %}
+
+          <ul class="space-y-3 list-disc list-inside">
+            {% for related in related_pages %}
+              <li>
+                <a href="{{ related.get_absolute_url }}"
+                  class="text-[color:var(--color-secondary)] hover:text-[color:var(--color-primary)] transition-colors">
+                  {{ related.title }}
+                </a>
+              </li>
+            {% endfor %}
+          </ul>
+        </div>
+      {% endif %}
+    </article>
+  </div>
+</main>
+{% endblock %}

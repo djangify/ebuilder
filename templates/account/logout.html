@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block title %}Sign Out{% endblock %}
+
+{% block content %}
+<div class="flex flex-col items-center justify-center min-h-screen px-6 py-16 text-[color:var(--color-font-main)] bg-[color:var(--color-light)]">
+
+  <div class="w-full max-w-md bg-white rounded-xl shadow-sm p-8 space-y-6 text-center">
+    <h1 class="text-2xl font-semibold text-[color:var(--color-primary)]">
+      Sign out
+    </h1>
+
+    <p class="text-sm text-[color:var(--color-primary-contrast)]">
+      Are you sure you want to sign out of your account?
+    </p>
+
+    <form method="post" action="{% url 'account_logout' %}">
+      {% csrf_token %}
+      <button
+        type="submit"
+        class="w-full bg-[color:var(--color-primary)] text-white font-semibold py-2 rounded-md hover:bg-[color:var(--color-dark)] transition"
+      >
+        Sign Out
+      </button>
+    </form>
+
+    <p class="text-sm">
+      <a href="{% url 'account_login' %}"
+         class="text-[color:var(--color-secondary)] hover:text-[color:var(--color-accent)] font-medium">
+        Cancel and return to login
+      </a>
+    </p>
+  </div>
+
+</div>
+{% endblock %}

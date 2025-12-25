@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% block title %}Log In{% endblock %}
+
+{% block content %}
+<div class="flex flex-col items-center justify-center min-h-screen px-6 py-16 text-[color:var(--color-font-main)] bg-primary">
+
+  <div class="w-full max-w-md bg-white rounded-xl shadow-sm p-8 space-y-6">
+    <h1 class="text-2xl font-semibold text-center text-[color:var(--color-primary)]">Sign in to your account</h1>
+
+    {% if messages %}
+      {% for message in messages %}
+        <div class="p-4 text-sm rounded-lg {% if message.tags == 'error' %}bg-red-50 text-red-800{% else %}bg-[color:var(--color-light)]-50 text-teal-700{% endif %}">
+          {{ message }}
+        </div>
+      {% endfor %}
+    {% endif %}
+
+    <form method="POST" action="{% url 'account_login' %}" class="space-y-4">
+    {% csrf_token %}
+
+    <label for="login" class="block text-sm font-medium text-[color:var(--color-primary)] mb-1">
+      Email
+    </label>
+    <input
+      type="email"
+      name="login"
+      id="login"
+      autocomplete="email"
+      required
+      class="w-full rounded-md border border-[color:var(--color-accent)] p-2 focus:outline-none focus:ring-2 focus:ring-[color:var(--color-primary)]"
+    >
+
+    <div>
+      <label for="password" class="block text-sm font-medium text-[color:var(--color-primary)] mb-1">
+        Password
+      </label>
+      <input
+        type="password"
+        name="password"
+        id="password"
+        autocomplete="current-password"
+        required
+        class="w-full rounded-md border border-[color:var(--color-accent)] p-2 focus:outline-none focus:ring-2 focus:ring-[color:var(--color-primary)]"
+      >
+    </div>
+
+    <button
+      type="submit"
+      class="w-full bg-[color:var(--color-primary)] text-white font-semibold py-2 rounded-md hover:bg-[color:var(--color-dark)] transition"
+    >
+      Sign In
+    </button>
+  </form>
+    <div class="text-center text-sm space-y-2">
+      <p>Don’t have an account? <a href="{% url 'account_signup' %}" class="text-[color:var(--color-secondary)] hover:text-[color:var(--color-accent)] font-medium">Register</a></p>
+      <p><a href="{% url 'account_reset_password' %}" class="text-[color:var(--color-secondary)] hover:text-[color:var(--color-accent)] font-medium">Forgot password?</a></p>
+    </div>
+  </div>
+
+</div>
+{% endblock %}

@@ -1,0 +1,22 @@
+<section class="py-16 bg-[color:var(--color-light)]">
+    <div class="max-w-6xl mx-auto px-6">
+
+        {% if section.title %}
+        <h2 class="text-3xl font-bold text-center mb-10">{{ section.title }}</h2>
+        {% endif %}
+
+        {{ section.body|safe }}
+
+        {% if section.button_text and section.button_link %}
+        <div class="flex justify-center mt-10">
+            <a 
+                href="{{ section.button_link }}"
+                class="uppercase inline-block px-6 py-3 text-[color:var(--color-font-main)] font-semibold border-2 border-[color:var(--color-primary)] rounded-md hover:bg-[color:var(--color-accent)] hover:text-[color:var(--color-light)] transition-colors tracking-wide"
+            >
+                {{ section.button_text }}
+            </a>
+        </div>
+        {% endif %}
+
+    </div>
+</section>

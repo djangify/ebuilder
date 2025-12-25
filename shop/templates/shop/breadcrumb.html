@@ -1,0 +1,44 @@
+
+
+<nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 mb-8" aria-label="Breadcrumb">
+  <ol class="flex  gap-2 text-sm text-[color:var(--color-font-main)]">
+
+    <!-- Home -->
+    <li class="flex">
+      <a href="/" class="text-[color:var(--color-dark)] transition-colors">
+        Home
+      </a>
+      <i class="fa-solid fa-angle-right mx-2 text-[color:var(--color-font-main)]"></i>
+    </li>
+
+    <!-- Shop -->
+    <li class="flex items-center">
+      <a href="{% url 'shop:product_list' %}"
+         class="hover:text-[color:var(--color-primary)] transition-colors">
+        Shop
+      </a>
+      {% if product.category %}
+        <i class="fa-solid fa-angle-right mx-2 text-[color:var(--color-font-main)]"></i>
+      {% endif %}
+    </li>
+
+    <!-- Category -->
+    {% if product.category %}
+      <li class="flex items-center">
+        <a href="{{ product.category.get_absolute_url }}"
+           class="hover:text-[color:var(--color-primary)] transition-colors">
+          {{ product.category.name }}
+        </a>
+        <i class="fa-solid fa-angle-right mx-2 text-[color:var(--color-font-main)]/70"></i>
+      </li>
+    {% endif %}
+
+    <!-- Current Product -->
+    {% if product %}
+      <li class="text-[color:var(--color-font-main)]">
+        {{ product.title|truncatechars:50 }}
+      </li>
+    {% endif %}
+
+  </ol>
+</nav>

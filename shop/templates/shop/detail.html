@@ -1,0 +1,117 @@
+{% extends "base.html" %}
+{% load static %}
+{% block extra_head %}
+<link rel="canonical" href="{{ request.build_absolute_uri }}">
+
+{% endblock %}
+
+
+{% block content %}
+<div class="min-h-screen mt-16">
+  {% include 'shop/breadcrumb.html' %}
+  <div class="container mx-auto px-4 py-12">
+    
+
+    <!-- GRID -->
+    <div class="max-w-7xl mx-auto lg:grid lg:grid-cols-3 gap-12 space-y-8 lg:space-y-0">
+
+      <!-- LEFT COLUMN -->
+      <div class="lg:col-span-1 space-y-6">
+        {% include 'components/product_image.html' %}
+        <div class="pt-6 space-y-6">
+
+          <!-- Secure PRODUCT Info -->
+          {% include 'components/product_info.html' %}
+          <!-- Wishlist -->
+          {% include 'components/wishlist.html' %}
+
+          <!-- Secure You Purchase Info -->
+          {% include 'components/purchase_info.html' %}
+
+          <!-- Download Preview and Disclaimer -->
+          {% include 'components/download_preview.html' %}
+          <!-- Video -->
+          {% include 'components/videos.html' %}
+        </div>
+
+      </div>
+
+      <!-- RIGHT COLUMN -->
+      <div class="lg:col-span-2 space-y-6">
+
+        <div>
+          <h1 class="text-3xl lg:text-4xl font-bold text-[color:var(--color-font-main)] mb-4">
+            {{ product.title }}
+          </h1>
+        </div>
+
+        <div class="flex items-center space-x-4">
+          <span class="text-4xl font-bold text-[color:var(--color-primary)]">£{{ product.current_price }}</span>
+          {% if product.is_on_sale %}
+            <span class="text-2xl text-[color:var(--color-accent)] line-through ml-3">£{{ product.price }}</span>
+          {% endif %}
+        </div>
+
+        <div class="flex items-center gap-1 mt-1">
+          <div class="flex">
+            {% for i in "12345"|make_list %}
+              <svg
+                class="w-5 h-5 {% if forloop.counter <= product.average_rating %}text-yellow-400 fill-yellow-400{% else %}text-gray-300 fill-gray-300{% endif %}"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24">
+                <path d="M12 .587l3.668 7.431 8.2 1.192-5.934 5.782L19.868 24 12 19.896 4.132 24l2.934-9.008L1.132 9.21l8.2-1.192z"/>
+              </svg>
+            {% endfor %}
+          </div>
+          <span class="ml-2 text-sm text-gray-600">
+            ({{ product.total_reviews }} review{{ product.total_reviews|pluralize }})
+          </span>
+        </div>
+
+        <div class="prose text-[color:var(--color-font-main)]">
+          {{ product.description|safe }}
+        </div>
+
+        {% include 'components/accordion.html' %}
+        {% include 'components/reviews.html' %}
+        {% include 'components/related_products.html' %}
+
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- Thumbnail Switch Script -->
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const mainImage = document.getElementById("main-product-image");
+  const thumbnails = document.querySelectorAll(".product-thumbnail");
+  thumbnails.forEach((thumb) => {
+    thumb.addEventListener("click", function () {
+      thumbnails.forEach(t =>
+        t.classList.remove("active-thumbnail", "border-2", "border-[color:var(--color-primary)]")
+      );
+      this.classList.add("active-thumbnail", "border-2", "border-[color:var(--color-primary)]");
+      const newSrc = this.getAttribute("data-src");
+      if (newSrc) mainImage.setAttribute("src", newSrc);
+    });
+  });
+});
+</script>
+
+<!-- Accordion Script -->
+<script>
+document.querySelectorAll(".accordion-header").forEach(header => {
+  header.addEventListener("click", () => {
+    const target = document.getElementById(header.dataset.target);
+    const icon = header.querySelector(".accordion-icon");
+    target.classList.toggle("hidden");
+    icon.classList.toggle("rotate-180");
+  });
+});
+</script>
+
+<script src="{% static 'js/favourite-products.js' %}"></script>
+
+{% endblock %}
