@@ -14,10 +14,12 @@
              alt="{{ homepage_settings.business_name }}"
              class="h-10 w-auto object-contain"
              loading="lazy">
-      {% else %}
-        <img src="{% static 'images/placeholder-logo.png' %}"
+      {% endif %}
+      
+        {% if homepage_settings.logo_image %}
+        <img src="{{ homepage_settings.logo_image.url }}"
              alt="{{ homepage_settings.business_name }}"
-             class="h-10 w-auto object-contain opacity-70"
+             class="h-10 w-auto object-contain"
              loading="lazy">
       {% endif %}
       <span class="hidden md:flex text-[color:var(--color-font-main)] font-semibold uppercase tracking-wide">

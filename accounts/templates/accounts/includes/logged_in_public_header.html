@@ -10,12 +10,15 @@
              alt="{{ homepage_settings.business_name }} logo"
              class="h-8 w-auto object-contain"
              loading="lazy">
-      {% else %}
-        <img src="{% static 'images/placeholder-logo.png' %}"
-             alt="{{ homepage_settings.business_name }}"
-             class="h-8 w-auto object-contain opacity-70"
-             loading="lazy">
       {% endif %}
+      
+        {% if homepage_settings.logo_image %}
+        <img src="{{ homepage_settings.logo_image.url }}"
+             alt="{{ homepage_settings.business_name }}"
+             class="h-10 w-auto object-contain"
+             loading="lazy">
+        {% endif %}
+      
       <span class=" sm:flex text-[color:var(--color-font-main)] font-semibold uppercase tracking-wide">
         {{ homepage_settings.business_name }}
       </span>
