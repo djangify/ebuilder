@@ -216,6 +216,8 @@ class PageSection(models.Model):
 
     class Meta:
         ordering = ["order"]
+        verbose_name = "Page Section"
+        verbose_name_plural = "PAGE SECTIONS"
 
     def __str__(self):
         return f"{self.page.title} - {self.get_section_type_display()}"
@@ -243,7 +245,7 @@ class ThreeColumnBlock(models.Model):
     class Meta:
         ordering = ["order"]
         verbose_name = "Three Column Block"
-        verbose_name_plural = "Three Column Blocks"
+        verbose_name_plural = "THREE COLUMN BLOCKS"
 
     def __str__(self):
         return f"{self.page.title} - 3-Column Block"
@@ -257,6 +259,8 @@ class GalleryBlock(models.Model):
 
     class Meta:
         ordering = ["order"]
+        verbose_name = "Gallery Block"
+        verbose_name_plural = "GALLERY BLOCKS"
 
     def __str__(self):
         return f"{self.page.title} - Gallery: {self.title or 'Untitled'}"

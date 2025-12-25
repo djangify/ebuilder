@@ -49,7 +49,6 @@ class PageSectionInline(admin.StackedInline):
     form = PageSectionForm
     extra = 1
     can_delete = True
-    classes = ["collapse"]
 
     fieldsets = (
         (
@@ -76,13 +75,11 @@ class ThreeColumnInline(admin.StackedInline):
     form = ThreeColumnBlockForm
     extra = 0
     can_delete = True
-    classes = ["collapse"]
 
     fieldsets = (
         (
             "3-Column Block",
             {
-                "classes": ("collapse",),
                 "fields": (
                     "published",
                     "order",
@@ -104,7 +101,6 @@ class GalleryBlockInline(admin.StackedInline):
     can_delete = True
     ordering = ("order",)
     fields = ("title", "order", "published")
-    classes = ["collapse"]
 
 
 class GalleryImageInline(admin.TabularInline):
@@ -252,14 +248,12 @@ class PageAdmin(admin.ModelAdmin):
             "NAVIGATION",
             {
                 "fields": ("show_in_navigation", "show_in_footer", "menu_order"),
-                "classes": ("collapse",),
             },
         ),
         (
             "SEO",
             {
                 "fields": ("meta_title", "meta_description"),
-                "classes": ("collapse",),
             },
         ),
     )
