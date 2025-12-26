@@ -102,7 +102,6 @@ class ProductAdmin(admin.ModelAdmin):
                     "external_image_url",
                     "preview_file",
                     "external_preview_url",
-                    "video_file",
                     "video_url",
                 ),
             },

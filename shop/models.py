@@ -97,19 +97,30 @@ class Product(models.Model):
         storage=PublicStorage(),
     )
 
-    # Video (YouTube or external link)
+    # Video
     video_url = models.URLField(
-        blank=True,
-        null=True,
-        help_text="Optional YouTube or Vimeo URL to display on the product page",
+        blank=True, null=True, help_text="YouTube video URL (watch or youtu.be)"
     )
-    video_file = models.FileField(
-        upload_to="products/videos/",
-        null=True,
-        blank=True,
-        storage=PublicStorage(),
-        help_text="Upload a short MP4 file to display as product video",
-    )
+
+    def get_youtube_video_id(self):
+        """Extract YouTube video ID from video_url"""
+        if not self.video_url:
+            return None
+        url = self.video_url.strip()
+        if "youtube.com/watch?v=" in url:
+            return url.split("v=")[1].split("&")[0]
+        elif "youtu.be/" in url:
+            return url.split("/")[-1].split("?")[0]
+        elif "youtube.com/embed/" in url:
+            return url.split("/embed/")[1].split("?")[0]
+        return None
+
+    def get_youtube_embed_url(self):
+        """Get YouTube video embed URL"""
+        video_id = self.get_youtube_video_id()
+        if video_id:
+            return f"https://www.youtube.com/embed/{video_id}"
+        return None
 
     # Settings
     download_limit = models.PositiveIntegerField(default=5)

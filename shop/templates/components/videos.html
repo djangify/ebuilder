@@ -1,49 +1,36 @@
+<!-- shop/templates/components/videos.html -->
+{% if product.get_youtube_embed_url %}
 <div class="border-t border-[color:var(--color-accent)] pt-8 mt-8">
-  {% if product.video_file %}
-    <div class="flex justify-center">
-      <div class="w-full max-w-4xl aspect-[16/9] rounded-xl overflow-hidden shadow-md">
-        <video
-          class="w-full h-full object-cover rounded-xl"
-          controls
-          preload="metadata"
-        >
-          <source src="{{ product.video_file.url }}" type="video/mp4">
-          Your browser does not support the video tag.
-        </video>
-      </div>
+  <div class="flex justify-center">
+    <div class="w-full max-w-4xl aspect-[16/9] rounded-xl overflow-hidden shadow-md">
+      <iframe
+        src="{{ product.get_youtube_embed_url }}"
+        class="w-full h-full rounded-xl"
+        frameborder="0"
+        loading="lazy"
+        referrerpolicy="strict-origin-when-cross-origin"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen>
+      </iframe>
     </div>
-
-  {% elif product.video_url %}
-    {% if "watch?v=" in product.video_url %}
-      {% with product.video_url|cut:"watch?v=" as embed_id %}
-        <div class="flex justify-center">
-          <div class="w-full max-w-4xl aspect-[16/9] rounded-xl overflow-hidden shadow-md">
-            <iframe
-              class="w-full h-full rounded-xl"
-              src="https://www.youtube.com/embed/{{ embed_id }}"
-              title="Product video for {{ product.title }}"
-              frameborder="0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-              allowfullscreen
-              loading="lazy"
-            ></iframe>
-          </div>
-        </div>
-      {% endwith %}
-    {% else %}
-      <div class="flex justify-center">
-        <div class="w-full max-w-4xl aspect-[16/9] rounded-xl overflow-hidden shadow-md">
-          <iframe
-            class="w-full h-full rounded-xl"
-            src="{{ product.video_url }}"
-            title="Product video for {{ product.title }}"
-            frameborder="0"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-            allowfullscreen
-            loading="lazy"
-          ></iframe>
-        </div>
-      </div>
-    {% endif %}
-  {% endif %}
+  </div>
 </div>
+
+{% elif product.video_url %}
+<!-- Non-YouTube video URL (Vimeo, etc.) -->
+<div class="border-t border-[color:var(--color-accent)] pt-8 mt-8">
+  <div class="flex justify-center">
+    <div class="w-full max-w-4xl aspect-[16/9] rounded-xl overflow-hidden shadow-md">
+      <iframe
+        src="{{ product.video_url }}"
+        class="w-full h-full rounded-xl"
+        frameborder="0"
+        loading="lazy"
+        referrerpolicy="strict-origin-when-cross-origin"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen>
+      </iframe>
+    </div>
+  </div>
+</div>
+{% endif %}
