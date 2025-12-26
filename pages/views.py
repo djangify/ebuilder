@@ -32,42 +32,48 @@ def _render_page(request, template_name):
 
 
 def home_view(request):
-    """
-    Render the homepage with all content blocks.
-    Uses SiteSettings for configuration.
-    """
     settings_obj = SiteSettings.objects.first()
     if not settings_obj:
-        # Create default settings if none exist
         settings_obj = SiteSettings.objects.create()
 
     page = get_object_or_404(Page, template="home", published=True)
 
-    # Collect all content blocks
+    # Content blocks
     sections = list(page.sections.filter(published=True))
     three_columns = list(page.three_columns.filter(published=True))
-    galleries = list(page.galleries.filter(published=True))
+    galleries = list(page.galleries.filter(published=True))  # ← THIS WAS MISSING
 
     content_blocks = sorted(
         sections + three_columns + galleries,
         key=lambda block: block.order,
     )
 
+    # Homepage gallery (LIMIT TO 6)
+    homepage_gallery = galleries[0] if galleries else None
+
+    homepage_images = (
+        homepage_gallery.images.filter(published=True).order_by("order", "id")[:6]
+        if homepage_gallery
+        else []
+    )
+
     # Optional blog posts
-    blog_posts = None
-    if settings_obj.show_blog_on_homepage:
-        blog_posts = Post.objects.filter(status="published").order_by("-publish_date")[
-            :3
-        ]
+    blog_posts = (
+        Post.objects.filter(status="published").order_by("-publish_date")[:3]
+        if settings_obj.show_blog_on_homepage
+        else None
+    )
 
     # Optional featured products
-    featured_products = None
-    if settings_obj.show_shop_on_homepage:
-        featured_products = Product.objects.filter(
+    featured_products = (
+        Product.objects.filter(
             is_active=True,
             status="publish",
             featured=True,
         ).order_by("order", "-created")[:4]
+        if settings_obj.show_shop_on_homepage
+        else None
+    )
 
     context = {
         "page": page,
@@ -76,6 +82,8 @@ def home_view(request):
         "hero_banner": HeroBanner.objects.filter(is_active=True).first(),
         "blog_posts": blog_posts,
         "featured_products": featured_products,
+        "homepage_gallery": homepage_gallery,
+        "homepage_images": homepage_images,
     }
 
     return render(request, "pages/home.html", context)

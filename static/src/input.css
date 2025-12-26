@@ -26,8 +26,9 @@
   }
 
   a {
-    @apply text-[color:var(--color-accent)] hover:text-[color:var(--color-secondary)] transition-colors;
+    @apply text-[color:var(--color-link)] hover:text-[color:var(--color-link-hover)] transition-colors;
   }
+
 }
 
 @layer components {
@@ -64,8 +65,9 @@
   }
 
   .prose a {
-    @apply text-[color:var(--color-accent)] underline hover:text-[color:var(--color-secondary)];
+    @apply text-[color:var(--color-link)] underline hover:text-[color:var(--color-link-hover)];
   }
+
 
 }
 
@@ -102,6 +104,12 @@
   --color-bg-default: #ffffff;
   --color-bg-contrast: #f1f5f9;
 
+  /* For a links */
+  --color-link: #2563eb;
+  /* blue-600 */
+  --color-link-hover: #1d4ed8;
+  /* blue-700 */
+
   /* Extended palette for badges and alerts */
   --color-badge-rose: #fecdd3;
   /* light rose */
@@ -120,6 +128,29 @@
    bg-[--color-accent-contrast]
    hover:text-[--color-font-main]
 */
+/* Prose styling for product descriptions */
+@layer components {
+  .prose p {
+    margin-bottom: 1rem;
+  }
+
+  .prose p:last-child {
+    margin-bottom: 0;
+  }
+
+  .prose ul,
+  .prose ol {
+    list-style-position: outside;
+    padding-left: 1.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .prose li {
+    margin-bottom: 0.25rem;
+    color: var(--color-font-main);
+  }
+}
+
 /* -------------------------------
    Global Utilities (optional)
 ---------------------------------- */

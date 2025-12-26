@@ -75,6 +75,54 @@
       </form>
 
     </div>
+{% if dashboard_settings %}
+<div class="mt-12 grid gap-8 md:grid-cols-2">
+
+  <!-- Left box — Get in Touch -->
+  <div class="bg-gray-50 rounded-xl border border-gray-200 p-6">
+    <h2 class="text-xl font-semibold mb-3">
+      {{ dashboard_settings.left_title }}
+    </h2>
+
+    <p class="text-sm text-gray-600 mb-1">
+      {{ dashboard_settings.response_time }}
+    </p>
+
+    <p class="text-sm text-gray-600 mb-4">
+      {{ dashboard_settings.support_hours }}
+    </p>
+
+    <ul class="list-disc list-outside pl-5 space-y-2 text-sm">
+      {% if dashboard_settings.policies_link %}
+        <li>
+          <a href="{{ dashboard_settings.policies_link }}">Policies</a>
+        </li>
+      {% endif %}
+      {% if dashboard_settings.docs_link %}
+        <li>
+          <a href="{{ dashboard_settings.docs_link }}">Documentation</a>
+        </li>
+      {% endif %}
+    </ul>
+  </div>
+
+  <!-- Right box — What I Can Help With -->
+  <div class="bg-gray-50 rounded-xl border border-gray-200 p-6">
+    <h2 class="text-xl font-semibold mb-3">
+      What I Can Help With
+    </h2>
+
+    <ul class="list-disc list-outside pl-5 space-y-2 text-sm">
+      {% if dashboard_settings.help_item_1 %}<li>{{ dashboard_settings.help_item_1 }}</li>{% endif %}
+      {% if dashboard_settings.help_item_2 %}<li>{{ dashboard_settings.help_item_2 }}</li>{% endif %}
+      {% if dashboard_settings.help_item_3 %}<li>{{ dashboard_settings.help_item_3 }}</li>{% endif %}
+      {% if dashboard_settings.help_item_4 %}<li>{{ dashboard_settings.help_item_4 }}</li>{% endif %}
+      {% if dashboard_settings.help_item_5 %}<li>{{ dashboard_settings.help_item_5 }}</li>{% endif %}
+    </ul>
+  </div>
+
+</div>
+{% endif %}
 
   </div>
 </section>

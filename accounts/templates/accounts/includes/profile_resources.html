@@ -4,7 +4,7 @@
   {% if member_resources %}
   <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
     {% for resource in member_resources %}
-    <article class="bg-white border border-[color:var(--color-accent)]/30 rounded-lg shadow-sm hover:shadow-md transition flex flex-col">
+    <article class="bg-white border border-[color:var(--color-accent)] rounded-lg shadow-sm hover:shadow-md transition flex flex-col">
       <a href="{{ resource.file.url }}" target="_blank" class="flex flex-col h-full">
 
         <!-- Thumbnail -->
@@ -28,7 +28,7 @@
           </p>
 
           <!-- Download Link -->
-          <div class="mt-4 flex items-center text-[color:var(--color-secondary)] font-semibold text-sm hover:text-[color:var(--color-accent)] transition">
+          <div class="mt-4 flex items-center text-blue-700 font-semibold text-sm hover:text-[color:var(--color-accent)] transition">
             <svg xmlns="http://www.w3.org/2000/svg" 
                  fill="none" viewBox="0 0 24 24" stroke="currentColor"
                  class="w-5 h-5 mr-2">

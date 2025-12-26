@@ -130,24 +130,17 @@ class GalleryBlockInline(admin.StackedInline):
 
 class GalleryImageInline(admin.TabularInline):
     model = GalleryImage
-    extra = 0
+    extra = 1
     ordering = ("order",)
     fields = ("image", "display_thumbnail", "title", "caption", "published", "order")
     readonly_fields = ("display_thumbnail",)
 
     def display_thumbnail(self, obj):
         """Display thumbnail preview in admin."""
-        if obj.thumbnail:
-            return format_html(
-                '<img src="{}" style="max-height: 60px; max-width: 100px; object-fit: cover; border-radius: 4px;" />',
-                obj.thumbnail.url,
-            )
-        elif obj.image:
-            return format_html(
-                '<img src="{}" style="max-height: 60px; max-width: 100px; object-fit: cover; border-radius: 4px;" />',
-                obj.image.url,
-            )
-        return "No image"
+        image_url = obj.get_thumbnail_url()
+        if image_url:
+            return format_html('<img src="{}" width="50" />', image_url)
+        return "-"
 
     display_thumbnail.short_description = "Preview"
 
@@ -313,12 +306,32 @@ class GalleryBlockAdmin(admin.ModelAdmin):
         # Gallery blocks should be added via Page admin inline
         return False
 
+    def change_view(self, request, object_id, form_url="", extra_context=None):
+        extra_context = extra_context or {}
+        extra_context["show_save_and_add_another"] = False
+        return super().change_view(
+            request, object_id, form_url, extra_context=extra_context
+        )
+
 
 @admin.register(FAQBlock)
 class FAQBlockAdmin(admin.ModelAdmin):
     list_display = ("title", "page", "order", "published")
     list_filter = ("published", "page")
+    ordering = ("page", "order")
+    readonly_fields = ("page",)
     inlines = [FAQItemInline]
+
+    def has_add_permission(self, request):
+        # FAQ blocks should be added via Page admin inline
+        return False
+
+    def change_view(self, request, object_id, form_url="", extra_context=None):
+        extra_context = extra_context or {}
+        extra_context["show_save_and_add_another"] = False
+        return super().change_view(
+            request, object_id, form_url, extra_context=extra_context
+        )
 
 
 @admin.register(Hero)

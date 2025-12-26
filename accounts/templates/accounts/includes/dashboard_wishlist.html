@@ -1,7 +1,7 @@
 {% if favourite_products %}
 <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 mt-6">
   {% for product in favourite_products %}
-  <article class="bg-white border border-[color:var(--color-accent)]/30 rounded-lg overflow-hidden shadow-sm hover:shadow-md transition flex flex-col">
+  <article class="bg-white border border-[color:var(--color-primary) rounded-lg overflow-hidden shadow-sm hover:shadow-md transition flex flex-col">
     
     <!-- Product Image -->
     <a href="{% url 'shop:product_detail' product.slug %}">
@@ -28,7 +28,7 @@
 
       <div class="mt-auto flex justify-center">
         <a href="{% url 'shop:product_detail' product.slug %}"
-           class="px-4 py-2 text-sm font-semibold border border-[color:var(--color-secondary)] text-[color:var(--color-secondary)] rounded-md hover:bg-[color:var(--color-secondary)] hover:text-white transition">
+           class="px-4 py-2 text-sm font-semibold border border-[color:var(--color-accent)] text-[color:var(--color-secondary)] rounded-md hover:bg-[color:var(--color-secondary)] hover:text-white transition">
           View
         </a>
         
@@ -52,9 +52,9 @@
 </div>
 {% else %}
 <div class="text-center py-12">
-  <p class="text-[color:var(--color-font-main)]/70">No products in your wish list yet.</p>
+  <p class="text-[color:var(--color-font-main)]">No products in your wish list yet.</p>
   <a href="{% url 'shop:product_list' %}" 
-     class="mt-4 inline-block px-6 py-3 rounded-lg bg-[color:var(--color-secondary)] text-white font-semibold hover:bg-[color:var(--color-primary)] transition">
+     class="mt-4 inline-block px-6 py-3 rounded-lg bg-[color:var(--color-primary)] text-white font-semibold hover:bg-[color:var(--color-secondary)] hover:text-[color:var(--color-primary)] transition">
     Visit the Shop
   </a>
 </div>

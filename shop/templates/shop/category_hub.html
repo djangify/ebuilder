@@ -42,7 +42,7 @@ Browse all product categories in the digital shop.
       {% for category in categories %}
       <div class="border border-[color:var(--color-accent)]/40 rounded-lg p-6 hover:shadow-md hover:border-[color:var(--color-accent)] transition">
         <h3 class="text-xl font-semibold mb-3 text-[color:var(--color-font-main)]">
-          <a href="{{ category.get_absolute_url }}" class="text-[color:var(--color-secondary)] hover:underline">
+          <a href="{{ category.get_absolute_url }}" class="text-[color:var(--color-accent)] hover:underline">
             {{ category.name }}
           </a>
         </h3>
@@ -59,7 +59,7 @@ Browse all product categories in the digital shop.
       </div>
       {% empty %}
       <p class="col-span-full text-center text-[color:var(--color-font-main)]">
-        No categories found at the moment. <a href="{% url 'shop:product_list' %}" class="text-[color:var(--color-secondary)] hover:underline">Return to the shop</a>.
+        No categories found at the moment. <a href="{% url 'shop:product_list' %}" class="text-[color:var(--color-accent)] hover:underline">Return to the shop</a>.
       </p>
       {% endfor %}
     </div>

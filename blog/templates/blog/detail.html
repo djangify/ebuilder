@@ -3,7 +3,7 @@
 {% load static %}
 
 {% block title %}{{ post.meta_title|default:post.title }}{% endblock %}
-{% block meta_description %}{{ post.meta_description|default:post.introduction|default:post.content|striptags|truncatechars:160 }}{% endblock %}
+
 
 
 {% block content %}
@@ -42,7 +42,7 @@
 
     <!-- Social Share (Top) -->
     <div class="mb-8">
-      {% include 'components/social_share.html' %}
+      {% include 'includes/social_share.html' %}
     </div>
 
     <!-- Main Content -->
@@ -53,7 +53,7 @@
     <!-- Social Share (Bottom) -->
     <div class="border-t border-[--color-accent]/30 pt-6 mb-10">
       <p class="text-sm text-[--color-font-main]/70 mb-2">Thanks for sharing:</p>
-      {% include 'components/social_share.html' %}
+      {% include 'includes/social_share.html' %}
     </div>
 
     <!-- Resource Download -->
