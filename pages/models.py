@@ -435,10 +435,18 @@ class FAQItem(models.Model):
 
 class Hero(models.Model):
     """
-    Hero section for the homepage.
-    Only one should be active at a time.
+    Hero section for pages.
+    Each hero belongs to a specific page.
     """
 
+    page = models.ForeignKey(
+        "Page",
+        on_delete=models.CASCADE,
+        related_name="heroes",
+        null=True,  # Allows existing heroes to migrate without breaking
+        blank=True,
+        help_text="Select which page this hero belongs to.",
+    )
     title = models.CharField(max_length=200)
     subtitle = models.CharField(max_length=300, blank=True)
     body = HTMLField(blank=True, null=True)
@@ -451,13 +459,16 @@ class Hero(models.Model):
     button_text = models.CharField(max_length=100, blank=True)
     button_link = models.URLField(blank=True)
     is_active = models.BooleanField(default=True)
+    order = models.PositiveIntegerField(default=0)
 
     class Meta:
         verbose_name = "Hero Section"
         verbose_name_plural = "Hero Sections"
+        ordering = ["order"]
 
     def __str__(self):
-        return self.title
+        page_name = self.page.title if self.page else "Unassigned"
+        return f"{page_name} - {self.title}"
 
 
 class HeroBanner(models.Model):

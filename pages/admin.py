@@ -46,6 +46,29 @@ class ThreeColumnBlockForm(forms.ModelForm):
 # === Inlines ===
 
 
+class HeroInline(admin.StackedInline):
+    model = Hero
+    extra = 0
+    can_delete = True
+    fieldsets = (
+        (
+            "Hero Section",
+            {
+                "fields": (
+                    "title",
+                    "subtitle",
+                    "body",
+                    "image",
+                    "button_text",
+                    "button_link",
+                    "order",
+                    "is_active",
+                )
+            },
+        ),
+    )
+
+
 class PageSectionInline(admin.StackedInline):
     model = PageSection
     form = PageSectionForm
@@ -249,6 +272,7 @@ class PageAdmin(admin.ModelAdmin):
     list_filter = ("template", "published")
     prepopulated_fields = {"slug": ("title",)}
     inlines = [
+        HeroInline,
         PageSectionInline,
         ThreeColumnInline,
         GalleryBlockInline,
@@ -299,16 +323,18 @@ class FAQBlockAdmin(admin.ModelAdmin):
 
 @admin.register(Hero)
 class HeroAdmin(admin.ModelAdmin):
-    """Admin for homepage hero section."""
+    """Admin for hero sections."""
 
-    list_display = ("title", "is_active")
-    list_filter = ("is_active",)
+    list_display = ("title", "page", "is_active", "order")
+    list_filter = ("is_active", "page")
+    list_editable = ("is_active", "order")
+    ordering = ("page", "order")
 
     fieldsets = (
         (
             None,
             {
-                "fields": ("title", "subtitle", "body", "is_active"),
+                "fields": ("page", "title", "subtitle", "body", "is_active", "order"),
             },
         ),
         (

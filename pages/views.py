@@ -72,7 +72,7 @@ def home_view(request):
     context = {
         "page": page,
         "content_blocks": content_blocks,
-        "hero": Hero.objects.filter(is_active=True).first(),
+        "hero": page.heroes.filter(is_active=True).first(),
         "hero_banner": HeroBanner.objects.filter(is_active=True).first(),
         "blog_posts": blog_posts,
         "featured_products": featured_products,
@@ -97,6 +97,7 @@ def about_view(request):
     context = {
         "page": page,
         "content_blocks": content_blocks,
+        "hero": page.heroes.filter(is_active=True).first(),
     }
 
     return render(request, "pages/about.html", context)
@@ -154,6 +155,7 @@ def detail_view(request, slug):
     context = {
         "page": page,
         "content_blocks": content_blocks,
+        "hero": page.heroes.filter(is_active=True).first(),
     }
 
     return render(request, "pages/custom.html", context)
