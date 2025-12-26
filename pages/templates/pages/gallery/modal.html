@@ -1,0 +1,33 @@
+<div
+    class="w-full h-full flex items-center justify-center animate-fade-in relative"
+    tabindex="0"
+    onclick="closeGalleryModal(event)"
+>
+
+    <img
+        src="{{ image.image.url }}"
+        alt="{{ image.title }}"
+        class="max-w-4xl max-h-[90vh] rounded-xl shadow-2xl border border-white/20 z-10"
+    >
+
+    {% if prev_image %}
+    <button
+        hx-get="{% url 'studio:gallery_image_modal' prev_image.pk %}"
+        hx-target="#gallery-modal"
+        hx-swap="innerHTML"
+        class="absolute left-6 text-white text-4xl opacity-70 hover:opacity-100 transition"
+        aria-label="Previous image"
+    >‹</button>
+    {% endif %}
+
+    {% if next_image %}
+    <button
+        hx-get="{% url 'studio:gallery_image_modal' next_image.pk %}"
+        hx-target="#gallery-modal"
+        hx-swap="innerHTML"
+        class="absolute right-6 text-white text-4xl opacity-70 hover:opacity-100 transition"
+        aria-label="Next image"
+    >›</button>
+    {% endif %}
+
+</div>

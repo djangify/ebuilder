@@ -1,7 +1,15 @@
 # pages/views.py
 
 from django.shortcuts import render, get_object_or_404
-from .models import Page, SiteSettings, HeroBanner, FAQBlock, GalleryImage, Hero
+from .models import (
+    Page,
+    SiteSettings,
+    HeroBanner,
+    FAQBlock,
+    GalleryImage,
+    Hero,
+    GalleryBlock,
+)
 from blog.models import Post
 from shop.models import Product
 
@@ -84,6 +92,7 @@ def home_view(request):
         "featured_products": featured_products,
         "homepage_gallery": homepage_gallery,
         "homepage_images": homepage_images,
+        "gallery_template": "pages/gallery/gallery_home.html",
     }
 
     return render(request, "pages/home.html", context)
@@ -112,24 +121,15 @@ def about_view(request):
 
 
 def gallery_view(request):
-    """Render the gallery page."""
-    page = get_object_or_404(Page, template="gallery", published=True)
-
-    sections = list(page.sections.filter(published=True))
-    three_columns = list(page.three_columns.filter(published=True))
-    galleries = list(page.galleries.filter(published=True))
-
-    content_blocks = sorted(
-        sections + three_columns + galleries,
-        key=lambda block: block.order,
-    )
+    galleries = GalleryBlock.objects.filter(published=True).order_by("order")
 
     context = {
-        "page": page,
-        "content_blocks": content_blocks,
+        "galleries": galleries,
     }
 
-    return render(request, "pages/gallery.html", context)
+    return render(request, "pages/gallery/gallery.html", context)
+
+    return render(request, "pages/gallery/gallery.html", context)
 
 
 def detail_view(request, slug):

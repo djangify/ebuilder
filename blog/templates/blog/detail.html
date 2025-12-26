@@ -13,21 +13,35 @@
     {% include 'blog/components/breadcrumb.html' %}
 
     <!-- Featured Media -->
-    <div class="mb-8 rounded-xl overflow-hidden shadow-md">
-      {% if post.get_youtube_embed_url %}
-      <div class="aspect-video w-full overflow-hidden rounded-xl shadow-md">
-        <iframe
-          src="{{ post.get_youtube_embed_url }}"
-          class="w-full h-full"
-          frameborder="0"
-          loading="lazy"
-          referrerpolicy="strict-origin-when-cross-origin"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-          allowfullscreen>
-        </iframe>
-      </div>
-      {% endif %}
+    <!-- Featured Media -->
+{% if post.get_youtube_embed_url %}
+  <!-- Video takes priority -->
+  <div class="mb-8 rounded-xl overflow-hidden shadow-md">
+    <div class="aspect-video w-full">
+      <iframe
+        src="{{ post.get_youtube_embed_url }}"
+        class="w-full h-full"
+        frameborder="0"
+        loading="lazy"
+        referrerpolicy="strict-origin-when-cross-origin"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen>
+      </iframe>
     </div>
+  </div>
+
+{% elif post.get_image_url %}
+  <!-- Image fallback -->
+  <div class="mb-8 rounded-xl overflow-hidden shadow-md">
+    <img
+      src="{{ post.get_image_url }}"
+      alt="{{ post.title }}"
+      class="w-full h-auto object-cover"
+      loading="lazy"
+    />
+  </div>
+{% endif %}
+
 
     <!-- Title + Meta -->
     <header class="mb-6">

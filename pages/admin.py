@@ -128,7 +128,7 @@ class GalleryBlockInline(admin.StackedInline):
     fields = ("title", "order", "published")
 
 
-class GalleryImageInline(admin.TabularInline):
+class GalleryImageInline(admin.StackedInline):
     model = GalleryImage
     extra = 1
     ordering = ("order",)
@@ -137,10 +137,17 @@ class GalleryImageInline(admin.TabularInline):
 
     def display_thumbnail(self, obj):
         """Display thumbnail preview in admin."""
-        image_url = obj.get_thumbnail_url()
-        if image_url:
-            return format_html('<img src="{}" width="50" />', image_url)
-        return "-"
+        if obj.thumbnail:
+            return format_html(
+                '<img src="{}" style="max-height: 60px; max-width: 100px; object-fit: cover; border-radius: 4px;" />',
+                obj.thumbnail.url,
+            )
+        elif obj.image:
+            return format_html(
+                '<img src="{}" style="max-height: 60px; max-width: 100px; object-fit: cover; border-radius: 4px;" />',
+                obj.image.url,
+            )
+        return "No image"
 
     display_thumbnail.short_description = "Preview"
 
