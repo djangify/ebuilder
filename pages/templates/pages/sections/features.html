@@ -2,10 +2,18 @@
     <div class="max-w-6xl mx-auto px-6">
 
         {% if section.title %}
-        <h2 class="text-3xl font-bold text-center mb-10">{{ section.title }}</h2>
+        <h2 class=" text-3xl font-bold mb-4">{{ section.title }}</h2>
         {% endif %}
 
-        {{ section.body|safe }}
+        {% if section.subtitle %}
+        <p class=" text-lg text-gray-600 mb-4">
+            {{ section.subtitle }}
+        </p>
+        {% endif %}
+
+        <div class="prose prose-lg mx-auto">
+            {{ section.body|safe }}
+        </div>
 
         {% if section.button_text and section.button_link %}
         <div class="flex justify-center mt-10">

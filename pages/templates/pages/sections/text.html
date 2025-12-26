@@ -1,7 +1,12 @@
 <section class="py-12">
-    <div class="max-w-3xl mx-auto px-6 prose">
+    <div class="max-w-6xl mx-auto px-6">
         {% if section.title %}
-        <h2 class="text-3xl font-bold">{{ section.title }}</h2>
+        <h2 class=" text-3xl mb-4 font-bold">{{ section.title }}</h2>
+        {% endif %}
+        {% if section.subtitle %}
+        <p class=" text-lg text-gray-600 mb-4">
+            {{ section.subtitle }}
+        </p>
         {% endif %}
         {{ section.body|safe }}
 

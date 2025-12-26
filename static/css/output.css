@@ -121,8 +121,8 @@
     --color-primary-contrast: #ffffff;
     --color-secondary: #e5e7eb;
     --color-secondary-contrast: #111827;
-    --color-accent: #d6c7b8;
-    --color-accent-contrast: #3b2f2f;
+    --color-accent: #475569;
+    --color-accent-contrast: #ffffff;
     --color-dark: #475569;
     --color-dark-contrast: #1e293b;
     --color-light: #f8fafc;
@@ -863,7 +863,7 @@
   }
   .divide-\[color\:var\(--color-accent\)\]\/20 {
     :where(& > :not(:last-child)) {
-      border-color: color-mix(in srgb, #d6c7b8 20%, transparent);
+      border-color: color-mix(in srgb, #475569 20%, transparent);
       @supports (color: color-mix(in lab, red, red)) {
         border-color: color-mix(in oklab, var(--color-accent) 20%, transparent);
       }
@@ -951,25 +951,25 @@
     border-color: var(--color-accent);
   }
   .border-\[color\:var\(--color-accent\)\]\/10 {
-    border-color: color-mix(in srgb, #d6c7b8 10%, transparent);
+    border-color: color-mix(in srgb, #475569 10%, transparent);
     @supports (color: color-mix(in lab, red, red)) {
       border-color: color-mix(in oklab, var(--color-accent) 10%, transparent);
     }
   }
   .border-\[color\:var\(--color-accent\)\]\/20 {
-    border-color: color-mix(in srgb, #d6c7b8 20%, transparent);
+    border-color: color-mix(in srgb, #475569 20%, transparent);
     @supports (color: color-mix(in lab, red, red)) {
       border-color: color-mix(in oklab, var(--color-accent) 20%, transparent);
     }
   }
   .border-\[color\:var\(--color-accent\)\]\/30 {
-    border-color: color-mix(in srgb, #d6c7b8 30%, transparent);
+    border-color: color-mix(in srgb, #475569 30%, transparent);
     @supports (color: color-mix(in lab, red, red)) {
       border-color: color-mix(in oklab, var(--color-accent) 30%, transparent);
     }
   }
   .border-\[color\:var\(--color-accent\)\]\/40 {
-    border-color: color-mix(in srgb, #d6c7b8 40%, transparent);
+    border-color: color-mix(in srgb, #475569 40%, transparent);
     @supports (color: color-mix(in lab, red, red)) {
       border-color: color-mix(in oklab, var(--color-accent) 40%, transparent);
     }
@@ -1071,7 +1071,7 @@
     background-color: var(--color-accent);
   }
   .bg-\[color\:var\(--color-accent\)\]\/10 {
-    background-color: color-mix(in srgb, #d6c7b8 10%, transparent);
+    background-color: color-mix(in srgb, #475569 10%, transparent);
     @supports (color: color-mix(in lab, red, red)) {
       background-color: color-mix(in oklab, var(--color-accent) 10%, transparent);
     }
@@ -1479,19 +1479,19 @@
     color: var(--color-accent);
   }
   .text-\[color\:var\(--color-accent\)\]\/40 {
-    color: color-mix(in srgb, #d6c7b8 40%, transparent);
+    color: color-mix(in srgb, #475569 40%, transparent);
     @supports (color: color-mix(in lab, red, red)) {
       color: color-mix(in oklab, var(--color-accent) 40%, transparent);
     }
   }
   .text-\[color\:var\(--color-accent\)\]\/50 {
-    color: color-mix(in srgb, #d6c7b8 50%, transparent);
+    color: color-mix(in srgb, #475569 50%, transparent);
     @supports (color: color-mix(in lab, red, red)) {
       color: color-mix(in oklab, var(--color-accent) 50%, transparent);
     }
   }
   .text-\[color\:var\(--color-accent\)\]\/70 {
-    color: color-mix(in srgb, #d6c7b8 70%, transparent);
+    color: color-mix(in srgb, #475569 70%, transparent);
     @supports (color: color-mix(in lab, red, red)) {
       color: color-mix(in oklab, var(--color-accent) 70%, transparent);
     }
@@ -2604,6 +2604,40 @@
         color: var(--color-secondary);
       }
     }
+  }
+  details.faq-item {
+    border-bottom-style: var(--tw-border-style);
+    border-bottom-width: 1px;
+    border-color: var(--color-accent);
+    padding-block: calc(var(--spacing) * 4);
+  }
+  details.faq-item summary {
+    display: flex;
+    cursor: pointer;
+    list-style-type: none;
+    align-items: center;
+    justify-content: space-between;
+    --tw-font-weight: var(--font-weight-semibold);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-dark);
+  }
+  details.faq-item summary::-webkit-details-marker {
+    display: none;
+  }
+  details.faq-item summary::after {
+    content: "+";
+    margin-left: calc(var(--spacing) * 4);
+    --tw-font-weight: var(--font-weight-bold);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-accent);
+  }
+  details.faq-item[open] summary::after {
+    content: "−";
+  }
+  details.faq-item>p, details.faq-item>div {
+    margin-top: calc(var(--spacing) * 3);
+    padding-left: calc(var(--spacing) * 0);
+    color: var(--color-font-main);
   }
 }
 @layer utilities {

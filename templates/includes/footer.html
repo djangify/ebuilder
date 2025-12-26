@@ -1,6 +1,6 @@
 {% load static %}
 
-<footer class="bg-[color:var(--color-light)] border-t border-gray-200 mt-16">
+<footer class="bg-[color:var(--color-light)] border-t border-gray-200 mt-16 ">
   <div class="max-w-7xl mx-auto px-6 py-12 text-center space-y-6">
 
     <!-- Navigation Links -->
@@ -12,7 +12,7 @@
           {% if p.show_in_footer %}
           <li>
             <a href="{{ p.get_absolute_url }}"
-               class="hover:text-[color:var(--color-secondary)] transition">
+               class="text-[color:var(--color-font-main)] hover:text-[color:var(--color-accent)] transition">
               {{ p.title }}
             </a>
           </li>
@@ -22,7 +22,7 @@
         <!-- Shop (always shown) -->
         <li>
           <a href="{% url 'shop:product_list' %}"
-             class="hover:text-[color:var(--color-secondary)] transition">
+             class="text-[color:var(--color-font-main)] hover:text-[color:var(--color-accent)] transition">
             Shop
           </a>
         </li>
@@ -30,7 +30,7 @@
         <!-- Policies -->
         <li>
           <a href="{% url 'infopages:policy_index' %}"
-             class="hover:text-[color:var(--color-secondary)] transition">
+             class="text-[color:var(--color-font-main)] hover:text-[color:var(--color-accent)] transition">
             Policies
           </a>
         </li>
@@ -38,7 +38,7 @@
         <!-- Blog -->
         <li>
           <a href="{% url 'blog:list' %}"
-             class="hover:text-[color:var(--color-secondary)] transition">
+             class="text-[color:var(--color-font-main)] hover:text-[color:var(--color-accent)] transition">
             Blog
           </a>
         </li>
@@ -47,20 +47,20 @@
         {% if not request.user.is_authenticated %}
           <li>
             <a href="{% url 'account_signup' %}"
-               class="hover:text-[color:var(--color-secondary)] transition">
+               class="text-[color:var(--color-font-main)] hover:text-[color:var(--color-accent)] transition">
               Register
             </a>
           </li>
           <li>
             <a href="{% url 'account_login' %}"
-               class="hover:text-[color:var(--color-secondary)] transition">
+               class="text-[color:var(--color-font-main)] hover:text-[color:var(--color-accent)] transition">
               Login
             </a>
           </li>
         {% else %}
           <li>
             <a href="{% url 'account_logout' %}"
-               class="hover:text-[color:var(--color-secondary)] transition">
+               class="text-[color:var(--color-font-main)] hover:text-[color:var(--color-accent)] transition">
               Logout
             </a>
           </li>

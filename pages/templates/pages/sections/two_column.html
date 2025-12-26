@@ -12,7 +12,12 @@
         <div>
             <div class="prose">
                 {% if section.title %}
-                <h2 class="text-3xl font-bold">{{ section.title }}</h2>
+                <h2 class="text-center text-3xl font-bold">{{ section.title }}</h2>
+                {% endif %}
+                {% if section.subtitle %}
+                <p class="text-center text-lg text-gray-600 mb-4">
+                    {{ section.subtitle }}
+                </p>
                 {% endif %}
                 {{ section.body|safe }}
             </div>
