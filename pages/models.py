@@ -196,7 +196,6 @@ class PageSection(models.Model):
         ("two_column", "Two Column"),
         ("features", "Features Grid"),
         ("cta", "Call to Action"),
-        ("faq", "FAQ List"),
     ]
 
     page = models.ForeignKey(Page, on_delete=models.CASCADE, related_name="sections")
@@ -393,6 +392,45 @@ class GalleryImage(models.Model):
         if self.image:
             return self.image.url
         return None
+
+
+class FAQBlock(models.Model):
+    page = models.ForeignKey(Page, on_delete=models.CASCADE, related_name="faqs")
+    title = models.CharField(
+        max_length=200,
+        blank=True,
+        help_text="Optional section title like 'Frequently Asked Questions'",
+    )
+    order = models.PositiveIntegerField(default=0)
+    published = models.BooleanField(default=True)
+
+    class Meta:
+        ordering = ["order"]
+        verbose_name = "FAQ Block"
+        verbose_name_plural = "FAQ BLOCKS"
+
+    def __str__(self):
+        return f"{self.page.title} - FAQ: {self.title or 'Untitled'}"
+
+
+class FAQItem(models.Model):
+    faq_block = models.ForeignKey(
+        FAQBlock,
+        on_delete=models.CASCADE,
+        related_name="items",
+    )
+    question = models.CharField(max_length=500)
+    answer = models.TextField()
+    order = models.PositiveIntegerField(default=0)
+    published = models.BooleanField(default=True)
+
+    class Meta:
+        ordering = ["order"]
+        verbose_name = "FAQ Item"
+        verbose_name_plural = "FAQ Items"
+
+    def __str__(self):
+        return self.question[:50]
 
 
 class Hero(models.Model):

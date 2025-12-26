@@ -1,0 +1,41 @@
+{% if block.published and block.items.all %}
+<section class="py-16">
+    <div class="max-w-4xl mx-auto px-6">
+
+        {% if block.title %}
+        <h2 class="text-3xl font-bold mb-8 text-[color:var(--color-dark)]">{{ block.title }}</h2>
+        {% endif %}
+
+        <div class="space-y-4">
+            {% for item in block.items.all %}
+                {% if item.published %}
+                <div x-data="{ open: false }" class="border-b border-[color:var(--color-accent)]">
+                    <button 
+                        @click="open = !open" 
+                        class="w-full py-4 flex justify-between items-center text-left focus:outline-none"
+                    >
+                        <span class="font-semibold text-lg text-[color:var(--color-dark)]">
+                            {{ item.question }}
+                        </span>
+                        <span 
+                            class="text-2xl font-bold text-[color:var(--color-accent)] transition-transform duration-300"
+                            :class="{ 'rotate-45': open }"
+                        >
+                            +
+                        </span>
+                    </button>
+                    <div 
+                        x-show="open" 
+                        x-collapse
+                        class="pb-4 text-[color:var(--color-font-main)] leading-relaxed"
+                    >
+                        {{ item.answer|linebreaks }}
+                    </div>
+                </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+
+    </div>
+</section>
+{% endif %}

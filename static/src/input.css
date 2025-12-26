@@ -67,32 +67,6 @@
     @apply text-[color:var(--color-accent)] underline hover:text-[color:var(--color-secondary)];
   }
 
-  /* FAQ Accordion Styling */
-  details.faq-item {
-    @apply border-b border-[color:var(--color-accent)] py-4;
-  }
-
-  details.faq-item summary {
-    @apply font-semibold cursor-pointer list-none text-[color:var(--color-dark)] flex justify-between items-center;
-  }
-
-  details.faq-item summary::-webkit-details-marker {
-    display: none;
-  }
-
-  details.faq-item summary::after {
-    content: "+";
-    @apply font-bold text-[color:var(--color-accent)] ml-4;
-  }
-
-  details.faq-item[open] summary::after {
-    content: "−";
-  }
-
-  details.faq-item>p,
-  details.faq-item>div {
-    @apply mt-3 pl-0 text-[color:var(--color-font-main)];
-  }
 }
 
 

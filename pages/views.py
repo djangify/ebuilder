@@ -1,17 +1,33 @@
 # pages/views.py
 
 from django.shortcuts import render, get_object_or_404
-from .models import Page, SiteSettings, HeroBanner, GalleryImage, Hero
+from .models import Page, SiteSettings, HeroBanner, FAQBlock, GalleryImage, Hero
 from blog.models import Post
 from shop.models import Product
 
 
 def _render_page(request, template_name):
-    """Helper to render a page by template name."""
+    """Helper to render a page by template name with all content blocks."""
     page = get_object_or_404(Page, template=template_name, published=True)
-    sections = page.sections.filter(published=True)
+
+    sections = list(page.sections.filter(published=True))
+    three_columns = list(page.three_columns.filter(published=True))
+    galleries = list(page.galleries.filter(published=True))
+    faq_blocks = list(page.faqs.filter(published=True))
+
+    content_blocks = sorted(
+        sections + three_columns + galleries + faq_blocks,
+        key=lambda x: x.order,
+    )
+
     return render(
-        request, f"pages/{template_name}.html", {"page": page, "sections": sections}
+        request,
+        f"pages/{template_name}.html",
+        {
+            "page": page,
+            "sections": sections,  # Keep for backwards compatibility
+            "content_blocks": content_blocks,
+        },
     )
 
 
@@ -128,10 +144,11 @@ def detail_view(request, slug):
     sections = list(page.sections.filter(published=True))
     three_columns = list(page.three_columns.filter(published=True))
     galleries = list(page.galleries.filter(published=True))
+    faq_blocks = page.faqs.filter(published=True)
 
     content_blocks = sorted(
-        sections + three_columns + galleries,
-        key=lambda block: block.order,
+        list(sections) + list(three_columns) + list(galleries) + list(faq_blocks),
+        key=lambda x: x.order,
     )
 
     context = {

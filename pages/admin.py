@@ -13,6 +13,8 @@ from .models import (
     HeroBanner,
     Hero,
     DashboardSettings,
+    FAQBlock,
+    FAQItem,
 )
 from tinymce.widgets import TinyMCE
 
@@ -174,6 +176,21 @@ class GalleryImageAdmin(admin.ModelAdmin):
     display_thumbnail.short_description = "Thumbnail Preview"
 
 
+class FAQItemInline(admin.TabularInline):
+    model = FAQItem
+    extra = 1
+    fields = ("question", "answer", "order", "published")
+    ordering = ("order",)
+
+
+class FAQBlockInline(admin.StackedInline):
+    model = FAQBlock
+    extra = 0
+    can_delete = True
+    ordering = ("order",)
+    fields = ("title", "order", "published")
+
+
 @admin.register(SiteSettings)
 class SiteSettingsAdmin(admin.ModelAdmin):
     fieldsets = (
@@ -235,6 +252,7 @@ class PageAdmin(admin.ModelAdmin):
         PageSectionInline,
         ThreeColumnInline,
         GalleryBlockInline,
+        FAQBlockInline,
     ]
 
     fieldsets = (
@@ -270,6 +288,13 @@ class GalleryBlockAdmin(admin.ModelAdmin):
     def has_add_permission(self, request):
         # Gallery blocks should be added via Page admin inline
         return False
+
+
+@admin.register(FAQBlock)
+class FAQBlockAdmin(admin.ModelAdmin):
+    list_display = ("title", "page", "order", "published")
+    list_filter = ("published", "page")
+    inlines = [FAQItemInline]
 
 
 @admin.register(Hero)
