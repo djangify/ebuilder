@@ -2,7 +2,6 @@
 
 from django.db import models
 from django.urls import reverse
-from tinymce.models import HTMLField
 import os
 from io import BytesIO
 from PIL import Image as PILImage
@@ -202,7 +201,7 @@ class PageSection(models.Model):
     section_type = models.CharField(max_length=50, choices=SECTION_TYPES)
     title = models.CharField(max_length=200, blank=True)
     subtitle = models.CharField(max_length=300, blank=True)
-    body = HTMLField(blank=True, null=True)
+    body = models.TextField(blank=True, null=True)
     image = models.ImageField(upload_to="pages/sections/", blank=True, null=True)
     button_text = models.CharField(max_length=100, blank=True)
     button_link = models.URLField(blank=True)
@@ -210,8 +209,8 @@ class PageSection(models.Model):
     published = models.BooleanField(default=True)
 
     # Two-column fields
-    col_1_body = HTMLField(blank=True, null=True)
-    col_2_body = HTMLField(blank=True, null=True)
+    col_1_body = models.TextField(blank=True, null=True)
+    col_2_body = models.TextField(blank=True, null=True)
 
     class Meta:
         ordering = ["order"]
@@ -231,15 +230,15 @@ class ThreeColumnBlock(models.Model):
 
     col_1_title = models.CharField(max_length=150, blank=True)
     col_1_image = models.ImageField(upload_to="pages/columns/", blank=True, null=True)
-    col_1_body = HTMLField(blank=True, null=True)
+    col_1_body = models.TextField(blank=True, null=True)
 
     col_2_title = models.CharField(max_length=150, blank=True)
     col_2_image = models.ImageField(upload_to="pages/columns/", blank=True, null=True)
-    col_2_body = HTMLField(blank=True, null=True)
+    col_2_body = models.TextField(blank=True, null=True)
 
     col_3_title = models.CharField(max_length=150, blank=True)
     col_3_image = models.ImageField(upload_to="pages/columns/", blank=True, null=True)
-    col_3_body = HTMLField(blank=True, null=True)
+    col_3_body = models.TextField(blank=True, null=True)
 
     class Meta:
         ordering = ["order"]
@@ -449,7 +448,7 @@ class Hero(models.Model):
     )
     title = models.CharField(max_length=200)
     subtitle = models.CharField(max_length=300, blank=True)
-    body = HTMLField(blank=True, null=True)
+    body = models.TextField(blank=True, null=True)
     image = models.ImageField(
         upload_to="pages/hero/",
         blank=True,

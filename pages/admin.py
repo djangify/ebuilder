@@ -16,8 +16,7 @@ from .models import (
     FAQBlock,
     FAQItem,
 )
-from tinymce.widgets import TinyMCE
-
+from .widgets import TrixWidget
 
 # === Form Customizations ===
 
@@ -26,26 +25,23 @@ class PageSectionForm(forms.ModelForm):
     class Meta:
         model = PageSection
         fields = "__all__"
-
-    body = forms.CharField(widget=TinyMCE(), required=False)
-
-
-# Add this form class after PageSectionForm
+        widgets = {
+            "body": TrixWidget(),
+        }
 
 
 class ThreeColumnBlockForm(forms.ModelForm):
     class Meta:
         model = ThreeColumnBlock
         fields = "__all__"
-
-    col_1_body = forms.CharField(widget=TinyMCE(), required=False)
-    col_2_body = forms.CharField(widget=TinyMCE(), required=False)
-    col_3_body = forms.CharField(widget=TinyMCE(), required=False)
+        widgets = {
+            "col_1_body": TrixWidget(),
+            "col_2_body": TrixWidget(),
+            "col_3_body": TrixWidget(),
+        }
 
 
 # === Inlines ===
-
-
 class HeroInline(admin.StackedInline):
     model = Hero
     extra = 0

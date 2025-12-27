@@ -2,7 +2,6 @@ from django.db import models
 from django.urls import reverse
 from django.utils.text import slugify
 from django.utils import timezone
-from tinymce.models import HTMLField
 from ebuilder.mixins.youtube import YouTubeVideoMixin
 
 
@@ -39,10 +38,8 @@ class Post(YouTubeVideoMixin, models.Model):
     # Basic fields
     title = models.CharField(max_length=200)
     slug = models.SlugField(unique=True)
-    introduction = HTMLField(
-        "Introduction", blank=True, null=True, help_text="Introduction"
-    )
-    content = HTMLField("Content")
+
+    content = models.TextField("Content")
 
     category = models.ForeignKey(Category, on_delete=models.PROTECT)
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default="draft")

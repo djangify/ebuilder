@@ -24,7 +24,7 @@ adminita
 django-widget-tweaks
 
 # Rich Text Editor
-django-tinymce
+
 
 # Image Processing
 Pillow

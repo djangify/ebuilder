@@ -7,7 +7,6 @@ from decimal import Decimal
 from ebuilder.storage import SecureStorage, PublicStorage
 from django.db.models import Avg
 from ebuilder.utils import custom_slugify
-from tinymce.models import HTMLField
 
 
 def generate_public_id(instance, *args, **kwargs):
@@ -49,9 +48,9 @@ class Product(models.Model):
     title = models.CharField(max_length=200)
     slug = models.SlugField(unique=True)
     category = models.ForeignKey(Category, on_delete=models.PROTECT)
-    description = HTMLField()
+    description = models.TextField()
     section_description = models.TextField(blank=True, null=True)
-    long_description = HTMLField(blank=True, null=True)
+    long_description = models.TextField(blank=True, null=True)
     product_type = models.CharField(
         max_length=20, choices=PRODUCT_TYPES, default="download"
     )

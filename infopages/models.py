@@ -1,6 +1,5 @@
 from django.db import models
 from django.urls import reverse
-from tinymce.models import HTMLField
 
 
 class Category(models.Model):
@@ -34,7 +33,7 @@ class InfoPage(models.Model):
         related_name="pages",
         help_text="Optional category for grouping related documentation pages.",
     )
-    content = HTMLField(
+    content = models.TextField(
         help_text="Main page content. You can use headings, lists, and links."
     )
     last_updated = models.DateTimeField(auto_now=True)

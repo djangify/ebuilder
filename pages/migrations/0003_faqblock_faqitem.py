@@ -5,41 +5,77 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('pages', '0002_alter_galleryblock_options_alter_pagesection_options_and_more'),
+        ("pages", "0002_alter_galleryblock_options_alter_pagesection_options_and_more"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='FAQBlock',
+            name="FAQBlock",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('title', models.CharField(blank=True, help_text="Optional section title like 'Frequently Asked Questions'", max_length=200)),
-                ('order', models.PositiveIntegerField(default=0)),
-                ('published', models.BooleanField(default=True)),
-                ('page', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='faqs', to='pages.page')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "title",
+                    models.CharField(
+                        blank=True,
+                        help_text="Optional section title like 'Frequently Asked Questions'",
+                        max_length=200,
+                    ),
+                ),
+                ("order", models.PositiveIntegerField(default=0)),
+                ("published", models.BooleanField(default=True)),
+                (
+                    "page",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="faqs",
+                        to="pages.page",
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'FAQ Block',
-                'verbose_name_plural': 'FAQ BLOCKS',
-                'ordering': ['order'],
+                "verbose_name": "FAQ Block",
+                "verbose_name_plural": "FAQ BLOCKS",
+                "ordering": ["order"],
             },
         ),
         migrations.CreateModel(
-            name='FAQItem',
+            name="FAQItem",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('question', models.CharField(max_length=500)),
-                ('answer', models.TextField()),
-                ('order', models.PositiveIntegerField(default=0)),
-                ('published', models.BooleanField(default=True)),
-                ('faq_block', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='items', to='pages.faqblock')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("question", models.CharField(max_length=500)),
+                ("answer", models.TextField()),
+                ("order", models.PositiveIntegerField(default=0)),
+                ("published", models.BooleanField(default=True)),
+                (
+                    "faq_block",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="items",
+                        to="pages.faqblock",
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'FAQ Item',
-                'verbose_name_plural': 'FAQ Items',
-                'ordering': ['order'],
+                "verbose_name": "FAQ Item",
+                "verbose_name_plural": "FAQ Items",
+                "ordering": ["order"],
             },
         ),
     ]

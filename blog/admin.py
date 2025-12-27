@@ -2,8 +2,8 @@ from django import forms
 from django.contrib import admin
 from django.contrib.admin.widgets import AdminTextareaWidget
 from .models import Category, Post
-from tinymce.widgets import TinyMCE
 from django.utils.html import format_html, format_html_join
+from pages.widgets import TrixWidget
 
 
 @admin.register(Category)
@@ -14,11 +14,12 @@ class CategoryAdmin(admin.ModelAdmin):
 
 
 class PostAdminForm(forms.ModelForm):
-    content = forms.CharField(widget=TinyMCE(attrs={"cols": 80, "rows": 30}))
-
     class Meta:
         model = Post
         fields = "__all__"
+        widgets = {
+            "content": TrixWidget(),
+        }
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -32,7 +33,6 @@ class PostAdminForm(forms.ModelForm):
 @admin.register(Post)
 class PostAdmin(admin.ModelAdmin):
     form = PostAdminForm
-    exclude = ["introduction"]  # hides the introduction field
     list_display = [
         "title",
         "category",
