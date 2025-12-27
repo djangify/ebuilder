@@ -9,6 +9,18 @@ from django.db.models import Avg
 from ebuilder.utils import custom_slugify
 
 
+def get_default_category():
+    """Get or create the default 'Uncategorized' category."""
+    category, _ = Category.objects.get_or_create(
+        slug="uncategorized",
+        defaults={
+            "name": "Uncategorized",
+            "description": "Default category for products",
+        },
+    )
+    return category.pk
+
+
 def generate_public_id(instance, *args, **kwargs):
     title = instance.title
     unique_id_short = uuid.uuid4().hex[:5]
@@ -38,25 +50,24 @@ class Product(models.Model):
     STATUS_CHOICES = [
         ("publish", "Published"),
         ("soon", "Coming Soon"),
-        ("full", "Fully Booked"),
         ("draft", "Draft"),
     ]
-    PRODUCT_TYPES = [("download", "Digital Download")]
 
     # Basic Fields
     public_id = models.CharField(max_length=130, blank=True, null=True, db_index=True)
     title = models.CharField(max_length=200)
     slug = models.SlugField(unique=True)
-    category = models.ForeignKey(Category, on_delete=models.PROTECT)
+    category = models.ForeignKey(
+        Category,
+        on_delete=models.PROTECT,
+        blank=True,
+        null=True,
+        default=get_default_category,
+    )
     description = models.TextField()
     section_description = models.TextField(blank=True, null=True)
     long_description = models.TextField(blank=True, null=True)
-    product_type = models.CharField(
-        max_length=20, choices=PRODUCT_TYPES, default="download"
-    )
-    number_of_pages = models.PositiveIntegerField(
-        null=True, blank=True, help_text="Number of pages for digital downloads"
-    )
+
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default="draft")
     external_image_url = models.URLField(
         max_length=500,

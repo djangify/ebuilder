@@ -5,6 +5,15 @@ from django.utils import timezone
 from ebuilder.mixins.youtube import YouTubeVideoMixin
 
 
+def get_default_category():
+    """Get or create the default 'Uncategorized' category."""
+
+    category, _ = Category.objects.get_or_create(
+        slug="uncategorized", defaults={"name": "Uncategorized"}
+    )
+    return category.pk
+
+
 class Category(models.Model):
     name = models.CharField(max_length=100)
     slug = models.SlugField(unique=True)
@@ -41,7 +50,13 @@ class Post(YouTubeVideoMixin, models.Model):
 
     content = models.TextField("Content")
 
-    category = models.ForeignKey(Category, on_delete=models.PROTECT)
+    category = models.ForeignKey(
+        Category,
+        on_delete=models.PROTECT,
+        blank=True,
+        null=True,
+        default=get_default_category,
+    )
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default="draft")
     is_featured = models.BooleanField(
         default=False, help_text="Show this post at the top of the listing"
