@@ -43,6 +43,8 @@ clean_json.py
 export_all.py
 
 db.sqlite3
+db.sqlite3-shm
+db.sqlite3-wal
 **/db.sqlite3
 data/media/*
 data/db/
@@ -53,3 +55,6 @@ static/images
 package-lock.json
 package.json
 ruff.toml
+
+# Lighthouse / Chrome audit reports
+chromewebdata_*.report.html
