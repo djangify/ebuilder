@@ -1,4 +1,24 @@
+// Load Trix CSS dynamically (since Django widget Media isn't including it)
+(function loadTrixCSS() {
+  const cssFiles = [
+    '/static/admin/css/trix.css',
+    '/static/admin/css/trix-admin.css'
+  ];
+
+  cssFiles.forEach(function (href) {
+    if (!document.querySelector('link[href="' + href + '"]')) {
+      const link = document.createElement('link');
+      link.rel = 'stylesheet';
+      link.type = 'text/css';
+      link.href = href;
+      document.head.appendChild(link);
+    }
+  });
+})();
+
 // Trix initialization for Django Admin with Auto-Save
+// Fixed for Django inline formsets
+
 // Configure Trix BEFORE it initializes
 document.addEventListener('trix-before-initialize', function () {
   // Add H2 heading
@@ -19,19 +39,106 @@ document.addEventListener('trix-before-initialize', function () {
 });
 
 document.addEventListener('DOMContentLoaded', function () {
+  // CRITICAL: Clean template forms FIRST before any initialization
+  cleanTemplateRows();
+
+  // Then initialize
   addCustomToolbarButtons();
   initTrixEditors();
   initAutoSave();
+
+  // Set up inline formset handlers
+  setupInlineFormsetHandlers();
 });
 
-// Handle Django admin inline formsets (dynamically added forms)
-document.addEventListener('formset:added', function (event) {
-  setTimeout(function () {
-    addCustomToolbarButtons(event.target);
-    initTrixEditors(event.target);
-    initAutoSave(event.target);
-  }, 100);
-});
+// ============================================================
+// DJANGO INLINE FORMSET HANDLING (CRITICAL FIX)
+// ============================================================
+
+function cleanTemplateRows() {
+  // Remove Trix editors from empty/template forms to prevent cloning issues
+  // Django uses these as templates when "Add another" is clicked
+  const emptyForms = document.querySelectorAll('.empty-form, [id*="-empty"], [id*="__prefix__"]');
+  emptyForms.forEach(function (form) {
+    const editors = form.querySelectorAll('trix-editor');
+    editors.forEach(function (editor) {
+      editor.remove();
+    });
+    const toolbars = form.querySelectorAll('trix-toolbar');
+    toolbars.forEach(function (toolbar) {
+      toolbar.remove();
+    });
+    // Reset textareas in template forms
+    const textareas = form.querySelectorAll('textarea[data-trix="true"]');
+    textareas.forEach(function (textarea) {
+      textarea.style.display = '';
+      textarea.removeAttribute('data-autosave-init');
+    });
+  });
+}
+
+function setupInlineFormsetHandlers() {
+  // Handle Django's formset:added event (Django 4.1+)
+  document.addEventListener('formset:added', function (event) {
+    // Clean any accidentally cloned Trix elements first
+    const newRow = event.target;
+    const clonedEditors = newRow.querySelectorAll('trix-editor');
+    clonedEditors.forEach(function (editor) {
+      editor.remove();
+    });
+    const clonedToolbars = newRow.querySelectorAll('trix-toolbar');
+    clonedToolbars.forEach(function (toolbar) {
+      toolbar.remove();
+    });
+
+    // Reset textarea state
+    const textareas = newRow.querySelectorAll('textarea[data-trix="true"]');
+    textareas.forEach(function (textarea) {
+      textarea.style.display = '';
+      textarea.removeAttribute('data-autosave-init');
+      // Ensure unique ID for new form
+      if (textarea.id && textarea.id.includes('__prefix__')) {
+        // Django should have already updated this, but just in case
+        textarea.id = textarea.id.replace('__prefix__', Date.now().toString());
+      }
+    });
+
+    // Now initialize fresh Trix editors
+    setTimeout(function () {
+      addCustomToolbarButtons(newRow);
+      initTrixEditors(newRow);
+      initAutoSave(newRow);
+    }, 100);
+  });
+
+  // Fallback: Watch for click on "Add another" links
+  document.addEventListener('click', function (e) {
+    const addRow = e.target.closest('.add-row a, .inline-group .add-row a, a.grp-add-handler');
+    if (addRow) {
+      // Clean template rows again just before cloning happens
+      cleanTemplateRows();
+
+      // Wait for Django to add the new row
+      setTimeout(function () {
+        // Find any newly added rows that need initialization
+        document.querySelectorAll('textarea[data-trix="true"]').forEach(function (textarea) {
+          // Skip template rows
+          if (textarea.name && textarea.name.includes('__prefix__')) {
+            return;
+          }
+          // Skip already initialized
+          if (textarea.nextElementSibling && textarea.nextElementSibling.tagName === 'TRIX-EDITOR') {
+            return;
+          }
+          // Initialize this one
+          initTrixOnTextarea(textarea);
+        });
+        addCustomToolbarButtons();
+        initAutoSave();
+      }, 150);
+    }
+  });
+}
 
 // ============================================================
 // AUTO-SAVE FUNCTIONALITY
@@ -51,6 +158,11 @@ function initAutoSave(container) {
   const root = container || document;
 
   root.querySelectorAll('textarea[data-trix="true"]').forEach(function (textarea) {
+    // Skip template rows
+    if (textarea.name && textarea.name.includes('__prefix__')) {
+      return;
+    }
+
     const storageKey = getStorageKey(textarea);
     const trixEditor = textarea.nextElementSibling;
 
@@ -83,10 +195,14 @@ function initAutoSave(container) {
 
     // Clear draft on successful form submission
     const form = textarea.closest('form');
-    if (form) {
+    if (form && !form.dataset.autosaveFormInit) {
+      form.dataset.autosaveFormInit = 'true';
       form.addEventListener('submit', function () {
-        clearDraft(storageKey);
-        clearInterval(autoSaveTimer);
+        // Clear all drafts for this form
+        form.querySelectorAll('textarea[data-trix="true"]').forEach(function (ta) {
+          const key = getStorageKey(ta);
+          clearDraft(key);
+        });
       });
     }
 
@@ -393,27 +509,37 @@ function insertImageFromUrl(editor) {
 // TRIX EDITOR INITIALIZATION
 // ============================================================
 
+function initTrixOnTextarea(textarea) {
+  // Skip template rows
+  if (textarea.name && textarea.name.includes('__prefix__')) {
+    return;
+  }
+
+  // Skip if already initialized
+  if (textarea.nextElementSibling && textarea.nextElementSibling.tagName === 'TRIX-EDITOR') {
+    return;
+  }
+
+  // Ensure unique ID
+  if (!textarea.id) {
+    textarea.id = 'trix-textarea-' + Math.random().toString(36).substr(2, 9);
+  }
+
+  // Create trix-editor element
+  const trixEditor = document.createElement('trix-editor');
+  trixEditor.setAttribute('input', textarea.id);
+  trixEditor.classList.add('trix-content');
+
+  // Insert after textarea
+  textarea.parentNode.insertBefore(trixEditor, textarea.nextSibling);
+
+  // Hide the textarea
+  textarea.style.display = 'none';
+}
+
 function initTrixEditors(container) {
   const root = container || document;
-  root.querySelectorAll('textarea[data-trix="true"]').forEach(function (textarea) {
-    // Skip if already initialized
-    if (textarea.nextElementSibling && textarea.nextElementSibling.tagName === 'TRIX-EDITOR') {
-      return;
-    }
-
-    // Ensure unique ID
-    if (!textarea.id) {
-      textarea.id = 'trix-textarea-' + Math.random().toString(36).substr(2, 9);
-    }
-
-    // Create trix-editor element
-    const trixEditor = document.createElement('trix-editor');
-    trixEditor.setAttribute('input', textarea.id);
-    trixEditor.classList.add('trix-content');
-
-    // Insert after textarea
-    textarea.parentNode.insertBefore(trixEditor, textarea.nextSibling);
-  });
+  root.querySelectorAll('textarea[data-trix="true"]').forEach(initTrixOnTextarea);
 }
 
 // Disable file uploads (drag/drop and paste) but allow our URL images

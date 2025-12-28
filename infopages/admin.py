@@ -1,5 +1,7 @@
 from django.contrib import admin
 from .models import InfoPage, Category
+from pages.widgets import TrixWidget
+from django import forms
 
 
 @admin.register(Category)
@@ -9,8 +11,18 @@ class CategoryAdmin(admin.ModelAdmin):
     search_fields = ("name",)
 
 
+class InfoPageAdminForm(forms.ModelForm):
+    class Meta:
+        model = InfoPage
+        fields = "__all__"
+        widgets = {
+            "content": TrixWidget(),
+        }
+
+
 @admin.register(InfoPage)
 class InfoPageAdmin(admin.ModelAdmin):
+    form = InfoPageAdminForm
     list_display = ("title", "page_type", "category", "published", "last_updated")
     list_filter = ("page_type", "category", "published")
     search_fields = ("title", "content")
