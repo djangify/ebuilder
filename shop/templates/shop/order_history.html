@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-
+{% load currency_tags %}
 {% block content %}
 <section class="w-full py-12">
   <div class="max-w-5xl mx-auto px-6">
@@ -55,7 +55,7 @@
 
                 <div class="text-right">
                   <p class="font-semibold text-[color:var(--color-font-main)]">
-                    £{{ item.get_cost|floatformat:2 }}
+                    {{ item.get_cost|currency }}
                   </p>
                   {% if item.downloads_remaining > 0 %}
                   <a href="{% url 'shop:secure_download' item.id %}" 
@@ -71,7 +71,7 @@
             <!-- Order Total -->
             <div class="mt-6 pt-4 border-t border-[color:var(--color-accent)]/30 flex justify-between text-lg font-semibold text-[color:var(--color-font-main)]">
               <span>Total</span>
-              <span>£{{ order.get_total_cost|floatformat:2 }}</span>
+              <span>{{ order.get_total_cost|currency }}</span>
             </div>
           </div>
         </div>

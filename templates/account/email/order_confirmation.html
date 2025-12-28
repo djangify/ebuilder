@@ -1,4 +1,5 @@
 {% extends "account/base_email.html" %}
+{% load currency_tags %}
 
 {% block title %}Order Confirmation #{{ order_id }}{% endblock %}
 
@@ -14,7 +15,7 @@
 {% endfor %}
 </ul>
 
-<p><strong>Total: £{{ total|floatformat:2 }}</strong></p>
+<p><strong>Total: {{ total|currency }}</strong></p>
 
 <p>You can <a href="{% url 'account_login' %}">Login HERE</a> to download your purchase.</p>
 <p>If you have any questions, please don't hesitate to contact us at  {{ support_email }}.</p>

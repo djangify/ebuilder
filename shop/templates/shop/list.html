@@ -1,6 +1,7 @@
 <!--ebuilder/shop/templates/shop/list.html-->
 {% extends "base.html" %}
 {% load static %}
+{% load currency_tags %}
 
 {% block extra_head %}
 <link rel="canonical" href="{{ request.build_absolute_uri }}">
@@ -167,7 +168,7 @@
             <!-- Price & CTA -->
             <div class="flex items-center justify-between pt-4 border-t border-gray-100">
               <div>
-                <span class="text-xl text-semibold text-[color:var(--color-font-main)]">£{{ product.current_price|floatformat:2 }}</span>
+                <span class="text-xl text-semibold text-[color:var(--color-font-main)]">{{ product.current_price|currency}}</span>
               </div>
               <a href="{{ product.get_absolute_url }}" class="inline-flex items-center gap-1 px-4 py-2 bg-[color:var(--color-primary)] text-white text-sm font-semibold rounded-lg hover:bg-[color:var(--color-accent)] transition-colors">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -288,7 +289,7 @@
         <div class="flex flex-col items-center">
           <div class="w-12 h-12 rounded-full bg-amber-100 flex items-center justify-center mb-3">
             <div class="w-10 h-10 rounded-full bg-amber-100 flex items-center justify-center">
-              <span class="text-amber-600 text-xl font-bold leading-none">£</span>
+              <span class="text-amber-600 text-xl font-bold leading-none">{% currency_symbol %}</span>
             </div>
           </div>
           <p class="text-sm font-semibold text-[color:var(--color-primary)]">One-Time Purchase</p>

@@ -14,6 +14,29 @@ class SiteSettings(models.Model):
     Combines branding, navigation, footer, and homepage mode controls.
     """
 
+    # === Currency Settings ===
+    CURRENCY_CHOICES = [
+        ("AUD", "Australian Dollar (A$)"),
+        ("CAD", "Canadian Dollar (CA$)"),
+        ("EUR", "Euro (€)"),
+        ("GBP", "British Pound (£)"),
+        ("USD", "US Dollar ($)"),
+    ]
+
+    currency_code = models.CharField(
+        "Currency Code",
+        max_length=3,
+        choices=CURRENCY_CHOICES,
+        default="GBP",
+        help_text="Currency code for Stripe payments (e.g., GBP, USD, EUR)",
+    )
+    currency_symbol = models.CharField(
+        "Currency Symbol",
+        max_length=5,
+        default="£",
+        help_text="Symbol displayed before prices (e.g., £, $, €)",
+    )
+
     # === Homepage Mode ===
     HOMEPAGE_CHOICES = [
         ("SHOP", "Shop Homepage"),

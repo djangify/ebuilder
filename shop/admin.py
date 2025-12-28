@@ -5,6 +5,7 @@ from django.core.exceptions import ValidationError
 from django.core.validators import URLValidator
 from django.contrib.admin.widgets import AdminSplitDateTime
 import requests
+from pages.models import SiteSettings
 from .models import (
     Category,
     Product,
@@ -117,12 +118,22 @@ class ProductAdmin(admin.ModelAdmin):
         ),
     )
 
+    def get_currency_symbol(self):
+        """Get currency symbol from SiteSettings"""
+        try:
+            settings = SiteSettings.objects.first()
+            return settings.currency_symbol if settings else "£"
+        except Exception:
+            return "£"
+
     def price(self, obj):
-        return f"£{obj.price:.2f}"
+        symbol = self.get_currency_symbol()
+        return f"{symbol}{obj.price:.2f}"
 
     def sale_price(self, obj):
         if obj.sale_price_pence:
-            return f"£{obj.sale_price:.2f}"
+            symbol = self.get_currency_symbol()
+            return f"{symbol}{obj.sale_price:.2f}"
         return "-"
 
     def display_thumbnail(self, obj):

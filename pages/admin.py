@@ -227,6 +227,16 @@ class SiteSettingsAdmin(admin.ModelAdmin):
             },
         ),
         (
+            "Currency",
+            {
+                "fields": (
+                    "currency_code",
+                    "currency_symbol",
+                ),
+                "description": "Currency settings for your store. Change currency_code to match your Stripe account.",
+            },
+        ),
+        (
             "Homepage Mode",
             {
                 "fields": (

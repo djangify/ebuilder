@@ -1,4 +1,6 @@
 {% if favourite_products %}
+{% load currency_tags %}
+
 <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 mt-6">
   {% for product in favourite_products %}
   <article class="bg-white border border-[color:var(--color-primary) rounded-lg overflow-hidden shadow-sm hover:shadow-md transition flex flex-col">
@@ -23,7 +25,7 @@
       </h3>
 
       <p class="text-[color:var(--color-font-main)] text-sm mb-4">
-        £{{ product.current_price|default:product.price|floatformat:2 }}
+        {{ product.current_price|default:product.price|currency }}
       </p>
 
       <div class="mt-auto flex justify-center">

@@ -1,15 +1,16 @@
 # shop/views/checkout.py
-from ..models import Order, OrderItem
 from django.contrib import messages
 from django.shortcuts import render, redirect
-from django.conf import settings
-import stripe
-import logging
-from ..emails import send_order_confirmation_email
-from ..cart import Cart
 from django.views.decorators.http import require_POST
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse
+from django.conf import settings
+from ..models import Order, OrderItem
+from pages.models import SiteSettings
+from ..emails import send_order_confirmation_email
+from ..cart import Cart
+import stripe
+import logging
 
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
@@ -38,10 +39,17 @@ def checkout(request):
             messages.error(request, "Invalid cart total")
             return redirect("shop:cart_detail")
 
+        # Get currency from SiteSettings, fallback to settings, then to 'gbp'
+        try:
+            site_settings = SiteSettings.objects.first()
+            currency = site_settings.currency_code.lower() if site_settings else "gbp"
+        except Exception:
+            currency = getattr(settings, "STRIPE_CURRENCY", "gbp")
+
         # Create a new PaymentIntent each time user loads checkout
         intent = stripe.PaymentIntent.create(
             amount=int(total_price * 100),
-            currency=getattr(settings, "STRIPE_CURRENCY", "gbp"),
+            currency=currency,  # Now uses database setting
             automatic_payment_methods={"enabled": True},
             metadata={
                 "user_id": str(request.user.id),

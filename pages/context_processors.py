@@ -23,6 +23,9 @@ def ebuilder_settings(request):
             "site_name": site_settings.business_name,
             "support_email": site_settings.support_email,
             "site_author": site_settings.site_author or site_settings.business_name,
+            # Currency settings (NEW)
+            "currency_symbol": site_settings.currency_symbol,
+            "currency_code": site_settings.currency_code,
         }
     else:
         # Fallbacks if SiteSettings doesn't exist yet
@@ -32,6 +35,9 @@ def ebuilder_settings(request):
             "site_name": "My Store",
             "support_email": "hello@example.com",
             "site_author": "My Store",
+            # Currency fallbacks
+            "currency_symbol": "£",
+            "currency_code": "GBP",
         }
 
 

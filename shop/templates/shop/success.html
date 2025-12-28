@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load currency_tags %}
 
 {% block content %}
 <section class="w-full bg-[color:var(--color-bg-muted)] py-16">
@@ -43,7 +44,7 @@
           <strong>Order ID:</strong> {{ order.id }}
         </p>
         <p class="text-[color:var(--color-primary)]">
-          <strong>Total Amount:</strong> £{{ order.get_total_cost|floatformat:2 }}
+          <strong>Total Amount:</strong> {{ order.get_total_cost|currency }}
         </p>
       </div>
 

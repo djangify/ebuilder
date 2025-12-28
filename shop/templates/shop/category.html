@@ -1,8 +1,10 @@
 {% extends "base.html" %}
 {% load static %}
-{% block title %}{{ category.name }} – ebuilder Shop{% endblock %}
+{% load currency_tags %}
+
+{% block title %}{{ category.name }} {% endblock %}
 {% block meta_description %}
-Browse {{ category.name }} products including digital downloads, templates, and bookkeeping tools created for UK self-employed users.
+Browse {{ category.name }} 
 {% endblock %}
 
 
@@ -78,7 +80,7 @@ Browse {{ category.name }} products including digital downloads, templates, and 
 
           <div class="flex items-center justify-between mt-auto">
             <span class="text-lg font-semibold text-[color:var(--color-font-main)]">
-              £{{ product.current_price|floatformat:2 }}
+              {{ product.current_price|currency}}
             </span>
             <a href="{{ product.get_absolute_url }}" 
                class="text-[color:var(--color-secondary)] hover:text-[color:var(--color-accent)] font-semibold text-sm transition">
