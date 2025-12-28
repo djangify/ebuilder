@@ -1,0 +1,28 @@
+{# Accessible form field template #}
+{% load widget_tweaks %}
+
+<div class="form-field mb-4">
+  <label for="{{ field.id_for_label }}" 
+         class="block text-sm font-medium text-[color:var(--color-font-main)] mb-1">
+    {{ field.label }}
+    {% if field.field.required %}
+      <span class="text-red-600" aria-label="required">*</span>
+    {% endif %}
+  </label>
+
+  {% render_field field class="w-full border px-3 py-2 rounded focus:outline-none focus:ring-2 focus:ring-[color:var(--color-primary)]" aria-describedby=field.auto_id|add:"-error" aria-invalid=field.errors|yesno:"true,false" %}
+
+  {% if field.errors %}
+    <div id="{{ field.auto_id }}-error" 
+         role="alert" 
+         class="text-red-600 text-sm mt-1">
+      {{ field.errors.0 }}
+    </div>
+  {% endif %}
+
+  {% if field.help_text %}
+    <p class="text-gray-600 text-xs mt-1">
+      {{ field.help_text }}
+    </p>
+  {% endif %}
+</div>

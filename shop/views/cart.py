@@ -32,7 +32,10 @@ def cart_add(request, product_id):
     cart.add(product=product, quantity=quantity, download_id=download_id)
 
     messages.success(request, f"{product.title} has been added to your cart.")
-    return redirect("shop:cart_detail")
+    # Add for screen reader announcement
+    response = redirect("shop:cart_detail")
+    response["HX-Trigger"] = f'{{"cartUpdated": "{product.title} added to cart"}}'
+    return response
 
 
 def cart_detail(request):

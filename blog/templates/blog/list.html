@@ -20,144 +20,145 @@
     list_name="Blog Articles" 
 %}
 {% endblock %}
+
 {% block content %}
+<main id="main-content" role="main">
+  <!-- Featured Posts Section -->
+  <section class="px-6 md:px-16 py-12 bg-[color:var(--color-light)] text-[color:var(--color-font-main)]">
+    <div class="max-w-7xl mx-auto">
 
-<!-- Featured Posts Section -->
-<section class="px-6 md:px-16 py-12 bg-[color:var(--color-light)] text-[color:var(--color-font-main)]">
-  <div class="max-w-7xl mx-auto">
-
-    <header class="mb-12 space-y-3">
-    <h1 class="text-2xl font-bold lg:text-3xl text-[color:var(--color-font-main)]">
-        Our Blog
-    </h1>
-
-
-    <p class="max-w-5xl leading-relaxed text-[color:var(--color-font-main)]/80">
-        Blog posts and news
-    </p>
-</header>
+      <header class="mb-12 space-y-3">
+      <h1 class="text-2xl font-bold lg:text-3xl text-[color:var(--color-font-main)]">
+          Our Blog
+      </h1>
 
 
-    {% if featured_posts %}
-      {% with main_post=featured_posts.0 %}
-        <section class="mb-16">
-          <div class="grid md:grid-cols-2 gap-8 items-center">
-            <div>
-              <a href="{{ main_post.get_absolute_url }}">
-                {% if main_post.external_image_url %}
-                  <img src="{{ main_post.external_image_url }}" alt="{{ main_post.title }}" class="w-full h-80 object-cover rounded-xl shadow-sm">
-                {% elif main_post.get_image_url %}
-                  <img src="{{ main_post.get_image_url }}" alt="{{ main_post.title }}" class="w-full h-80 object-cover rounded-xl shadow-sm">
-                {% elif main_post.youtube_url %}
-                  <img src="https://img.youtube.com/vi/{{ main_post.get_youtube_video_id }}/maxresdefault.jpg"
-                       alt="{{ main_post.title }}"
-                       class="w-full h-80 object-cover rounded-xl shadow-sm"
-                       onerror="this.onerror=null; this.src='https://img.youtube.com/vi/{{ main_post.get_youtube_video_id }}/hqdefault.jpg';">
-                {% endif %}
-              </a>
+      <p class="max-w-5xl leading-relaxed text-[color:var(--color-font-main)]/80">
+          Blog posts and news
+      </p>
+  </header>
+
+
+      {% if featured_posts %}
+        {% with main_post=featured_posts.0 %}
+          <section class="mb-16">
+            <div class="grid md:grid-cols-2 gap-8 items-center">
+              <div>
+                <a href="{{ main_post.get_absolute_url }}">
+                  {% if main_post.external_image_url %}
+                    <img src="{{ main_post.external_image_url }}" alt="{{ main_post.title }}" class="w-full h-80 object-cover rounded-xl shadow-sm">
+                  {% elif main_post.get_image_url %}
+                    <img src="{{ main_post.get_image_url }}" alt="{{ main_post.title }}" class="w-full h-80 object-cover rounded-xl shadow-sm">
+                  {% elif main_post.youtube_url %}
+                    <img src="https://img.youtube.com/vi/{{ main_post.get_youtube_video_id }}/maxresdefault.jpg"
+                        alt="{{ main_post.title }}"
+                        class="w-full h-80 object-cover rounded-xl shadow-sm"
+                        onerror="this.onerror=null; this.src='https://img.youtube.com/vi/{{ main_post.get_youtube_video_id }}/hqdefault.jpg';">
+                  {% endif %}
+                </a>
+              </div>
+              <div>
+                <h2 class="text-2xl font-semibold text-[color:var(--color-font-main)] mb-3">
+                  <a href="{{ main_post.get_absolute_url }}">{{ main_post.title }}</a>
+                </h2>
+                <p class="text-[color:var(--color-font-main)]/80 mb-4">
+                  {{ main_post.content|striptags|truncatewords:50|safe }}
+                </p>
+                <a href="{{ main_post.get_absolute_url }}"
+                  class="inline-flex items-center font-semibold text-[color:var(--color-font-main)] hover:text-[color:var(--color-accent)] transition">
+                  Read Full Article
+                  <svg class="w-5 h-5 ml-1" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M12.293 5.293a1 1 0 011.414 0l4 
+                    4a1 1 0 010 1.414l-4 4a1 1 0 
+                    01-1.414-1.414L14.586 11H3a1 1 0 
+                    110-2h11.586l-2.293-2.293a1 1 0 
+                    010-1.414z"></path>
+                  </svg>
+                </a>
+              </div>
             </div>
-            <div>
-              <h2 class="text-2xl font-semibold text-[color:var(--color-font-main)] mb-3">
-                <a href="{{ main_post.get_absolute_url }}">{{ main_post.title }}</a>
-              </h2>
-              <p class="text-[color:var(--color-font-main)]/80 mb-4">
-                {{ main_post.content|striptags|truncatewords:50|safe }}
-              </p>
-              <a href="{{ main_post.get_absolute_url }}"
-                 class="inline-flex items-center font-semibold text-[color:var(--color-font-main)] hover:text-[color:var(--color-accent)] transition">
-                 Read Full Article
-                 <svg class="w-5 h-5 ml-1" fill="currentColor" viewBox="0 0 20 20">
-                   <path d="M12.293 5.293a1 1 0 011.414 0l4 
-                   4a1 1 0 010 1.414l-4 4a1 1 0 
-                   01-1.414-1.414L14.586 11H3a1 1 0 
-                   110-2h11.586l-2.293-2.293a1 1 0 
-                   010-1.414z"></path>
-                 </svg>
-              </a>
-            </div>
-          </div>
-        </section>
-      {% endwith %}
-    {% endif %}
-  </div>
-</section>
-
-<!-- All Blog Posts Section -->
-<section class="px-6 md:px-16 py-12 bg-white text-[color:var(--color-font-main)]">
-  <div class="max-w-7xl mx-auto">
-
-    {% if posts %}
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-        {% for post in posts %}
-        <article class="bg-white border border-[color:var(--color-accent)]/30 rounded-md overflow-hidden shadow-sm hover:shadow transition flex flex-col">
-
-      <!-- IMAGE -->
-      <a href="{{ post.get_absolute_url }}">
-          {% if post.external_image_url %}
-              <img src="{{ post.external_image_url }}" alt="{{ post.title }}" class="w-full h-56 object-cover">
-          {% elif post.get_image_url %}
-              <img src="{{ post.get_image_url }}" alt="{{ post.title }}" class="w-full h-56 object-cover">
-          {% elif post.youtube_url %}
-              <img src="https://img.youtube.com/vi/{{ post.get_youtube_video_id }}/maxresdefault.jpg"
-                  alt="{{ post.title }}" class="w-full h-56 object-cover"
-                  onerror="this.onerror=null; this.src='https://img.youtube.com/vi/{{ post.get_youtube_video_id }}/hqdefault.jpg';">
-          {% endif %}
-      </a>
-
-      <!-- TEXT AREA (Padding ONLY here) -->
-      <div class="p-6 flex flex-col flex-grow">
-          <h3 class="text-lg font-semibold text-[color:var(--color-font-main)] mb-3 leading-snug">
-              <a href="{{ post.get_absolute_url }}">{{ post.title }}</a>
-          </h3>
-
-          <p class="flex-grow text-[color:var(--color-font-main)]/70 mb-6">
-              {{ post.content|striptags|truncatewords:15|safe }}
-          </p>
-      </div>
-
-      <!-- FULL-WIDTH FOOTER -->
-      <div class="w-full bg-[color:var(--color-light)] py-4 flex justify-center">
-          <a href="{{ post.get_absolute_url }}"
-            class="px-4 py-2 border border-[color:var(--color-primary)]
-                    text-[color:var(--color-primary)] font-semibold text-sm
-                    rounded hover:bg-[color:var(--color-primary)]
-                    hover:text-white transition">
-              Read Full Article →
-          </a>
-      </div>
-
-  </article>
-
-
-        {% empty %}
-          <div class="col-span-3 text-center py-16 bg-white rounded-lg">
-            <h2 class="text-xl font-semibold text-[color:var(--color-primary)] mb-2">No Articles Yet</h2>
-            <p class="text-[color:var(--color-font-main)]/70">Check back soon for the latest AI marketing insights.</p>
-          </div>
-        {% endfor %}
-      </div>
-
-      <!-- Pagination -->
-      {% if posts.has_other_pages %}
-        <div class="flex justify-center items-center gap-2 mt-12 flex-wrap">
-          {% if posts.has_previous %}
-            <a href="?page={{ posts.previous_page_number }}" class="px-4 py-2 border border-[color:var(--color-primary)] text-[color:var(--color-primary)] rounded hover:bg-[color:var(--color-primary)] hover:text-white transition">Previous</a>
-          {% endif %}
-          {% for num in posts.paginator.page_range %}
-            {% if posts.number == num %}
-              <span class="px-4 py-2 bg-[color:var(--color-primary)] text-white border border-[color:var(--color-primary)] rounded">{{ num }}</span>
-            {% else %}
-              <a href="?page={{ num }}" class="px-4 py-2 border border-[color:var(--color-primary)] text-[color:var(--color-primary)] rounded hover:bg-[color:var(--color-primary)] hover:text-white transition">{{ num }}</a>
-            {% endif %}
-          {% endfor %}
-          {% if posts.has_next %}
-            <a href="?page={{ posts.next_page_number }}" class="px-4 py-2 border border-[color:var(--color-primary)] text-[color:var(--color-primary)] rounded hover:bg-[color:var(--color-primary)] hover:text-white transition">Next</a>
-          {% endif %}
-        </div>
+          </section>
+        {% endwith %}
       {% endif %}
-    {% endif %}
+    </div>
+  </section>
 
-  </div>
-</section>
+  <!-- All Blog Posts Section -->
+  <section class="px-6 md:px-16 py-12 bg-white text-[color:var(--color-font-main)]">
+    <div class="max-w-7xl mx-auto">
 
+      {% if posts %}
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+          {% for post in posts %}
+          <article class="bg-white border border-[color:var(--color-accent)]/30 rounded-md overflow-hidden shadow-sm hover:shadow transition flex flex-col">
+
+        <!-- IMAGE -->
+        <a href="{{ post.get_absolute_url }}">
+            {% if post.external_image_url %}
+                <img src="{{ post.external_image_url }}" alt="{{ post.title }}" class="w-full h-56 object-cover">
+            {% elif post.get_image_url %}
+                <img src="{{ post.get_image_url }}" alt="{{ post.title }}" class="w-full h-56 object-cover">
+            {% elif post.youtube_url %}
+                <img src="https://img.youtube.com/vi/{{ post.get_youtube_video_id }}/maxresdefault.jpg"
+                    alt="{{ post.title }}" class="w-full h-56 object-cover"
+                    onerror="this.onerror=null; this.src='https://img.youtube.com/vi/{{ post.get_youtube_video_id }}/hqdefault.jpg';">
+            {% endif %}
+        </a>
+
+        <!-- TEXT AREA (Padding ONLY here) -->
+        <div class="p-6 flex flex-col flex-grow">
+            <h3 class="text-lg font-semibold text-[color:var(--color-font-main)] mb-3 leading-snug">
+                <a href="{{ post.get_absolute_url }}">{{ post.title }}</a>
+            </h3>
+
+            <p class="flex-grow text-[color:var(--color-font-main)]/70 mb-6">
+                {{ post.content|striptags|truncatewords:15|safe }}
+            </p>
+        </div>
+
+        <!-- FULL-WIDTH FOOTER -->
+        <div class="w-full bg-[color:var(--color-light)] py-4 flex justify-center">
+            <a href="{{ post.get_absolute_url }}"
+              class="px-4 py-2 border border-[color:var(--color-primary)]
+                      text-[color:var(--color-primary)] font-semibold text-sm
+                      rounded hover:bg-[color:var(--color-primary)]
+                      hover:text-white transition">
+                Read Full Article →
+            </a>
+        </div>
+
+    </article>
+
+
+          {% empty %}
+            <div class="col-span-3 text-center py-16 bg-white rounded-lg">
+              <h2 class="text-xl font-semibold text-[color:var(--color-primary)] mb-2">No Articles Yet</h2>
+              <p class="text-[color:var(--color-font-main)]/70">Check back soon for the latest AI marketing insights.</p>
+            </div>
+          {% endfor %}
+        </div>
+
+        <!-- Pagination -->
+        {% if posts.has_other_pages %}
+          <div class="flex justify-center items-center gap-2 mt-12 flex-wrap">
+            {% if posts.has_previous %}
+              <a href="?page={{ posts.previous_page_number }}" class="px-4 py-2 border border-[color:var(--color-primary)] text-[color:var(--color-primary)] rounded hover:bg-[color:var(--color-primary)] hover:text-white transition">Previous</a>
+            {% endif %}
+            {% for num in posts.paginator.page_range %}
+              {% if posts.number == num %}
+                <span class="px-4 py-2 bg-[color:var(--color-primary)] text-white border border-[color:var(--color-primary)] rounded">{{ num }}</span>
+              {% else %}
+                <a href="?page={{ num }}" class="px-4 py-2 border border-[color:var(--color-primary)] text-[color:var(--color-primary)] rounded hover:bg-[color:var(--color-primary)] hover:text-white transition">{{ num }}</a>
+              {% endif %}
+            {% endfor %}
+            {% if posts.has_next %}
+              <a href="?page={{ posts.next_page_number }}" class="px-4 py-2 border border-[color:var(--color-primary)] text-[color:var(--color-primary)] rounded hover:bg-[color:var(--color-primary)] hover:text-white transition">Next</a>
+            {% endif %}
+          </div>
+        {% endif %}
+      {% endif %}
+
+    </div>
+  </section>
+</main>
 {% endblock %}

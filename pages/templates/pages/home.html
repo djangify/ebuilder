@@ -23,25 +23,26 @@
 {% endif %}
 
 <!-- PAGE SECTIONS (dynamic sections from PageSection model) -->
-
 {% for block in content_blocks %}
-    {% if block|is_pagesection %}
-        {% include "pages/sections/"|add:block.section_type|add:".html" with section=block %}
-    {% elif block|is_threecolumn %}
-        {% include "pages/sections/content_blocks.html" with block=block %}
-    {% elif block|is_faqblock %}
-        {% include "pages/sections/faq_block.html" with block=block %}
-    {% elif block.images %}
-        {% include "pages/sections/gallery.html" with gallery_items=block.images.all %}
+<main id="main-content" role="main">
+        {% if block|is_pagesection %}
+            {% include "pages/sections/"|add:block.section_type|add:".html" with section=block %}
+        {% elif block|is_threecolumn %}
+            {% include "pages/sections/content_blocks.html" with block=block %}
+        {% elif block|is_faqblock %}
+            {% include "pages/sections/faq_block.html" with block=block %}
+        {% elif block.images %}
+            {% include "pages/sections/gallery.html" with gallery_items=block.images.all %}
+        {% endif %}
+    {% endfor %}
+
+    {% if featured_products %}
+        {% include "pages/sections/featured_products.html" %}
     {% endif %}
-{% endfor %}
 
-{% if featured_products %}
-    {% include "pages/sections/featured_products.html" %}
-{% endif %}
+    {% if blog_posts %}
+        {% include "pages/sections/blog_posts.html" %}
+    {% endif %}
 
-{% if blog_posts %}
-    {% include "pages/sections/blog_posts.html" %}
-{% endif %}
-
+</main>
 {% endblock %}

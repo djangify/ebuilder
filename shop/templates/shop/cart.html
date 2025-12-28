@@ -19,7 +19,7 @@
           <!-- Product Info -->
           <div class="flex items-start gap-4">
             <img src="{{ item.product.get_image_url }}" 
-                 alt="cart item - {{ item.product.title }}" 
+                 alt="{{ item.product.title }}" 
                  class="w-20 h-20 object-cover rounded-md">
             <div>
               <h3 class="text-base font-semibold text-[color:var(--color-font-main)] mb-1">
@@ -41,14 +41,22 @@
               {% if item.download %}
               <input type="hidden" name="download_id" value="{{ item.download.id }}">
               {% endif %}
+              <label for="qty-{{ item.product.id }}" class="sr-only">
+                Quantity for {{ item.product.title }}
+              </label>
               <input 
                 type="number" 
+                id="qty-{{ item.product.id }}"
                 name="quantity" 
                 value="{{ item.quantity }}" 
                 min="1" 
                 max="99"
+                aria-label="Quantity"
                 class="w-14 border border-gray-300 rounded-md text-center text-sm py-1"
               >
+              {% for field in form %}
+                {% include "includes/form_field.html" with field=field %}
+              {% endfor %}
               <button type="submit" class="text-[color:var(--color-accent)] text-sm hover:underline">Update</button>
             </form>
 

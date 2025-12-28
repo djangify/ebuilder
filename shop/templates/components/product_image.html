@@ -3,7 +3,7 @@
           <img
             id="main-product-image"
             src="{{ product.get_image_url|default:'/static/images/placeholder.webp' }}"
-            alt="product detail for {{ product.title }}"
+            alt="{{ product.title }}"
             class="block w-full h-full object-contain  transition duration-300" width="600" height="800" loading="lazy"
           />
         </div>
@@ -13,14 +13,14 @@
           <img
             src="{{ product.get_image_url|default:'/static/images/placeholder.webp' }}"
             data-src="{{ product.get_image_url|default:'/static/images/placeholder.webp' }}"
-            alt="product title for {{ product.title }}"
+            alt="{{ product.title }}"
             class="w-20 h-20 object-cover border-2 border-[color:var(--color-primary)] rounded hover:shadow-md cursor-pointer product-thumbnail active-thumbnail"
           />
           {% for img in product.images.all %}
           <img
             src="{{ img.image.url }}"
             data-src="{{ img.image.url }}"
-            alt="{{ img.alt_text|default:'Additional product image' }}"
+            alt="{{ img.alt_text|default:product.title }}"
             class="w-20 h-20 object-cover border border-[color:var(--color-accent)] rounded hover:shadow-md cursor-pointer product-thumbnail"
           />
           {% endfor %}

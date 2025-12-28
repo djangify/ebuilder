@@ -1,6 +1,6 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en-GB">
  <head>
     <!-- Preconnect & Prefetch -->
   <link rel="preconnect" href="https://www.djangify.com" crossorigin>
@@ -30,6 +30,7 @@
   <link rel="canonical" href="{{ request.build_absolute_uri }}">
   <!-- Stylesheets -->
   <link rel="stylesheet" href="{% static 'css/output.css' %}" media="all" onload="this.onload=null;this.removeAttribute('media');">
+  
   <!-- Favicon -->
   <link rel="icon" type="image/ico" href="{% static 'images/favicon.ico' %}">
 
@@ -70,6 +71,17 @@
 </head>
 
   <body>
+    <!-- Skip to main content link for keyboard users -->
+    <a href="#main-content" 
+      style="position: absolute; 
+              left: -9999px; 
+              width: 1px; 
+              height: 1px; 
+              overflow: hidden;"
+      onfocus="this.style.cssText='position: absolute; top: 10px; left: 10px; z-index: 9999; background: #1e3a8a; color: white; padding: 8px 16px; border-radius: 4px; font-weight: 600;'"
+      onblur="this.style.cssText='position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden;'">
+      Skip to main content
+    </a>
      {% if messages %}
       <section aria-label="Notifications" role="alert">
           {% include 'partials/_messages.html' %}
@@ -182,7 +194,17 @@
 <script src="{% static 'js/app.js' %}" defer></script>
 <script src="{% static 'js/messages.js' %}"defer></script>
 <script src="{% static 'js/gallery.js' %}"defer></script>
+<script src="{% static 'js/modal-accessibility.js' %}"></script>
+<script src="{% static 'js/cart-accessibility.js' %}"></script>
 <div id="gallery-modal"></div>
+
+<!-- ARIA Live Region for dynamic announcements -->
+<div id="a11y-announcer" 
+     role="status" 
+     aria-live="polite" 
+     aria-atomic="true"
+     class="sr-only">
+</div>
 
   </body>
 </html>

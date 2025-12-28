@@ -1,17 +1,22 @@
-<div
+<div id="gallery-modal"
     class="w-full h-full flex items-center justify-center animate-fade-in relative"
     tabindex="0"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="modal-image"
+    aria-hidden="true"
     onclick="closeGalleryModal(event)"
 >
 
-    <img
+    <img id="modal-image"
         src="{{ image.image.url }}"
-        alt="{{ image.title }}"
+        alt="{{ image.alt_text }}"
         class="max-w-4xl max-h-[90vh] rounded-xl shadow-2xl border border-white/20 z-10"
     >
 
     {% if prev_image %}
     <button
+        aria-label="Previous image"
         hx-get="{% url 'studio:gallery_image_modal' prev_image.pk %}"
         hx-target="#gallery-modal"
         hx-swap="innerHTML"
@@ -22,6 +27,7 @@
 
     {% if next_image %}
     <button
+        aria-label="Next image"
         hx-get="{% url 'studio:gallery_image_modal' next_image.pk %}"
         hx-target="#gallery-modal"
         hx-swap="innerHTML"
@@ -29,5 +35,10 @@
         aria-label="Next image"
     >›</button>
     {% endif %}
+
+    <button onclick="closeGalleryModal(event)"
+          aria-label="Close gallery">
+        ✕
+    </button>
 
 </div>

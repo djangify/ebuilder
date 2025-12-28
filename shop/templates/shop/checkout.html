@@ -73,7 +73,9 @@
             </div>
             <div id="card-errors" class="text-red-600 text-sm mt-2" role="alert"></div>
           </div>
-
+          {% for field in form %}
+            {% include "includes/form_field.html" with field=field %}
+          {% endfor %}
           <button type="submit" id="submit-button"
                   class="w-full md:w-auto px-6 py-3 bg-[color:var(--color-primary)] text-white font-semibold rounded-lg hover:opacity-90 transition">
             Pay £{{ cart.get_total_price|floatformat:2 }}

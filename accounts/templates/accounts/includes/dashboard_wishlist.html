@@ -7,7 +7,7 @@
     <a href="{% url 'shop:product_detail' product.slug %}">
       {% if product.get_image_url %}
         <img src="{{ product.get_image_url }}" 
-             alt="wish list item - {{ product.title }}" 
+             alt="{{ product.title }}" 
              class="w-full h-64 object-cover">
       {% else %}
         <div class="w-full h-64 bg-[color:var(--color-light)] flex items-center justify-center text-[color:var(--color-accent)]">

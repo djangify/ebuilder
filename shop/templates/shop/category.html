@@ -57,7 +57,7 @@ Browse {{ category.name }} products including digital downloads, templates, and 
         <a href="{{ product.get_absolute_url }}">
           {% if product.get_image_url %}
           <img src="{{ product.get_image_url }}" 
-               alt="shop category for {{ product.title }}" 
+               alt="{{ product.title }}" 
                width="700" height="900" 
                loading="lazy" decoding="async"
                class="w-full h-56 object-cover">
