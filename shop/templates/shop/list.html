@@ -1,39 +1,29 @@
 <!--ebuilder/shop/templates/shop/list.html-->
 {% extends "base.html" %}
 {% load static %}
-{% block title %}ebuilder Shop – Digital Bookkeeping Tools & Resources{% endblock %}
-
-
 
 {% block extra_head %}
-<!-- Canonical -->
 <link rel="canonical" href="{{ request.build_absolute_uri }}">
 
 <!-- AI Search Metadata -->
-<meta name="ai-page-type" content="shop-list" />
-<meta name="ai-topics" content="digital downloads" />
+<meta name="ai-page-type" content="shop-list">
+<meta name="ai-topics" content="digital downloads">
 
-<!-- JSON-LD ItemList -->
-{% comment %} <script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "ItemList",
-  "name": "ebuilder Shop Product List",
-  "url": "{{ request.build_absolute_uri }}",
-  "itemListElement": [
-    {% for product in products %}
-    {
-      "@type": "ListItem",
-      "position": {{ forloop.counter }},
-      "url": "{{ product.get_absolute_url }}"
-    }{% if not forloop.last %},{% endif %}
-    {% endfor %}
-  ]
-}
-</script> {% endcomment %}
+<!-- Open Graph -->
+{% include "includes/seo/og_meta.html" with 
+    og_title="Shop - Digital Downloads"
+    og_description="Browse our collection of digital products and resources"
+%}
+
+<!-- ItemList Schema -->
+{% include "includes/seo/schema_itemlist.html" with 
+    items=products 
+    list_name="Shop Products" 
+%}
 {% endblock %}
 
-{% block content %}
+
+
 
 <!-- Hero Section -->
      

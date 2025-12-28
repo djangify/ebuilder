@@ -4,7 +4,24 @@
 
 {% block title %}{{ post.meta_title|default:post.title }}{% endblock %}
 
+{% block extra_head %}
+<link rel="canonical" href="{{ request.build_absolute_uri }}">
 
+<!-- AI Search Metadata -->
+<meta name="ai-page-type" content="article">
+<meta name="ai-topics" content="{{ post.category.name }}, blog">
+
+<!-- Open Graph -->
+{% include "includes/seo/og_meta.html" with 
+    og_title=post.title 
+    og_description=post.get_meta_description
+    og_type="article"
+    og_image=post.image
+%}
+
+<!-- Article Schema -->
+{% include "includes/seo/schema_article.html" with post=post %}
+{% endblock %}
 
 {% block content %}
 <section class="px-6 md:px-16 py-12 bg-[--color-light] text-[--color-font-main]">
@@ -12,7 +29,7 @@
     
     {% include 'blog/components/breadcrumb.html' %}
 
-    <!-- Featured Media -->
+   
     <!-- Featured Media -->
 {% if post.get_youtube_embed_url %}
   <!-- Video takes priority -->

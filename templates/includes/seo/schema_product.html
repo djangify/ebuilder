@@ -1,0 +1,50 @@
+{# templates/includes/seo/schema_product.html #}
+{#
+  Product Schema.org JSON-LD
+  
+  USAGE:
+  {% include "includes/seo/schema_product.html" with product=product %}
+  
+  REQUIRED CONTEXT:
+  - product: Product object with title, description, price, image, etc.
+  
+  GENERATES:
+  - Product schema with offers, reviews, images
+#}
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Product",
+  "name": "{{ product.title }}",
+  "description": "{{ product.description|striptags|truncatewords:50 }}",
+  {% if product.get_image_url %}
+  "image": "{{ request.scheme }}://{{ request.get_host }}{{ product.get_image_url }}",
+  {% elif product.image %}
+  "image": "{{ request.scheme }}://{{ request.get_host }}{{ product.image.url }}",
+  {% endif %}
+  "brand": {
+    "@type": "Brand",
+    "name": "{{ site_name }}"
+  },
+  "offers": {
+    "@type": "Offer",
+    "url": "{{ request.build_absolute_uri }}",
+    "priceCurrency": "GBP",
+    "price": "{{ product.current_price }}",
+    "availability": "{% if product.is_active %}https://schema.org/InStock{% else %}https://schema.org/OutOfStock{% endif %}",
+    "seller": {
+      "@type": "Organization",
+      "name": "{{ site_name }}"
+    }
+  }
+  {% if product.average_rating and product.total_reviews > 0 %}
+  ,
+  "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": "{{ product.average_rating }}",
+    "reviewCount": "{{ product.total_reviews }}"
+  }
+  {% endif %}
+}
+</script>

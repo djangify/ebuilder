@@ -1,0 +1,37 @@
+{# templates/includes/seo/schema_organization.html #}
+{#
+  Organization Schema.org JSON-LD
+  
+  USAGE:
+  {% include "includes/seo/schema_organization.html" %}
+  
+  Place this in base.html or homepage
+  
+  GENERATES:
+  - Organization schema with contact info, social profiles
+#}
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "{{ site_name }}",
+  "url": "{{ site_url }}",
+  {% if site_settings.logo_image %}
+  "logo": "{{ request.scheme }}://{{ request.get_host }}{{ site_settings.logo_image.url }}",
+  {% endif %}
+  "contactPoint": {
+    "@type": "ContactPoint",
+    "email": "{{ support_email }}",
+    "contactType": "Customer Service"
+  }
+  {% if social_links %}
+  ,
+  "sameAs": [
+    {% for name, url in social_links %}
+    "{{ url }}"{% if not forloop.last %},{% endif %}
+    {% endfor %}
+  ]
+  {% endif %}
+}
+</script>

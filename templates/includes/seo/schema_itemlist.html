@@ -1,0 +1,42 @@
+{# templates/includes/seo/schema_itemlist.html #}
+{#
+  ItemList Schema.org JSON-LD for Listing Pages
+  
+  USAGE - Products:
+  {% include "includes/seo/schema_itemlist.html" with 
+      items=products 
+      list_name="Shop Products" 
+  %}
+  
+  USAGE - Blog Posts:
+  {% include "includes/seo/schema_itemlist.html" with 
+      items=posts 
+      list_name="Blog Articles" 
+  %}
+  
+  REQUIRED CONTEXT:
+  - items: QuerySet or list of items (products, posts, etc.)
+  - list_name: Name of the list
+  
+  GENERATES:
+  - ItemList schema showing all items in order
+#}
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  "name": "{{ list_name }}",
+  "url": "{{ request.build_absolute_uri }}",
+  "numberOfItems": {{ items|length }},
+  "itemListElement": [
+    {% for item in items %}
+    {
+      "@type": "ListItem",
+      "position": {{ forloop.counter }},
+      "url": "{{ request.scheme }}://{{ request.get_host }}{{ item.get_absolute_url }}"
+    }{% if not forloop.last %},{% endif %}
+    {% endfor %}
+  ]
+}
+</script>

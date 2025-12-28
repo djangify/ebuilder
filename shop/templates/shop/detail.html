@@ -3,6 +3,20 @@
 {% block extra_head %}
 <link rel="canonical" href="{{ request.build_absolute_uri }}">
 
+<!-- AI Search Metadata -->
+<meta name="ai-page-type" content="product-detail">
+<meta name="ai-topics" content="digital download, {{ product.title }}">
+
+<!-- Open Graph -->
+{% include "includes/seo/og_meta.html" with 
+    og_title=product.title 
+    og_description=product.description|striptags|truncatewords:30
+    og_type="product"
+    og_image=product.image
+%}
+
+<!-- Product Schema -->
+{% include "includes/seo/schema_product.html" with product=product %}
 {% endblock %}
 
 

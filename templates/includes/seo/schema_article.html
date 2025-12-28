@@ -1,0 +1,59 @@
+{# templates/includes/seo/schema_article.html #}
+{#
+  Article Schema.org JSON-LD for Blog Posts
+  
+  USAGE:
+  {% include "includes/seo/schema_article.html" with post=post %}
+  
+  REQUIRED CONTEXT:
+  - post: Post object with title, content, publish_date, author, etc.
+  
+  GENERATES:
+  - Article/BlogPosting schema with author, publisher, dates
+#}
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "{{ post.title }}",
+  "description": "{{ post.get_meta_description|default:post.content|striptags|truncatewords:30 }}",
+  {% if post.get_image_url %}
+  "image": "{{ request.scheme }}://{{ request.get_host }}{{ post.get_image_url }}",
+  {% elif post.image %}
+  "image": "{{ request.scheme }}://{{ request.get_host }}{{ post.image.url }}",
+  {% elif post.external_image_url %}
+  "image": "{{ post.external_image_url }}",
+  {% endif %}
+  "datePublished": "{{ post.publish_date|date:'c' }}",
+  "dateModified": "{{ post.updated|date:'c' }}",
+  "author": {
+    "@type": "Person",
+    "name": "{{ site_author }}"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "{{ site_name }}",
+    "url": "{{ site_url }}"
+    {% if site_settings.logo_image %}
+    ,
+    "logo": {
+      "@type": "ImageObject",
+      "url": "{{ request.scheme }}://{{ request.get_host }}{{ site_settings.logo_image.url }}"
+    }
+    {% endif %}
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "{{ request.build_absolute_uri }}"
+  }
+  {% if post.category %}
+  ,
+  "articleSection": "{{ post.category.name }}"
+  {% endif %}
+  {% if post.meta_keywords %}
+  ,
+  "keywords": "{{ post.meta_keywords }}"
+  {% endif %}
+}
+</script>

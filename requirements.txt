@@ -1,37 +1,21 @@
-# Django eBuilder Requirements
-# Last updated: December 2025
-
-# Core Framework - LTS version for stability
+adminita==0.1.6
+asgiref==3.11.0
+beautifulsoup4==4.14.3
+certifi==2025.11.12
+charset-normalizer==3.4.4
 Django==5.2.9
-
-# Authentication
-django-allauth
-
-# Environment & Configuration
-django-environ>=0.11
-
-# Server
+django-allauth==65.13.1
+django-environ==0.12.0
+django-widget-tweaks==1.5.0
 gunicorn==21.2.0
-whitenoise>=6.6
-
-# Database
-psycopg[binary]
-
-# Admin Theme
-adminita
-
-# Form Handling
-django-widget-tweaks
-
-# Rich Text Editor
-
-
-# Image Processing
-Pillow
-
-# Payments
-stripe
-
-# Utilities
-requests
-beautifulsoup4
+idna==3.11
+packaging==25.0
+pillow==12.0.0
+requests==2.32.5
+soupsieve==2.8.1
+sqlparse==0.5.5
+stripe==14.1.0
+typing_extensions==4.15.0
+tzdata==2025.3
+urllib3==2.6.2
+whitenoise==6.11.0

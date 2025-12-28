@@ -1,0 +1,58 @@
+{# templates/includes/seo/og_meta.html #}
+{# 
+  Reusable Open Graph metadata include
+  
+  USAGE:
+  {% include "includes/seo/og_meta.html" with 
+      og_title="Page Title" 
+      og_description="Description here" 
+      og_type="article"
+      og_image=product.image.url
+  %}
+  
+  PARAMETERS (all optional):
+  - og_title: Title for social sharing (falls back to page title or site_name)
+  - og_description: Description (falls back to meta description or default)
+  - og_type: article, product, website (default: website)
+  - og_image: Full image URL or object with .url attribute
+  - og_url: Canonical URL (falls back to request.build_absolute_uri)
+#}
+
+{% load static %}
+
+<!-- Open Graph / Facebook -->
+<meta property="og:type" content="{{ og_type|default:'website' }}">
+<meta property="og:title" content="{{ og_title|default:page.meta_title|default:page.title|default:site_name }}">
+<meta property="og:description" content="{{ og_description|default:page.meta_description|default:site_settings.default_meta_description|default:'Explore our products and content' }}">
+<meta property="og:url" content="{{ og_url|default:request.build_absolute_uri }}">
+
+{# Image handling with multiple fallbacks #}
+{% if og_image %}
+  {% if og_image.url %}
+    <meta property="og:image" content="{{ request.scheme }}://{{ request.get_host }}{{ og_image.url }}">
+  {% else %}
+    <meta property="og:image" content="{{ request.scheme }}://{{ request.get_host }}{{ og_image }}">
+  {% endif %}
+{% elif site_settings.logo_image %}
+  <meta property="og:image" content="{{ request.scheme }}://{{ request.get_host }}{{ site_settings.logo_image.url }}">
+{% else %}
+  <meta property="og:image" content="{{ request.scheme }}://{{ request.get_host }}{% static 'images/default-og-image.jpg' %}">
+{% endif %}
+
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:site_name" content="{{ site_name }}">
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="{{ og_title|default:page.meta_title|default:page.title|default:site_name }}">
+<meta name="twitter:description" content="{{ og_description|default:page.meta_description|default:site_settings.default_meta_description|default:'Explore our products and content' }}">
+{% if og_image %}
+  {% if og_image.url %}
+    <meta name="twitter:image" content="{{ request.scheme }}://{{ request.get_host }}{{ og_image.url }}">
+  {% else %}
+    <meta name="twitter:image" content="{{ request.scheme }}://{{ request.get_host }}{{ og_image }}">
+  {% endif %}
+{% elif site_settings.logo_image %}
+  <meta name="twitter:image" content="{{ request.scheme }}://{{ request.get_host }}{{ site_settings.logo_image.url }}">
+{% endif %}

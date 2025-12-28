@@ -1,5 +1,19 @@
 {% extends "base.html" %}
 {% load instance_utils %}
+
+{% block extra_head %}
+<link rel="canonical" href="{{ request.build_absolute_uri }}">
+
+<!-- Open Graph -->
+{% include "includes/seo/og_meta.html" with 
+    og_title=page.meta_title|default:page.title
+    og_description=page.meta_description
+%}
+
+<!-- WebPage Schema -->
+{% include "includes/seo/schema_webpage.html" with page=page %}
+{% endblock %}
+
 {% block content %}
 {% if hero %}
     {% include "pages/sections/hero.html" %}

@@ -1,5 +1,25 @@
 {% extends "base.html" %}
 {% load static %}
+
+{% block extra_head %}
+<link rel="canonical" href="{{ request.build_absolute_uri }}">
+
+<!-- AI Search Metadata -->
+<meta name="ai-page-type" content="blog-list">
+<meta name="ai-topics" content="blog, articles">
+
+<!-- Open Graph -->
+{% include "includes/seo/og_meta.html" with 
+    og_title="Blog - Latest Articles"
+    og_description="Read our latest blog posts and updates"
+%}
+
+<!-- ItemList Schema -->
+{% include "includes/seo/schema_itemlist.html" with 
+    items=posts 
+    list_name="Blog Articles" 
+%}
+{% endblock %}
 {% block content %}
 
 <!-- Featured Posts Section -->

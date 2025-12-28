@@ -1,0 +1,38 @@
+{# templates/includes/seo/schema_webpage.html #}
+{#
+  WebPage Schema.org JSON-LD for Custom Pages
+  
+  USAGE:
+  {% include "includes/seo/schema_webpage.html" with page=page %}
+  
+  OPTIONAL CONTEXT:
+  - page: Page object (optional, will use defaults if not provided)
+  - page_name: Override page name
+  - page_description: Override description
+  
+  GENERATES:
+  - WebPage schema for SEO
+#}
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "{{ page_name|default:page.meta_title|default:page.title|default:site_name }}",
+  "description": "{{ page_description|default:page.meta_description|default:site_settings.default_meta_description|default:'Welcome to our site' }}",
+  "url": "{{ request.build_absolute_uri }}",
+  "publisher": {
+    "@type": "Organization",
+    "name": "{{ site_name }}",
+    "url": "{{ site_url }}"
+    {% if site_settings.logo_image %}
+    ,
+    "logo": {
+      "@type": "ImageObject",
+      "url": "{{ request.scheme }}://{{ request.get_host }}{{ site_settings.logo_image.url }}"
+    }
+    {% endif %}
+  },
+  "inLanguage": "en-GB"
+}
+</script>

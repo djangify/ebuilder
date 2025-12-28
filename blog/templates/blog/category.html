@@ -1,6 +1,24 @@
 <!--blog/category.html-->
 {% extends "base.html" %}
 {% load static %}
+{% block extra_head %}
+<link rel="canonical" href="{{ request.build_absolute_uri }}">
+
+<meta name="ai-page-type" content="shop-category">
+<meta name="ai-category" content="{{ category.name }}">
+
+<!-- Open Graph -->
+{% include "includes/seo/og_meta.html" with 
+    og_title=category.name|add:" - Shop"
+    og_description=category.description|default:"Browse products in this category"
+%}
+
+<!-- ItemList Schema -->
+{% include "includes/seo/schema_itemlist.html" with 
+    items=products 
+    list_name=category.name 
+%}
+{% endblock %}
 
 {% block content %}
 <section class="px-6 md:px-16 py-12 bg-[--color-light] text-[--color-font-main]">
