@@ -78,9 +78,9 @@
       </div>
 
       <!-- Main Content -->
-      <div class="blog-content">
+      <div class="page-content">
         {{ post.content|safe }}
-      </article>
+      </div>
 
       <!-- Social Share (Bottom) -->
       <div class="border-t border-[--color-accent]/30 pt-6 mb-10">
@@ -88,7 +88,7 @@
         {% include 'includes/social_share.html' %}
       </div>
 
-      <!-- Resource Download -->
+    
     <!-- Resource block -->
       {% if post.resource_type != 'none' and post.resource %}
       <div class="mt-12 p-6 border border-[color:var(--color-accent)]/30 bg-white rounded-lg shadow-sm">

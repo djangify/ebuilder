@@ -35,7 +35,7 @@
           {% for item in toc %}
             <li>
               <a href="#{{ item.id }}"
-                class="text-[color:var(--color-secondary)] hover:text-[color:var(--color-primary)] transition-colors">
+                class="text-[color:var(--color-accent)] hover:text-[color:var(--color-primary)] transition-colors">
                 {{ item.title }}
               </a>
             </li>
@@ -55,12 +55,12 @@
         <nav aria-label="Back to section">
           {% if page.page_type == "policy" %}
             <a href="{% url 'infopages:policy_index' %}"
-              class="text-[color:var(--color-secondary)] hover:text-[color:var(--color-primary)] underline transition-colors">
+              class="text-[color:var(--color-accent)] hover:text-[color:var(--color-primary)] underline transition-colors">
               Back to Policies
             </a>
           {% elif page.page_type == "doc" %}
             <a href="{% url 'infopages:docs_index' %}"
-              class="text-[color:var(--color-secondary)] hover:text-[color:var(--color-primary)] underline transition-colors">
+              class="text-[color:var(--color-accent)] hover:text-[color:var(--color-primary)] underline transition-colors">
               Back to Documentation
             </a>
           {% endif %}
@@ -84,7 +84,7 @@
             {% for related in related_pages %}
               <li>
                 <a href="{{ related.get_absolute_url }}"
-                  class="text-[color:var(--color-secondary)] hover:text-[color:var(--color-primary)] transition-colors">
+                  class="text-[color:var(--color-accent)] hover:text-[color:var(--color-primary)] transition-colors">
                   {{ related.title }}
                 </a>
               </li>

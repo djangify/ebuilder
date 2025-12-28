@@ -63,10 +63,7 @@
           <p>{{ error }}</p>
           {% endfor %}
         </div>
-        {% endif %}
-        {% for field in form %}
-          {% include "includes/form_field.html" with field=field %}
-        {% endfor %}
+        
         <!-- Submit Button -->
         <div class="text-center">
           <button type="submit"

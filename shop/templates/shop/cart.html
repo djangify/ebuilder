@@ -55,9 +55,7 @@
                 aria-label="Quantity"
                 class="w-14 border border-gray-300 rounded-md text-center text-sm py-1"
               >
-              {% for field in form %}
-                {% include "includes/form_field.html" with field=field %}
-              {% endfor %}
+              
               <button type="submit" class="text-[color:var(--color-accent)] text-sm hover:underline">Update</button>
             </form>
 
