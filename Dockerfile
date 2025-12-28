@@ -18,19 +18,16 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Application code
 COPY . /app/
 
+# Copy entrypoint script
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+
 # Create data directories
 RUN mkdir -p /app/media /app/db /app/staticfiles
 
 # Create non-root user for security
 RUN useradd -m appuser && chown -R appuser:appuser /app
 USER appuser
-
-# Collect static files
-RUN python manage.py collectstatic --noinput
-
-# Copy and set entrypoint
-COPY --chown=appuser:appuser entrypoint.sh /entrypoint.sh
-RUN chmod +x /entrypoint.sh
 
 EXPOSE 8000
 

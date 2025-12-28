@@ -117,7 +117,57 @@ open http://localhost:8000
 
 ---
 
+## Creating Your Admin Account
+
+After starting the container, create your superuser with this command:
+
+```bash
+docker compose exec web python manage.py createsuperuser_verified
+```
+
+This creates an admin account AND automatically verifies the email address so you can log in immediately.
+
+You'll be prompted for:
+- Email address
+- Password (minimum 8 characters)
+
+Once complete, log in at `https://yourdomain.com/admin/`
+
+### Why not the standard createsuperuser?
+
+The standard Django `createsuperuser` command doesn't verify the email address. Since eBuilder uses django-allauth with mandatory email verification, you wouldn't be able to log in without the extra verification step.
+
+The `createsuperuser_verified` command handles both steps automatically.
+
+### Manual Verification (Alternative)
+
+If you used the standard `createsuperuser` command, you can verify the email manually:
+
+```bash
+docker compose exec web python manage.py shell
+```
+
+Then run:
+
+```python
+from allauth.account.models import EmailAddress
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
+user = User.objects.get(email="your-email@example.com")
+EmailAddress.objects.create(
+    user=user,
+    email=user.email,
+    verified=True,
+    primary=True
+)
+exit()
+```
+---
+
 ## 📋 First Steps After Installation
+
+
 
 ### 1. **Configure Site Settings**
 Visit `/admin` and go to **Pages → Site Settings**:

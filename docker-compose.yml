@@ -8,6 +8,8 @@ services:
     volumes:
       - ./data/media:/app/media
       - ./data/db:/app/db
+      - ./data/logs:/app/logs
+      - ./staticfiles:/app/staticfiles
     ports:
       - "8000:8000"
     healthcheck:
