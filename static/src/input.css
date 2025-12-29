@@ -1,32 +1,67 @@
 @import "tailwindcss";
 
+/* Global typography and link defaults */
 @layer base {
   h1 {
-    @apply text-4xl font-bold text-[color:var(--color-text)];
+    @apply text-4xl font-bold text-[--color-brand-primary];
   }
 
   h2 {
-    @apply text-3xl font-semibold text-[color:var(--color-text)];
+    @apply text-3xl font-semibold text-[--color-brand-primary];
   }
 
-  a {
-    @apply text-[color:var(--color-link)] hover:text-[color:var(--color-link-hover)] transition-colors;
+  h3 {
+    @apply text-xl font-semibold text-[--color-brand-primary];
   }
-}
 
-@layer base {
+  p {
+    @apply text-lg text-[--color-font-main] leading-relaxed mb-4;
+  }
+
+  p:last-child {
+    @apply mb-0;
+  }
+
   ul {
-    list-style: disc outside;
-    padding-left: 1.5rem;
+    list-style-type: disc;
   }
 
   ol {
-    list-style: decimal outside;
+    list-style-type: decimal;
+  }
+
+  ul,
+  ol {
+    @apply text-lg text-[--color-font-main] leading-relaxed;
+    list-style-position: outside;
     padding-left: 1.5rem;
+  }
+
+  ul:has(> li > a):where(.flex, [class*="flex"]) {
+    list-style: none;
+    padding-left: 0;
+  }
+
+  li {
+    @apply text-lg text-[--color-font-main] leading-relaxed;
+    text-indent: 0;
+    margin-bottom: 0.25rem;
+  }
+
+  a {
+    @apply text-[--color-brand-secondary] hover:text-[--color-brand-accent] transition-colors;
   }
 }
 
 
+@layer base {
+
+  nav ul,
+  footer ul {
+    list-style: none;
+    padding-left: 0;
+  }
+}
 
 /* -------------------------------
    Tailwind v4 Theme Variables
@@ -168,38 +203,4 @@
 
 .page-content strong {
   font-weight: 600;
-}
-
-
-@layer base {
-  nav ul {
-    list-style: none;
-    padding-left: 0;
-  }
-}
-
-/* ======================================
-   TRIX IS EDITOR ONLY — NO FRONTEND STYLE
-====================================== */
-
-.trix-content * {
-  all: unset;
-}
-
-.trix-content {
-  all: unset;
-  display: contents;
-}
-
-/* --------------------------------
-   Footer navigation: no bullets
---------------------------------- */
-footer ul {
-  list-style: none;
-  padding-left: 0;
-  margin: 0;
-}
-
-footer li {
-  margin: 0;
 }

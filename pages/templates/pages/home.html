@@ -24,7 +24,7 @@
 
 <!-- PAGE SECTIONS (dynamic sections from PageSection model) -->
 {% for block in content_blocks %}
-<main id="main-content" role="main">
+
         {% if block|is_pagesection %}
             {% include "pages/sections/"|add:block.section_type|add:".html" with section=block %}
         {% elif block|is_threecolumn %}
@@ -44,5 +44,4 @@
         {% include "pages/sections/blog_posts.html" %}
     {% endif %}
 
-</main>
 {% endblock %}

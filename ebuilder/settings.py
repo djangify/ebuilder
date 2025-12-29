@@ -94,16 +94,8 @@ TEMPLATES = [
 WSGI_APPLICATION = "ebuilder.wsgi.application"
 
 
-# Database - SQLite default for Docker. Uncomment when build
-# DATABASES = {"default": env.db(default="sqlite:////app/db/db.sqlite3")}
-
-# Database - SQLite default - use in development only
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
-    }
-}
+# Database - SQLite default for Docker. Visit 127.0.0.1:8000
+DATABASES = {"default": env.db(default="sqlite:////app/db/db.sqlite3")}
 
 
 # Custom User Model

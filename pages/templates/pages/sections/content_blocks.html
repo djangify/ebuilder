@@ -5,12 +5,12 @@
         <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
 
             {% if block.col_1_title or block.col_1_body %}
-            <div class="bg-white text-center rounded-md p-8 shadow-lg border-2 border-[color:var(--color-accent)]
-                        hover:border-[color:var(--color-primary)]
+            <div class="bg-white text-center rounded-md p-8 shadow-md border-1 border-[color:var(--color-secondary)]
+                        hover:border-[color:var(--color-accent)]
                         transition-all duration-300 hover:shadow-xl">
 
                 {% if block.col_1_image %}
-                <div class="w-14 h-14 mx-auto  bg-[color:var(--color-accent)]/10 rounded-md flex items-center justify-center mb-4 overflow-hidden">
+                <div class="w-14 h-14 mx-auto  bg-[color:var(--color-secondary)] rounded-md flex items-center justify-center mb-4 overflow-hidden">
                     <img
                         src="{{ block.col_1_image.url }}"
                         alt="{{ block.col_1_title }}"
@@ -26,7 +26,7 @@
                 {% endif %}
 
                 {% if block.col_1_body %}
-                <div class="text-[color:var(--color-text-muted)] leading-relaxed  max-w-none">
+                <div class="text-[color:var(--color-text-muted)]   max-w-none">
                     {{ block.col_1_body|safe }}
                 </div>
                 {% endif %}
@@ -35,8 +35,8 @@
 
 
             {% if block.col_2_title or block.col_2_body %}
-            <div class="bg-white text-center rounded-md p-8 shadow-lg border-2 border-[color:var(--color-accent)]
-                        hover:border-[color:var(--color-primary)]
+            <div class="bg-white text-center rounded-md p-8 shadow-md border-1 border-[color:var(--color-secondary)]
+                        hover:border-[color:var(--color-accent)]
                         transition-all duration-300 hover:shadow-xl">
 
                 {% if block.col_2_image %}
@@ -56,7 +56,7 @@
                 {% endif %}
 
                 {% if block.col_2_body %}
-                <div class="text-[color:var(--color-text-muted)] leading-relaxed max-w-none">
+                <div class="text-[color:var(--color-text-muted)] max-w-none">
                     {{ block.col_2_body|safe }}
                 </div>
                 {% endif %}
@@ -65,8 +65,8 @@
 
 
             {% if block.col_3_title or block.col_3_body %}
-            <div class="bg-white text-center rounded-md p-8 shadow-lg border-2 border-[color:var(--color-accent)]
-                        hover:border-[color:var(--color-primary)]
+            <div class="bg-white text-center rounded-md p-8 shadow-md border-1 border-[color:var(--color-secondary)]
+                        hover:border-[color:var(--color-accent)]
                         transition-all duration-300 hover:shadow-xl">
 
                 {% if block.col_3_image %}
@@ -80,13 +80,13 @@
                 {% endif %}
 
                 {% if block.col_3_title %}
-                <h3 class="text-xl font-bold text-[color:var(--color-primary)] mb-3">
+                <h3 class="text-xl font-bold text-[color:var(--color-primary)]mb-3">
                     {{ block.col_3_title }}
                 </h3>
                 {% endif %}
 
                 {% if block.col_3_body %}
-                <div class="text-[color:var(--color-text-muted)] leading-relaxed  max-w-none">
+                <div class="text-[color:var(--color-text-muted)] max-w-none">
                     {{ block.col_3_body|safe }}
                 </div>
                 {% endif %}
