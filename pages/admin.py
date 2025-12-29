@@ -306,6 +306,9 @@ class PageAdmin(admin.ModelAdmin):
         ),
     )
 
+    class Media:
+        css = {"all": ("admin/css/admin_fixes.css",)}
+
 
 @admin.register(GalleryBlock)
 class GalleryBlockAdmin(admin.ModelAdmin):

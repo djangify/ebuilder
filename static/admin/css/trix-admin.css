@@ -45,13 +45,44 @@ trix-toolbar .trix-button.trix-active {
   border-color: #417690;
 }
 
-/* Hide attachment button if you disabled file uploads */
-trix-toolbar .trix-button-group--file-tools {
-  display: none;
-}
-
 /* Make editor fill width in admin */
 trix-editor.trix-content {
   width: 100%;
   border-radius: 0 0 4px 4px;
+}
+
+/* Fix duplicate "Add another" links in admin inlines */
+.add-row+.add-row {
+  display: none !important;
+}
+
+.inline-group>.add-row:not(:first-of-type) {
+  display: none !important;
+}
+
+fieldset+.add-row~.add-row {
+  display: none !important;
+}
+
+/* Ensure the visible add-row has proper styling */
+.inline-group .add-row:first-of-type {
+  margin-top: 10px;
+  padding: 10px 0;
+  border-top: 1px solid #eee;
+}
+
+.inline-group .add-row a {
+  color: var(--link-fg, #447e9b);
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.inline-group .add-row a:hover {
+  text-decoration: underline;
+}
+
+.inline-group .add-row a::before {
+  content: "+";
+  margin-right: 5px;
+  font-weight: bold;
 }

@@ -16,8 +16,8 @@ class TrixWidget(forms.Textarea):
             )
         }
         js = (
-            "admin/js/trix.umd.min.js",
             "admin/js/trix-init.js",
+            "admin/js/trix.umd.min.js",
         )
 
     def __init__(self, attrs=None):
