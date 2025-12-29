@@ -289,7 +289,7 @@ class PageAdmin(admin.ModelAdmin):
         (
             None,
             {
-                "fields": ("title", "slug", "template", "published"),
+                "fields": ("title", "slug", "template", "published", "show_title"),
             },
         ),
         (

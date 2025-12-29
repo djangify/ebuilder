@@ -1,8 +1,5 @@
 @import "tailwindcss";
 
-/* -------------------------------
-   Global Typography + Link Styles
----------------------------------- */
 @layer base {
   h1 {
     @apply text-4xl font-bold text-[color:var(--color-text)];
@@ -12,64 +9,23 @@
     @apply text-3xl font-semibold text-[color:var(--color-text)];
   }
 
-  p {
-    @apply text-lg text-[color:var(--color-text)] leading-relaxed;
-  }
-
-  ul,
-  ol {
-    @apply text-lg text-[color:var(--color-text)] leading-relaxed list-inside;
-  }
-
-  li {
-    @apply text-lg text-[color:var(--color-text)] leading-relaxed;
-  }
-
   a {
     @apply text-[color:var(--color-link)] hover:text-[color:var(--color-link-hover)] transition-colors;
   }
-
 }
 
-@layer components {
-
-  /* Typography styling similar to Tailwind Typography plugin */
-  .prose {
-    @apply max-w-none text-[color:var(--color-font-main)] leading-relaxed;
+@layer base {
+  ul {
+    list-style: disc outside;
+    padding-left: 1.5rem;
   }
 
-  .prose p {
-    @apply mb-4 text-lg;
+  ol {
+    list-style: decimal outside;
+    padding-left: 1.5rem;
   }
-
-  .prose h2,
-  .prose h3,
-  .prose h4 {
-    @apply mt-6 mb-2 font-semibold text-[color:var(--color-dark)];
-  }
-
-  .prose ul {
-    @apply list-disc list-inside mb-4 ml-4;
-  }
-
-  .prose ol {
-    @apply list-decimal list-inside mb-4 ml-4;
-  }
-
-  .prose li {
-    @apply mb-1;
-  }
-
-  .prose strong {
-    @apply font-semibold text-[color:var(--color-dark)];
-  }
-
-  .prose a {
-    @apply text-[color:var(--color-link)] underline hover:text-[color:var(--color-link-hover)];
-  }
-
-
 }
+
 
 
 /* -------------------------------
@@ -128,28 +84,7 @@
    bg-[--color-accent-contrast]
    hover:text-[--color-font-main]
 */
-/* Prose styling for product descriptions */
-@layer components {
-  .prose p {
-    margin-bottom: 1rem;
-  }
 
-  .prose p:last-child {
-    margin-bottom: 0;
-  }
-
-  .prose ul,
-  .prose ol {
-    list-style-position: outside;
-    padding-left: 1.5rem;
-    margin-bottom: 1rem;
-  }
-
-  .prose li {
-    margin-bottom: 0.25rem;
-    color: var(--color-font-main);
-  }
-}
 
 /* -------------------------------
    Global Utilities (optional)
@@ -160,43 +95,6 @@
   }
 }
 
-/* -------------------------------
-   Global Bullet Alignment Fix
----------------------------------- */
-ul,
-ol {
-  list-style-position: outside !important;
-  padding-left: 1.5rem !important;
-  /* ensures space for bullets */
-}
-
-li {
-  text-indent: 0 !important;
-  /* prevents wrapped text indent */
-  margin-bottom: 0.25rem;
-}
-
-.prose ul,
-.prose ol {
-  list-style-position: outside !important;
-  padding-left: 1.5rem !important;
-  margin-bottom: 1rem;
-}
-
-.prose li {
-  margin-bottom: 0.25rem;
-  color: var(--color-font-main);
-}
-
-/* Fix misaligned bullets inside centered text blocks */
-.text-center ul,
-.text-center ol {
-  text-align: left !important;
-  margin-left: auto;
-  margin-right: auto;
-  list-style-position: outside;
-  padding-left: 1.5rem;
-}
 
 #messages-container {
   top: 3.5rem !important;
@@ -226,9 +124,82 @@ li {
 
 }
 
+/* ======================================
+   CANONICAL CMS TYPOGRAPHY (XL)
+====================================== */
+
+.page-content,
+.page-content p,
+.page-content li {
+  font-size: 1.25rem;
+  /* text-xl */
+  line-height: 1.75;
+}
+
+.page-content ul {
+  list-style: disc outside;
+  padding-left: 1.5rem;
+}
+
+.page-content ol {
+  list-style: decimal outside;
+  padding-left: 1.5rem;
+}
+
+.page-content li {
+  margin-bottom: 0.5rem;
+}
+
+.page-content h2 {
+  font-size: 1.875rem;
+  /* text-3xl */
+  font-weight: 600;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+}
+
+.page-content h3 {
+  font-size: 1.5rem;
+  /* text-2xl */
+  font-weight: 600;
+  margin-top: 1.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.page-content strong {
+  font-weight: 600;
+}
+
+
 @layer base {
   nav ul {
     list-style: none;
     padding-left: 0;
   }
+}
+
+/* ======================================
+   TRIX IS EDITOR ONLY — NO FRONTEND STYLE
+====================================== */
+
+.trix-content * {
+  all: unset;
+}
+
+.trix-content {
+  all: unset;
+  display: contents;
+}
+
+/* --------------------------------
+   Footer navigation: no bullets
+--------------------------------- */
+footer ul {
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
+}
+
+footer li {
+  margin: 0;
 }

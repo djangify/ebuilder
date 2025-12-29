@@ -19,9 +19,11 @@
     {% include "pages/sections/hero.html" %}
 {% endif %}
 
-<div class="max-w-3xl mx-auto text-center mt-12 mb-12">
+{% if page.show_title %}
+<div class="max-w-3xl mx-auto text-center mt-8 mb-8">
     <h1 class="text-4xl font-bold">{{ page.title }}</h1>
 </div>
+{% endif %}
 
 {% for block in content_blocks %}
     {% if block|is_pagesection %}

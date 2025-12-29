@@ -174,6 +174,9 @@ class Page(models.Model):
     slug = models.SlugField(unique=True)
     template = models.CharField(max_length=20, choices=TEMPLATE_CHOICES)
     published = models.BooleanField(default=True)
+    show_title = models.BooleanField(
+        default=True, help_text="Uncheck to hide this title from the page."
+    )
 
     # SEO
     meta_title = models.CharField(max_length=60, blank=True)

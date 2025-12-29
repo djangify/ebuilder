@@ -19,10 +19,13 @@
     {% include "pages/sections/hero.html" %}
 {% endif %}
 
-<div class="max-w-3xl mx-auto text-center mt-12 mb-12">
-    <h1 class="text-4xl font-bold text-[color:var(--color-font-heading)] mb-4">
-        {{ page.title }}
-    </h1>
+{% if page.show_title %}
+<div class="max-w-3xl mx-auto text-center mt-8 mb-8">
+    <h1 class="text-4xl font-bold">{{ page.title }}</h1>
+</div>
+{% endif %}
+
+<div class="max-w-3xl mx-auto text-center mt-8 mb-8">
     {% if page.meta_description %}
     <p class="text-[color:var(--color-font-main)]/70">{{ page.meta_description }}</p>
     {% endif %}
