@@ -73,7 +73,7 @@ class Post(YouTubeVideoMixin, models.Model):
         max_length=500,
         blank=True,
         null=True,
-        help_text="External URL for product image (jpg/png only)",
+        help_text="External URL for product image (jpg/png/webp only)",
     )
     youtube_url = models.URLField(blank=True, null=True)
     thumbnail = models.ImageField(upload_to="blog/thumbnails/", null=True, blank=True)

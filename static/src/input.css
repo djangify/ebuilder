@@ -49,7 +49,7 @@
   }
 
   a {
-    @apply text-[--color-brand-secondary] hover:text-[--color-brand-accent] transition-colors;
+    @apply text-[--color-link] hover:text-[--color-link-hover] transition-colors;
   }
 }
 
@@ -72,8 +72,9 @@
   /* deep slate */
   --color-primary-contrast: #ffffff;
 
-  --color-secondary: #e5e7eb;
-  /* light grey */
+  --color-secondary: #334155;
+  /* slate-700 */
+
   --color-secondary-contrast: #111827;
 
   --color-accent: #475569;
