@@ -117,7 +117,12 @@ class SiteSettings(models.Model):
         blank=True,
         help_text="Optional custom copyright text. Leave blank to auto-generate.",
     )
-
+    # === Newsletter signup ===
+    newsletter_embed_html = models.TextField(
+        "Newsletter Signup HTML",
+        blank=True,
+        help_text="Paste the HTML embed code from your email provider (Mailchimp, Mailerlite, ConvertKit, etc.)",
+    )
     # === Default SEO ===
     default_meta_title = models.CharField(
         max_length=150,

@@ -68,6 +68,12 @@
         {% endif %}
       </ul>
     </nav>
+    <!-- Footer Newsletter Signup -->
+    {% if site_settings.newsletter_embed_html %}
+    <div class="newsletter-signup my-8">
+        {{ site_settings.newsletter_embed_html|safe }}
+    </div>
+    {% endif %}
 
     <!-- Footer Bottom Row -->
     <div class="flex flex-col md:flex-row items-center justify-between mt-8 border-t border-gray-200 pt-6">

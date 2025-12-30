@@ -255,8 +255,9 @@ class SiteSettingsAdmin(admin.ModelAdmin):
                     ("social_1_name", "social_1_url"),
                     ("social_2_name", "social_2_url"),
                     "copyright_text",
+                    "newsletter_embed_html",
                 ),
-                "description": "Footer social links and copyright.",
+                "description": "Footer social links, copyright, and newsletter signup.",
             },
         ),
         (
