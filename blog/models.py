@@ -46,7 +46,7 @@ class Post(YouTubeVideoMixin, models.Model):
 
     # Basic fields
     title = models.CharField(max_length=200)
-    slug = models.SlugField(unique=True)
+    slug = models.SlugField(max_length=200, unique=True)
 
     content = models.TextField("Content")
 

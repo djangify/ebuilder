@@ -3,7 +3,7 @@ from django.contrib import admin
 from django.contrib.admin.widgets import AdminTextareaWidget
 from .models import Category, Post
 from django.utils.html import format_html, format_html_join
-from pages.widgets import TrixWidget
+from pages.widgets import RichTextWidget
 
 
 @admin.register(Category)
@@ -18,7 +18,7 @@ class PostAdminForm(forms.ModelForm):
         model = Post
         fields = "__all__"
         widgets = {
-            "content": TrixWidget(),
+            "content": RichTextWidget(),
         }
 
     def __init__(self, *args, **kwargs):

@@ -5,7 +5,8 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib.sitemaps.views import sitemap
 from ebuilder.sitemaps import sitemaps
-from ebuilder import views as project_views  # Import project views
+from ebuilder import views as project_views
+from pages.views_upload import tinymce_upload
 
 urlpatterns = [
     path("health/", project_views.health, name="health"),
@@ -14,6 +15,8 @@ urlpatterns = [
     path("accounts/", include("accounts.urls")),
     path("blog/", include("blog.urls")),
     path("shop/", include("shop.urls")),
+    path("tinymce/", include("tinymce.urls")),
+    path("tinymce/upload/", tinymce_upload, name="tinymce_upload"),
     path(
         "sitemap.xml",
         sitemap,

@@ -1,0 +1,5 @@
+/* static/admin/css/admin-fixes.css */
+/* Fix duplicate "Add another" links in admin inlines */
+.add-row+.add-row {
+  display: none !important;
+}

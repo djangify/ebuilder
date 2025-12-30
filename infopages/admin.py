@@ -1,6 +1,6 @@
 from django.contrib import admin
 from .models import InfoPage, Category
-from pages.widgets import TrixWidget
+from pages.widgets import RichTextWidget
 from django import forms
 
 
@@ -16,7 +16,7 @@ class InfoPageAdminForm(forms.ModelForm):
         model = InfoPage
         fields = "__all__"
         widgets = {
-            "content": TrixWidget(),
+            RichTextWidget(),
         }
 
 

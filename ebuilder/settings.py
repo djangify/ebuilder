@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     "allauth.account",
     "allauth.socialaccount",
     "widget_tweaks",
+    "tinymce",
 ]
 
 MIDDLEWARE = [
@@ -94,9 +95,17 @@ TEMPLATES = [
 WSGI_APPLICATION = "ebuilder.wsgi.application"
 
 
-# Database - SQLite default for Docker. Visit 127.0.0.1:8000
+# Database - SQLite default for Docker. Use in production
 DATABASES = {"default": env.db(default="sqlite:////app/db/db.sqlite3")}
 
+
+# Database - SQLite. Use in development
+# DATABASES = {
+#     "default": {
+#         "ENGINE": "django.db.backends.sqlite3",
+#         "NAME": BASE_DIR / "db.sqlite3",
+#     }
+# }
 
 # Custom User Model
 AUTH_USER_MODEL = "accounts.User"
@@ -192,3 +201,73 @@ if EMAIL_BACKEND == "django.core.mail.backends.smtp.EmailBackend":
     EMAIL_USE_SSL = env.bool("EMAIL_USE_SSL", default=False)
 
 DEFAULT_FROM_EMAIL = env("DEFAULT_FROM_EMAIL", default="noreply@example.com")
+
+# =============================================================================
+# TINYMCE CONFIGURATION (Self-hosted, FREE plugins only)
+# =============================================================================
+
+TINYMCE_DEFAULT_CONFIG = {
+    # Core settings
+    "height": 500,
+    "menubar": "file edit view insert format tools table help",
+    "branding": False,  # Removes "Powered by TinyMCE"
+    "promotion": False,  # Removes upgrade prompts
+    # FREE plugins only - no premium plugins = no console errors
+    "plugins": [
+        "advlist",  # Advanced list formatting
+        "autolink",  # Auto-convert URLs to links
+        "lists",  # Bullet and numbered lists
+        "link",  # Insert/edit links
+        "image",  # Insert/edit images
+        "charmap",  # Special characters
+        "preview",  # Preview content
+        "anchor",  # Named anchors
+        "searchreplace",  # Find and replace
+        "visualblocks",  # Show block elements
+        "code",  # Edit HTML source
+        "fullscreen",  # Fullscreen editing
+        "insertdatetime",  # Insert date/time
+        "media",  # Embed videos
+        "table",  # Tables
+        "wordcount",  # Word count
+        "help",  # Help dialog
+    ],
+    # Toolbar configuration
+    "toolbar": (
+        "undo redo | blocks | bold italic underline strikethrough | "
+        "alignleft aligncenter alignright alignjustify | "
+        "bullist numlist outdent indent | link image media table | "
+        "code fullscreen preview | removeformat help"
+    ),
+    # Block formats (headings, paragraph, etc.)
+    "block_formats": "Paragraph=p; Heading 2=h2; Heading 3=h3; Heading 4=h4; Blockquote=blockquote; Code=pre",
+    # Image settings - allows upload and URL
+    "image_advtab": True,
+    "image_caption": True,
+    "automatic_uploads": True,
+    "file_picker_types": "image",
+    "images_upload_url": "/tinymce/upload/",  # We'll create this view
+    # Link settings
+    "link_default_target": "_blank",
+    "link_assume_external_targets": True,
+    # Content styling - uses your site's CSS
+    "content_css": "/static/css/tinymce-content.css",
+    # Clean paste from Word
+    "paste_as_text": False,
+    # Security - what HTML is allowed
+    "valid_elements": (
+        "p,br,b,strong,i,em,u,s,strike,sub,sup,"
+        "h1,h2,h3,h4,h5,h6,"
+        "ul,ol,li,"
+        "a[href|target|title],"
+        "img[src|alt|title|width|height|class],"
+        "table[border|cellspacing|cellpadding],thead,tbody,tr,th[colspan|rowspan],td[colspan|rowspan],"
+        "blockquote,pre,code,"
+        "div[class],span[class],"
+        "hr"
+    ),
+    # Relative URLs (important for portability)
+    "relative_urls": False,
+    "remove_script_host": True,
+    "document_base_url": "/",
+}

@@ -1,30 +1,20 @@
 # pages/widgets.py
-from django import forms
+from tinymce.widgets import TinyMCE
 
 
-class TrixWidget(forms.Textarea):
+class RichTextWidget(TinyMCE):
     """
-    Custom textarea widget that loads Trix editor.
-    Uses Django's Media class to inject CSS/JS only on pages that need it.
+    TinyMCE rich text editor widget.
+    Uses configuration from settings.TINYMCE_DEFAULT_CONFIG
     """
 
     class Media:
-        css = {
-            "all": (
-                "admin/css/trix.css",
-                "admin/css/trix-admin.css",
-            )
-        }
-        js = (
-            "admin/js/trix-init.js",
-            "admin/js/trix.umd.min.js",
-        )
+        css = {"all": ("admin/css/admin-fixes.css",)}
 
-    def __init__(self, attrs=None):
-        default_attrs = {
-            "data-trix": "true",
-            "style": "display:none;",  # Hide textarea, Trix editor shows instead
-        }
-        if attrs:
-            default_attrs.update(attrs)
-        super().__init__(attrs=default_attrs)
+    def __init__(self, attrs=None, mce_attrs=None):
+        default_attrs = attrs or {}
+        super().__init__(attrs=default_attrs, mce_attrs=mce_attrs)
+
+
+# Backward compatibility alias
+TrixWidget = RichTextWidget
