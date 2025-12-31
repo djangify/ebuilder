@@ -230,3 +230,14 @@
 /* .page-content strong {
   font-weight: 600;
 } */
+
+/* --------------------------------
+   Breadcrumb reset (NO numbering)
+--------------------------------- */
+@layer base {
+  nav[aria-label="Breadcrumb"] ol {
+    list-style: none;
+    padding-left: 0;
+    margin: 0;
+  }
+}

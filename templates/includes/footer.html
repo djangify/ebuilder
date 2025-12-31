@@ -28,13 +28,25 @@
           </a>
         </li>
 
-        <!-- Policies -->
-        <li>
-          <a href="{% url 'infopages:policy_index' %}"
-             class="text-[color:var(--color-font-main)] hover:text-[color:var(--color-accent)] transition">
-            Policies
-          </a>
-        </li>
+        <!-- Policies and Documentation -->
+        {% if dashboard_settings.policies_link %}
+          <li>
+            <a href="{{ dashboard_settings.policies_link }}"
+              class="text-[color:var(--color-font-main)] hover:text-[color:var(--color-accent)] transition">
+              Policies
+            </a>
+          </li>
+        {% endif %}
+
+        {% if dashboard_settings.docs_link %}
+          <li>
+            <a href="{{ dashboard_settings.docs_link }}"
+              class="text-[color:var(--color-font-main)] hover:text-[color:var(--color-accent)] transition">
+              Documentation
+            </a>
+          </li>
+        {% endif %}
+
 
         <!-- Blog -->
         <li>

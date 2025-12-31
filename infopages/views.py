@@ -1,8 +1,8 @@
-from django.views.generic import ListView, DetailView
+from django.views.generic import ListView, DetailView, TemplateView
 from django.shortcuts import get_object_or_404
 from bs4 import BeautifulSoup
+
 from .models import InfoPage, Category
-from django.views.generic import TemplateView
 
 
 class DocListView(TemplateView):
@@ -35,6 +35,10 @@ class DocListView(TemplateView):
             .order_by("title")
         )
 
+        context["breadcrumbs"] = [
+            {"title": "Documentation", "url": None},
+        ]
+
         return context
 
 
@@ -48,12 +52,20 @@ class CategoryDetailView(ListView):
     def get_queryset(self):
         self.category = get_object_or_404(Category, slug=self.kwargs["slug"])
         return InfoPage.objects.filter(
-            category=self.category, page_type="doc", published=True
+            category=self.category,
+            page_type="doc",
+            published=True,
         ).order_by("title")
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+
         context["category"] = self.category
+        context["breadcrumbs"] = [
+            {"title": "Documentation", "url": "/docs/"},
+            {"title": self.category.name, "url": None},
+        ]
+
         return context
 
 
@@ -64,6 +76,15 @@ class PolicyListView(ListView):
 
     def get_queryset(self):
         return InfoPage.objects.filter(page_type="policy", published=True)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        context["breadcrumbs"] = [
+            {"title": "Policies", "url": None},
+        ]
+
+        return context
 
 
 class InfoPageDetailView(DetailView):
@@ -77,6 +98,7 @@ class InfoPageDetailView(DetailView):
         # --- Build Table of Contents ---
         soup = BeautifulSoup(self.object.content or "", "html.parser")
         toc = []
+
         for heading in soup.find_all(["h2", "h3"]):
             text = heading.get_text(strip=True)
             if not text:
@@ -88,22 +110,40 @@ class InfoPageDetailView(DetailView):
         context["toc"] = toc
         context["rendered_content"] = str(soup)
 
-        # --- Related Pages Logic ---
+        # --- Related Pages ---
         page = self.object
+
         if page.category:
             related_pages = (
                 InfoPage.objects.filter(
-                    category=page.category, page_type=page.page_type, published=True
+                    category=page.category,
+                    page_type=page.page_type,
+                    published=True,
                 )
                 .exclude(id=page.id)
                 .order_by("title")[:5]
             )
         else:
             related_pages = (
-                InfoPage.objects.filter(page_type=page.page_type, published=True)
+                InfoPage.objects.filter(
+                    page_type=page.page_type,
+                    published=True,
+                )
                 .exclude(id=page.id)
                 .order_by("title")[:5]
             )
 
         context["related_pages"] = related_pages
+
+        # --- Breadcrumbs ---
+        context["breadcrumbs"] = [
+            {
+                "title": page.category.name if page.category else "Documentation",
+                "url": (
+                    page.category.get_absolute_url() if page.category else "/docs/"
+                ),
+            },
+            {"title": page.title, "url": None},
+        ]
+
         return context

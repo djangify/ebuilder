@@ -39,7 +39,7 @@ def product_list(request):
             Q(title__icontains=query) | Q(description__icontains=query)
         )
 
-    paginator = Paginator(products, 12)  # 12 per page
+    paginator = Paginator(products, 12)
     page = request.GET.get("page")
     products = paginator.get_page(page)
 
@@ -62,16 +62,21 @@ def product_list(request):
             "current_category": current_category,
             "query": query,
             "STRIPE_PUBLIC_KEY": settings.STRIPE_PUBLIC_KEY,
+            "breadcrumbs": [
+                {"title": "Shop", "url": None},
+            ],
         },
     )
 
 
 def product_detail(request, slug):
     product = get_object_or_404(
-        Product, slug=slug, is_active=True, status__in=["publish", "soon", "full"]
+        Product,
+        slug=slug,
+        is_active=True,
+        status__in=["publish", "soon", "full"],
     )
 
-    # Correct wishlist lookup
     wishlist_items = []
     if request.user.is_authenticated:
         wishlist_items = list(
@@ -86,15 +91,16 @@ def product_detail(request, slug):
         is_active=True,
     ).exclude(id=product.id)[:3]
 
-    has_purchased = False
     order_item = None
+    has_purchased = False
     review_form = None
 
     if request.user.is_authenticated:
         order_item = OrderItem.objects.filter(
-            order__user=request.user, order__paid=True, product=product
+            order__user=request.user,
+            order__paid=True,
+            product=product,
         ).first()
-
         has_purchased = bool(order_item)
         review_form = ProductReviewForm() if product.can_review(request.user) else None
 
@@ -113,7 +119,14 @@ def product_detail(request, slug):
             "STRIPE_PUBLIC_KEY": settings.STRIPE_PUBLIC_KEY,
             "form": review_form,
             "images": images,
-            "request": request,
+            "breadcrumbs": [
+                {"title": "Shop", "url": "/shop/"},
+                {
+                    "title": product.category.name,
+                    "url": product.category.get_absolute_url(),
+                },
+                {"title": product.title, "url": None},
+            ],
         },
     )
 
@@ -127,11 +140,14 @@ def category_hub(request):
 
 def category_list(request, slug):
     category = get_object_or_404(Category, slug=slug)
+
     products = Product.objects.filter(
-        category=category, status__in=["publish", "soon", "full"], is_active=True
+        category=category,
+        status__in=["publish", "soon", "full"],
+        is_active=True,
     ).order_by("order", "-created")
 
-    paginator = Paginator(products, 12)  # adjust per row layout
+    paginator = Paginator(products, 12)
     page = request.GET.get("page")
     products = paginator.get_page(page)
 
@@ -143,5 +159,9 @@ def category_list(request, slug):
             "products": products,
             "current_category": category,
             "hide_featured": True,
+            "breadcrumbs": [
+                {"title": "Shop", "url": "/shop/"},
+                {"title": category.name, "url": None},
+            ],
         },
     )

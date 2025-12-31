@@ -1,0 +1,31 @@
+{% if breadcrumbs %}
+<div class="container mt-8 mx-auto px-4">
+  <nav aria-label="Breadcrumb" class="mb-6">
+
+    <ol class="flex flex-wrap items-center gap-x-2 gap-y-1 text-sm list-none p-0 m-0">
+      <li class="flex items-center">
+        <a href="{% url 'pages:home' %}" class="text-[--color-secondary] hover:text-[--color-accent] transition">
+          Home
+        </a>
+        <span class="mx-2 text-[--color-secondary]/60">›</span>
+      </li>
+
+      {% for crumb in breadcrumbs %}
+        {% if not forloop.last %}
+          <li class="flex items-center">
+            <a href="{{ crumb.url }}"
+              class="text-[--color-secondary] hover:text-[--color-accent] transition">
+              {{ crumb.title }}
+            </a>
+            <span class="mx-2 text-[--color-secondary]/60">›</span>
+          </li>
+        {% else %}
+          <li class="text-[--color-primary] font-medium" aria-current="page">
+            {{ crumb.title }}
+          </li>
+        {% endif %}
+      {% endfor %}
+    </ol>
+  </nav>
+</div>
+{% endif %}

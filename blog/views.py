@@ -33,16 +33,21 @@ def blog_list(request):
         "posts": regular_posts_page,
         "categories": Category.objects.all(),
         "title": "Blog",
-        "meta_description": "Latest blogs and updates from {{ homepage_settings.business_name }}",
+        "meta_description": "Latest blogs and updates",
+        "breadcrumbs": [
+            {"title": "Blog", "url": None},
+        ],
     }
+
     return render(request, "blog/list.html", context)
 
 
 def category_list(request, slug):
     category = get_object_or_404(Category, slug=slug)
+
     posts = Post.objects.filter(
         category=category, status="published", publish_date__lte=timezone.now()
-    ).order_by("-publish_date")  # Add explicit ordering
+    ).order_by("-publish_date")
 
     paginator = Paginator(posts, 36)
     page = request.GET.get("page")
@@ -53,7 +58,11 @@ def category_list(request, slug):
         "posts": posts,
         "categories": Category.objects.all(),
         "title": f"{category.name} - Blog",
-        "meta_description": f"Latest blog and updates about {category.name} from {{ homepage_settings.business_name }}",
+        "meta_description": f"Posts about {category.name}",
+        "breadcrumbs": [
+            {"title": "Blog", "url": "/blog/"},
+            {"title": category.name, "url": None},
+        ],
     }
 
     return render(request, "blog/category.html", context)
@@ -103,5 +112,11 @@ def post_detail(request, slug):
         "title": post.meta_title or post.title,
         "meta_description": post.get_meta_description,
         "meta_keywords": post.meta_keywords,
+        "breadcrumbs": [
+            {"title": "Blog", "url": "/blog/"},
+            {"title": post.category.name, "url": post.category.get_absolute_url()},
+            {"title": post.title, "url": None},
+        ],
     }
+
     return render(request, "blog/detail.html", context)
