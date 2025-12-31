@@ -16,18 +16,30 @@ env.read_env(BASE_DIR / ".env")
 # Security settings
 SECRET_KEY = env("SECRET_KEY", default="unsafe-secret-key-change-in-production")
 DEBUG = env("DEBUG")
-ALLOWED_HOSTS = env("ALLOWED_HOSTS")
-SITE_URL = env("SITE_URL", default="http://localhost:8000")
+SITE_URL = "https://www.djangify.com"
+
+ALLOWED_HOSTS = [
+    "djangify.com",
+    "www.djangify.com",
+    "localhost",
+    "127.0.0.1",
+]
+
 
 # CSRF and CORS - read from environment with sensible defaults
 CSRF_TRUSTED_ORIGINS = env("CSRF_TRUSTED_ORIGINS") or [
     "http://localhost:8000",
     "http://127.0.0.1:8000",
+    "https://djangify.com",
+    "https://www.djangify.com",
 ]
+
 
 CORS_ALLOWED_ORIGINS = env("CORS_ALLOWED_ORIGINS") or [
     "http://localhost:8000",
     "http://127.0.0.1:8000",
+    "https://djangify.com",
+    "https://www.djangify.com",
 ]
 
 
@@ -96,16 +108,16 @@ WSGI_APPLICATION = "ebuilder.wsgi.application"
 
 
 # Database - SQLite default for Docker. Use in production
-# DATABASES = {"default": env.db(default="sqlite:////app/db/db.sqlite3")}
+DATABASES = {"default": env.db(default="sqlite:////app/db/db.sqlite3")}
 
 
 # Database - SQLite. Use in development
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
-    }
-}
+# DATABASES = {
+#     "default": {
+#         "ENGINE": "django.db.backends.sqlite3",
+#         "NAME": BASE_DIR / "db.sqlite3",
+#     }
+# }
 
 # Custom User Model
 AUTH_USER_MODEL = "accounts.User"
@@ -115,10 +127,11 @@ ACCOUNT_LOGIN_METHODS = {"email"}
 ACCOUNT_SIGNUP_FIELDS = [
     "email*",
     "first_name*",
+    "last_name*",
     "password1*",
     "password2*",
 ]
-# ACCOUNT_ADAPTER = "accounts.adapters.CustomAccountAdapter"
+ACCOUNT_ADAPTER = "accounts.adapters.CustomAccountAdapter"
 
 LOGIN_REDIRECT_URL = "/accounts/dashboard/"
 LOGOUT_REDIRECT_URL = "/"
@@ -191,16 +204,15 @@ EMAIL_BACKEND = env(
     "EMAIL_BACKEND", default="django.core.mail.backends.console.EmailBackend"
 )
 
-# SMTP settings only loaded if using SMTP backend
-if EMAIL_BACKEND == "django.core.mail.backends.smtp.EmailBackend":
-    EMAIL_HOST = env("EMAIL_HOST", default="localhost")
-    EMAIL_PORT = env.int("EMAIL_PORT", default=587)
-    EMAIL_HOST_USER = env("EMAIL_HOST_USER", default="")
-    EMAIL_HOST_PASSWORD = env("EMAIL_HOST_PASSWORD", default="")
-    EMAIL_USE_TLS = env.bool("EMAIL_USE_TLS", default=True)
-    EMAIL_USE_SSL = env.bool("EMAIL_USE_SSL", default=False)
-
-DEFAULT_FROM_EMAIL = env("DEFAULT_FROM_EMAIL", default="noreply@example.com")
+# Email settings for production
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_HOST = env("EMAIL_HOST", default="mail.privateemail.com")  # noqa: F405
+EMAIL_PORT = env("EMAIL_PORT", default=587)  # noqa: F405
+EMAIL_HOST_USER = env("EMAIL_HOST_USER")  # noqa: F405
+EMAIL_HOST_PASSWORD = env("EMAIL_HOST_PASSWORD")  # noqa: F405
+EMAIL_USE_TLS = True
+EMAIL_USE_SSL = False
+DEFAULT_FROM_EMAIL = env("DEFAULT_FROM_EMAIL", default="djangify@djangify.com")
 
 # =============================================================================
 # TINYMCE CONFIGURATION (Self-hosted, FREE plugins only)
