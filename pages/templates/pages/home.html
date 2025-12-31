@@ -37,7 +37,7 @@
     {% endfor %}
 
     {% if featured_products %}
-        {% include "pages/sections/featured_products.html" %}
+        {% include "pages/sections/featured_products.html" with products=featured_products %}
     {% endif %}
 
     {% if blog_posts %}
