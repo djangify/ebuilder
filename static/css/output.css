@@ -131,8 +131,6 @@
     --color-bg-contrast: #f1f5f9;
     --color-link: #2563eb;
     --color-link-hover: #1d4ed8;
-    --color-badge-rose: #fecdd3;
-    --color-badge-mint: #bbf7d0;
     --color-badge-yellow: #fef9c3;
     --color-badge-red-light: #fee2e2;
     --color-badge-red-text: #7f1d1d;
@@ -1106,14 +1104,8 @@
       background-color: color-mix(in oklab, var(--color-accent) 10%, transparent);
     }
   }
-  .bg-\[color\:var\(--color-badge-mint\)\] {
-    background-color: var(--color-badge-mint);
-  }
   .bg-\[color\:var\(--color-badge-red-light\)\] {
     background-color: var(--color-badge-red-light);
-  }
-  .bg-\[color\:var\(--color-badge-rose\)\] {
-    background-color: var(--color-badge-rose);
   }
   .bg-\[color\:var\(--color-badge-yellow\)\] {
     background-color: var(--color-badge-yellow);
@@ -1141,15 +1133,6 @@
   }
   .bg-\[color\:var\(--color-secondary\)\] {
     background-color: var(--color-secondary);
-  }
-  .bg-\[color\:var\(--color-secondary\)\]\/10 {
-    background-color: color-mix(in srgb, #334155 10%, transparent);
-    @supports (color: color-mix(in lab, red, red)) {
-      background-color: color-mix(in oklab, var(--color-secondary) 10%, transparent);
-    }
-  }
-  .bg-\[color\:var\(color-badge-red-light\)\] {
-    background-color: var(color-badge-red-light);
   }
   .bg-\[var\(--color-light\)\] {
     background-color: var(--color-light);
@@ -1585,9 +1568,6 @@
   }
   .text-\[color\:var\(--color-text-muted\)\] {
     color: var(--color-text-muted);
-  }
-  .text-\[color\:var\(--font-main\)\] {
-    color: var(--font-main);
   }
   .text-\[var\(--color-font-main\)\] {
     color: var(--color-font-main);
@@ -2096,6 +2076,13 @@
       }
     }
   }
+  .hover\:text-\[color\:var\(--font-main\)\] {
+    &:hover {
+      @media (hover: hover) {
+        color: var(--font-main);
+      }
+    }
+  }
   .hover\:text-accent {
     &:hover {
       @media (hover: hover) {
@@ -2570,6 +2557,23 @@
   }
 }
 @layer base {
+  body {
+    font-size: var(--text-xl);
+    line-height: var(--tw-leading, var(--text-xl--line-height));
+    --tw-leading: var(--leading-relaxed);
+    line-height: var(--leading-relaxed);
+    color: --color-font-main;
+  }
+  p, li, ul, ol {
+    font-size: inherit;
+    line-height: inherit;
+  }
+  p {
+    margin-bottom: 1rem;
+  }
+  p:last-child {
+    margin-bottom: 0;
+  }
   h1 {
     font-size: var(--text-4xl);
     line-height: var(--tw-leading, var(--text-4xl--line-height));
@@ -2591,17 +2595,6 @@
     font-weight: var(--font-weight-semibold);
     color: --color-brand-primary;
   }
-  p {
-    margin-bottom: calc(var(--spacing) * 4);
-    font-size: var(--text-lg);
-    line-height: var(--tw-leading, var(--text-lg--line-height));
-    --tw-leading: var(--leading-relaxed);
-    line-height: var(--leading-relaxed);
-    color: --color-font-main;
-  }
-  p:last-child {
-    margin-bottom: calc(var(--spacing) * 0);
-  }
   ul {
     list-style-type: disc;
   }
@@ -2609,11 +2602,6 @@
     list-style-type: decimal;
   }
   ul, ol {
-    font-size: var(--text-lg);
-    line-height: var(--tw-leading, var(--text-lg--line-height));
-    --tw-leading: var(--leading-relaxed);
-    line-height: var(--leading-relaxed);
-    color: --color-font-main;
     list-style-position: outside;
     padding-left: 1.5rem;
   }
@@ -2622,11 +2610,6 @@
     padding-left: 0;
   }
   li {
-    font-size: var(--text-lg);
-    line-height: var(--tw-leading, var(--text-lg--line-height));
-    --tw-leading: var(--leading-relaxed);
-    line-height: var(--leading-relaxed);
-    color: --color-font-main;
     text-indent: 0;
     margin-bottom: 0.25rem;
   }
@@ -2680,10 +2663,6 @@
     margin-bottom: 0.25rem;
   }
 }
-.page-content, .page-content p, .page-content li {
-  font-size: 1.25rem;
-  line-height: 1.75;
-}
 .page-content ul {
   list-style: disc outside;
   padding-left: 1.5rem;
@@ -2706,9 +2685,6 @@
   font-weight: 600;
   margin-top: 1.5rem;
   margin-bottom: 0.75rem;
-}
-.page-content strong {
-  font-weight: 600;
 }
 @property --tw-translate-x {
   syntax: "*";

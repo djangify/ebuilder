@@ -1,11 +1,7 @@
-{# pages/templates/pages/sections/gallery.html #}
-
 {% if block.images.exists %}
-<section class="mt-16">
-
-   
-
+<section class="mt-16 w-full">
+  <div class="max-w-7xl mx-auto px-6">
     {% include gallery_template with block=block %}
-
+  </div>
 </section>
 {% endif %}

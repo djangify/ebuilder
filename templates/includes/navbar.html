@@ -53,7 +53,7 @@
     <div class="flex items-center gap-5">
       {% if not request.user.is_authenticated %}
       <a href="{% url 'account_login' %}"
-         class="uppercase border bg-[color:var(--color-light)] border-[color:var(--color-accent)] text-[color:var(--color-font-main)] text-xs sm:text-sm px-5 py-2 rounded font-bold hover:bg-[color:var(--color-secondary)] hover:border-[color:var(--color-secondary)] hover:text-[color:var(--color-light)] transition">
+         class="uppercase border bg-[color:var(--color-light)] border-[color:var(--color-accent)] text-[color:var(--color-font-main)] text-xs sm:text-sm px-5 py-2 rounded font-bold hover:bg-[color:var(--color-secondary)] hover:border-[color:var(--color-secondary)] hover:text-[color:var(--font-main)] transition">
         Login
       </a>
       {% else %}
@@ -85,20 +85,20 @@
     <!-- Dynamic pages -->
     {% for p in published_pages %}
     <a href="{{ p.get_absolute_url }}"
-       class="block w-full text-center py-2 text-lg text-[color:var(--color-font-main)] hover:text-[color:var(--color-primary)] transition">
+       class="block w-full text-center py-2 text-lg text-[color:var(--color-font-main)] hover:text-[color:var(--color-secondary)] transition">
       {{ p.title }}
     </a>
     {% endfor %}
 
     <!-- Shop (always shown) -->
     <a href="{% url 'shop:product_list' %}"
-       class="block w-full text-center py-2 text-lg text-[color:var(--color-font-main)] hover:text-[color:var(--color-primary)] transition">
+       class="block w-full text-center py-2 text-lg text-[color:var(--color-font-main)] hover:text-[color:var(--color-secondary)] transition">
       Shop
     </a>
 
     {% if not request.user.is_authenticated %}
     <a href="{% url 'account_login' %}"
-       class="block w-full text-center py-2 text-lg text-[color:var(--color-font-main)] hover:text-[color:var(--color-primary)]">
+       class="block w-full text-center py-2 text-lg text-[color:var(--color-font-main)] hover:text-[color:var(--color-secondary)]">
       Login
     </a>
     {% else %}

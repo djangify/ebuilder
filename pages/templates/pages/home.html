@@ -32,7 +32,7 @@
         {% elif block|is_faqblock %}
             {% include "pages/sections/faq_block.html" with block=block %}
         {% elif block.images %}
-            {% include "pages/sections/gallery.html" with gallery_items=block.images.all %}
+            {% include "pages/sections/gallery_section.html" with block=block %}
         {% endif %}
     {% endfor %}
 

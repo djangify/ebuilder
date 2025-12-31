@@ -2,6 +2,36 @@
 
 /* Global typography and link defaults */
 @layer base {
+
+  /* --------------------------------
+     Global body text (ONE size)
+     Matches blog content
+  --------------------------------- */
+
+  body {
+    @apply text-xl text-[--color-font-main] leading-relaxed;
+  }
+
+  p,
+  li,
+  ul,
+  ol {
+    font-size: inherit;
+    line-height: inherit;
+  }
+
+  p {
+    margin-bottom: 1rem;
+  }
+
+  p:last-child {
+    margin-bottom: 0;
+  }
+
+  /* --------------------------------
+     Headings (hierarchy stays)
+  --------------------------------- */
+
   h1 {
     @apply text-4xl font-bold text-[--color-brand-primary];
   }
@@ -14,13 +44,9 @@
     @apply text-xl font-semibold text-[--color-brand-primary];
   }
 
-  p {
-    @apply text-lg text-[--color-font-main] leading-relaxed mb-4;
-  }
-
-  p:last-child {
-    @apply mb-0;
-  }
+  /* --------------------------------
+     Lists
+  --------------------------------- */
 
   ul {
     list-style-type: disc;
@@ -32,7 +58,6 @@
 
   ul,
   ol {
-    @apply text-lg text-[--color-font-main] leading-relaxed;
     list-style-position: outside;
     padding-left: 1.5rem;
   }
@@ -43,16 +68,22 @@
   }
 
   li {
-    @apply text-lg text-[--color-font-main] leading-relaxed;
     text-indent: 0;
     margin-bottom: 0.25rem;
   }
+
+  /* --------------------------------
+     Links
+  --------------------------------- */
 
   a {
     @apply text-[--color-link] hover:text-[--color-link-hover] transition-colors;
   }
 }
 
+/* --------------------------------
+   Nav & footer list reset
+--------------------------------- */
 
 @layer base {
 
@@ -62,6 +93,7 @@
     padding-left: 0;
   }
 }
+
 
 /* -------------------------------
    Tailwind v4 Theme Variables
@@ -164,13 +196,6 @@
    CANONICAL CMS TYPOGRAPHY (XL)
 ====================================== */
 
-.page-content,
-.page-content p,
-.page-content li {
-  font-size: 1.25rem;
-  /* text-xl */
-  line-height: 1.75;
-}
 
 .page-content ul {
   list-style: disc outside;
@@ -202,6 +227,6 @@
   margin-bottom: 0.75rem;
 }
 
-.page-content strong {
+/* .page-content strong {
   font-weight: 600;
-}
+} */

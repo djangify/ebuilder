@@ -4,7 +4,7 @@ from django.shortcuts import render, get_object_or_404
 from django.conf import settings
 from django.core.paginator import Paginator
 import stripe
-from django.db.models import Q
+from django.db.models import Q, Count
 import logging
 from shop.forms import ProductReviewForm
 from ..models import WishList
@@ -43,7 +43,15 @@ def product_list(request):
     page = request.GET.get("page")
     products = paginator.get_page(page)
 
-    categories = Category.objects.all()
+    categories = Category.objects.annotate(
+        product_count=Count(
+            "product",
+            filter=Q(
+                product__is_active=True,
+                product__status__in=["publish", "soon", "full"],
+            ),
+        )
+    ).filter(product_count__gt=0)
 
     return render(
         request,

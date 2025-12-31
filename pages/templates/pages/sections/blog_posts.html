@@ -47,7 +47,7 @@
                 {{ post.title }}
               </h3>
               <p class="text-base leading-relaxed text-[color:var(--color-font-main)]">
-                {{ post.content|safe|truncatewords:20 }}
+                {{ post.content|striptags|truncatewords:20 }}
               </p>
             </div>
 

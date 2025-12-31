@@ -19,9 +19,10 @@
             {{ item.title }}
           </h3>
           <div class="flex items-center space-x-2">
-            <span class="text-lg font-bold text-[color:var(--color-font-main)]">{{ item.current_price }}</span>
+            <span class="text-lg font-bold text-[color:var(--color-font-main)]">{{ item.current_price|currency }}</span>
             {% if item.is_on_sale %}
-            <span class="text-sm text-[color:var(--color-accent)] line-through">{{ item.price }}</span>
+            <span class="text-sm text-[color:var(--color-accent)] line-through">{{ item.price|currency }}</span>
+             
             {% endif %}
           </div>
         </div>

@@ -16,7 +16,7 @@ class InfoPageAdminForm(forms.ModelForm):
         model = InfoPage
         fields = "__all__"
         widgets = {
-            RichTextWidget(),
+            "content": RichTextWidget(),
         }
 
 

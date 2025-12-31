@@ -18,6 +18,8 @@ from .models import (
 )
 from django import forms
 
+from pages.widgets import RichTextWidget
+
 
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
@@ -40,8 +42,19 @@ class ProductDownloadInline(admin.TabularInline):
     ordering = ["order"]
 
 
+class ProductAdminForm(forms.ModelForm):
+    class Meta:
+        model = Product
+        fields = "__all__"
+        widgets = {
+            "description": RichTextWidget(),
+            "long_description": RichTextWidget(),
+        }
+
+
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
+    form = ProductAdminForm
     list_display = [
         "title",
         "category",
