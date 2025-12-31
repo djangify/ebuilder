@@ -16,7 +16,7 @@ from .models import (
     FAQBlock,
     FAQItem,
 )
-from .widgets import TrixWidget
+from pages.widgets import RichTextWidget
 
 # === Form Customizations ===
 
@@ -26,7 +26,7 @@ class PageSectionForm(forms.ModelForm):
         model = PageSection
         fields = "__all__"
         widgets = {
-            "body": TrixWidget(),
+            "body": RichTextWidget(),
         }
 
 
@@ -35,9 +35,9 @@ class ThreeColumnBlockForm(forms.ModelForm):
         model = ThreeColumnBlock
         fields = "__all__"
         widgets = {
-            "col_1_body": TrixWidget(),
-            "col_2_body": TrixWidget(),
-            "col_3_body": TrixWidget(),
+            "col_1_body": RichTextWidget(),
+            "col_2_body": RichTextWidget(),
+            "col_3_body": RichTextWidget(),
         }
 
 
