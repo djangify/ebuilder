@@ -432,3 +432,179 @@ class WishList(models.Model):
 
     def __str__(self):
         return f"{self.user} → {self.product}"
+
+
+# ============================================
+# ADD TO END OF shop/models.py
+# ============================================
+
+
+class ShopSettings(models.Model):
+    """
+    Singleton model for shop homepage customisation.
+    Only applies when SiteSettings.homepage_mode = 'SHOP'
+    """
+
+    # === Hero Section ===
+    hero_title = models.CharField(
+        max_length=200,
+        default="Welcome to Our Shop",
+        help_text="Main heading in the hero section.",
+    )
+    hero_subtitle = models.CharField(
+        max_length=300,
+        blank=True,
+        help_text="Smaller text above or below the title.",
+    )
+    hero_body = models.TextField(
+        blank=True,
+        null=True,
+        help_text="Optional descriptive text for the hero.",
+    )
+    hero_image = models.ImageField(
+        upload_to="shop/hero/",
+        blank=True,
+        null=True,
+        help_text="Background or side image for the hero section.",
+    )
+    hero_button_text = models.CharField(
+        max_length=100,
+        blank=True,
+        help_text="e.g. 'Browse Products', 'Shop Now'",
+    )
+    hero_button_link = models.CharField(
+        max_length=200,
+        blank=True,
+        help_text="URL or anchor link for the button (e.g. #products or /shop/category/sale/)",
+    )
+
+    # === Intro Section ===
+    show_intro_section = models.BooleanField(
+        default=False,
+        help_text="Display an intro text block below the hero.",
+    )
+    intro_title = models.CharField(
+        max_length=200,
+        blank=True,
+    )
+    intro_body = models.TextField(
+        blank=True,
+        null=True,
+        help_text="Rich text introduction to your shop.",
+    )
+
+    # === Product Spotlight (Two Column: Text + Image) ===
+    show_spotlight = models.BooleanField(
+        default=False,
+        help_text="Display a featured product or promotion section.",
+    )
+    spotlight_title = models.CharField(
+        max_length=200,
+        blank=True,
+    )
+    spotlight_body = models.TextField(
+        blank=True,
+        null=True,
+    )
+    spotlight_image = models.ImageField(
+        upload_to="shop/spotlight/",
+        blank=True,
+        null=True,
+    )
+    spotlight_button_text = models.CharField(
+        max_length=100,
+        blank=True,
+    )
+    spotlight_button_link = models.CharField(
+        max_length=200,
+        blank=True,
+    )
+    IMAGE_POSITION_CHOICES = [
+        ("left", "Image Left, Text Right"),
+        ("right", "Image Right, Text Left"),
+    ]
+    spotlight_image_position = models.CharField(
+        max_length=10,
+        choices=IMAGE_POSITION_CHOICES,
+        default="right",
+    )
+
+    # === Display Options ===
+    products_per_page = models.PositiveIntegerField(
+        default=12,
+        help_text="Number of products to show per page.",
+    )
+
+    PRODUCT_DISPLAY_CHOICES = [
+        ("all", "All Products"),
+        ("featured", "Featured Products Only"),
+        ("category", "Specific Category"),
+    ]
+    product_display_mode = models.CharField(
+        max_length=20,
+        choices=PRODUCT_DISPLAY_CHOICES,
+        default="all",
+    )
+    display_category = models.ForeignKey(
+        Category,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        help_text="Only used when display mode is 'Specific Category'.",
+    )
+
+    # === Promo Blocks Toggle ===
+    show_promo_blocks = models.BooleanField(
+        default=False,
+        help_text="Display promotional column blocks on the shop homepage.",
+    )
+
+    updated = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name = "Shop Settings"
+        verbose_name_plural = "Shop Settings"
+
+    def __str__(self):
+        return "Shop Settings"
+
+    def save(self, *args, **kwargs):
+        # Enforce singleton
+        if not self.pk and ShopSettings.objects.exists():
+            raise ValueError("Only one ShopSettings instance is allowed.")
+        super().save(*args, **kwargs)
+
+
+class ShopPromoBlock(models.Model):
+    """
+    Three-column promotional blocks for shop homepage.
+    Similar to ThreeColumnBlock in pages app.
+    """
+
+    shop_settings = models.ForeignKey(
+        ShopSettings,
+        on_delete=models.CASCADE,
+        related_name="promo_blocks",
+    )
+    order = models.PositiveIntegerField(default=0)
+    published = models.BooleanField(default=True)
+
+    col_1_title = models.CharField(max_length=150, blank=True)
+    col_1_image = models.ImageField(upload_to="shop/promo/", blank=True, null=True)
+    col_1_body = models.TextField(blank=True, null=True)
+
+    col_2_title = models.CharField(max_length=150, blank=True)
+    col_2_image = models.ImageField(upload_to="shop/promo/", blank=True, null=True)
+    col_2_body = models.TextField(blank=True, null=True)
+
+    col_3_title = models.CharField(max_length=150, blank=True)
+    col_3_image = models.ImageField(upload_to="shop/promo/", blank=True, null=True)
+    col_3_body = models.TextField(blank=True, null=True)
+
+    class Meta:
+        ordering = ["order"]
+        verbose_name = "Shop Promo Block"
+        verbose_name_plural = "SHOP PROMO BLOCKS"
+
+    def __str__(self):
+        return f"Promo Block #{self.order}"

@@ -271,3 +271,88 @@ TINYMCE_DEFAULT_CONFIG = {
     "remove_script_host": True,
     "document_base_url": "/",
 }
+# =============================================================================
+# LOGGING CONFIGURATION
+# =============================================================================
+
+# Create logs directory path
+LOG_DIR = BASE_DIR / "data" / "logs"
+LOG_DIR.mkdir(parents=True, exist_ok=True)
+
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "formatters": {
+        "verbose": {
+            "format": "{levelname} {asctime} {module} {process:d} {thread:d} {message}",
+            "style": "{",
+        },
+        "simple": {
+            "format": "{levelname} {asctime} {module} {message}",
+            "style": "{",
+        },
+    },
+    "filters": {
+        "require_debug_false": {
+            "()": "django.utils.log.RequireDebugFalse",
+        },
+    },
+    "handlers": {
+        "console": {
+            "level": "INFO",
+            "class": "logging.StreamHandler",
+        },
+        "file_error": {
+            "level": "ERROR",
+            "class": "logging.handlers.RotatingFileHandler",
+            "filename": LOG_DIR / "django-error.log",
+            "maxBytes": 5 * 1024 * 1024,  # 5 MB
+            "backupCount": 5,
+            "formatter": "verbose",
+        },
+        "file_debug": {
+            "level": "DEBUG",
+            "class": "logging.handlers.RotatingFileHandler",
+            "filename": LOG_DIR / "django-debug.log",
+            "maxBytes": 5 * 1024 * 1024,  # 5 MB
+            "backupCount": 3,
+            "formatter": "simple",
+        },
+        "mail_admins": {
+            "level": "ERROR",
+            "filters": ["require_debug_false"],
+            "class": "django.utils.log.AdminEmailHandler",
+            "include_html": True,
+        },
+    },
+    "loggers": {
+        "django": {
+            "handlers": ["console", "file_error", "mail_admins"],
+            "level": "INFO",
+            "propagate": True,
+        },
+        "django.request": {
+            "handlers": ["file_error", "mail_admins"],
+            "level": "ERROR",
+            "propagate": False,
+        },
+    },
+}
+
+# =============================================================================
+# EMAIL CONFIGURATION (for error notifications)
+# =============================================================================
+
+ADMINS = [
+    ("Diane", env("ADMIN_EMAIL", default="your-email@example.com")),
+]
+
+# Email backend - use SMTP for production
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_HOST = env("EMAIL_HOST", default="smtp.example.com")
+EMAIL_PORT = env.int("EMAIL_PORT", default=587)
+EMAIL_USE_TLS = env.bool("EMAIL_USE_TLS", default=True)
+EMAIL_HOST_USER = env("EMAIL_HOST_USER", default="")
+EMAIL_HOST_PASSWORD = env("EMAIL_HOST_PASSWORD", default="")
+DEFAULT_FROM_EMAIL = env("DEFAULT_FROM_EMAIL", default="noreply@example.com")
+SERVER_EMAIL = env("SERVER_EMAIL", default="errors@example.com")

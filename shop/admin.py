@@ -6,6 +6,7 @@ from django.core.validators import URLValidator
 from django.contrib.admin.widgets import AdminSplitDateTime
 import requests
 from pages.models import SiteSettings
+
 from .models import (
     Category,
     Product,
@@ -15,6 +16,8 @@ from .models import (
     OrderItem,
     ProductReview,
     Purchase,
+    ShopPromoBlock,
+    ShopSettings,
 )
 from django import forms
 
@@ -49,6 +52,28 @@ class ProductAdminForm(forms.ModelForm):
         widgets = {
             "description": RichTextWidget(),
             "long_description": RichTextWidget(),
+        }
+
+
+class ShopPromoBlockForm(forms.ModelForm):
+    class Meta:
+        model = ShopPromoBlock
+        fields = "__all__"
+        widgets = {
+            "col_1_body": RichTextWidget(),
+            "col_2_body": RichTextWidget(),
+            "col_3_body": RichTextWidget(),
+        }
+
+
+class ShopSettingsForm(forms.ModelForm):
+    class Meta:
+        model = ShopSettings
+        fields = "__all__"
+        widgets = {
+            "hero_body": RichTextWidget(),
+            "intro_body": RichTextWidget(),
+            "spotlight_body": RichTextWidget(),
         }
 
 
@@ -231,6 +256,44 @@ class ProductAdmin(admin.ModelAdmin):
         return url
 
 
+class ShopPromoBlockInline(admin.StackedInline):
+    model = ShopPromoBlock
+    form = ShopPromoBlockForm
+    extra = 0
+    can_delete = True
+    ordering = ("order",)
+
+    fieldsets = (
+        (
+            "Block Settings",
+            {
+                "fields": ("order", "published"),
+            },
+        ),
+        (
+            "Column 1",
+            {
+                "fields": ("col_1_title", "col_1_image", "col_1_body"),
+                "classes": ("collapse",),
+            },
+        ),
+        (
+            "Column 2",
+            {
+                "fields": ("col_2_title", "col_2_image", "col_2_body"),
+                "classes": ("collapse",),
+            },
+        ),
+        (
+            "Column 3",
+            {
+                "fields": ("col_3_title", "col_3_image", "col_3_body"),
+                "classes": ("collapse",),
+            },
+        ),
+    )
+
+
 class OrderItemInline(admin.TabularInline):
     model = OrderItem
     raw_id_fields = ["product"]
@@ -336,3 +399,79 @@ class ProductReviewAdmin(admin.ModelAdmin):
     def save_model(self, request, obj, form, change):
         obj.verified_purchase = True
         super().save_model(request, obj, form, change)
+
+
+@admin.register(ShopSettings)
+class ShopSettingsAdmin(admin.ModelAdmin):
+    form = ShopSettingsForm
+    inlines = [ShopPromoBlockInline]
+
+    fieldsets = (
+        (
+            "Hero Section",
+            {
+                "fields": (
+                    "hero_title",
+                    "hero_subtitle",
+                    "hero_body",
+                    "hero_image",
+                    "hero_button_text",
+                    "hero_button_link",
+                ),
+                "description": "The main banner area at the top of your shop homepage.",
+            },
+        ),
+        (
+            "Intro Section",
+            {
+                "fields": (
+                    "show_intro_section",
+                    "intro_title",
+                    "intro_body",
+                ),
+                "description": "Optional text block below the hero.",
+                "classes": ("collapse",),
+            },
+        ),
+        (
+            "Product Spotlight",
+            {
+                "fields": (
+                    "show_spotlight",
+                    "spotlight_title",
+                    "spotlight_body",
+                    "spotlight_image",
+                    "spotlight_image_position",
+                    "spotlight_button_text",
+                    "spotlight_button_link",
+                ),
+                "description": "Two-column section to highlight a product or promotion.",
+                "classes": ("collapse",),
+            },
+        ),
+        (
+            "Promo Blocks",
+            {
+                "fields": ("show_promo_blocks",),
+                "description": "Toggle the three-column promo blocks. Add blocks using the inline below.",
+            },
+        ),
+        (
+            "Display Options",
+            {
+                "fields": (
+                    "products_per_page",
+                    "product_display_mode",
+                    "display_category",
+                ),
+                "description": "Control which products appear and pagination.",
+            },
+        ),
+    )
+
+    def has_add_permission(self, request):
+        # Only allow one instance
+        return not ShopSettings.objects.exists()
+
+    def has_delete_permission(self, request, obj=None):
+        return False
