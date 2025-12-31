@@ -6,7 +6,7 @@ from django.contrib import messages
 from django.contrib.auth import logout
 from allauth.account.models import EmailAddress
 from shop.models import WishList
-
+from pages.models import DashboardSettings
 from .forms import SupportForm, ProfileForm
 from .models import MemberResource
 from shop.models import OrderItem
@@ -110,10 +110,17 @@ def support(request):
     else:
         form = SupportForm()
 
+    dashboard_settings = (
+        DashboardSettings.objects.first()
+        if DashboardSettings.objects.exists()
+        else None
+    )
+
     context = {
         "form": form,
         "user_name": user.get_full_name() or user.first_name or "Member",
         "user_email": user.email,
+        "dashboard_settings": dashboard_settings,
     }
 
     return render(request, "accounts/support.html", context)

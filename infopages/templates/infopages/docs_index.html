@@ -40,8 +40,8 @@
                     {% for doc in item.docs|slice:":7" %}
                     <li>
                         <a href="{{ doc.get_absolute_url }}"
-                           class="text-[color:var(--color-secondary)]
-                                  hover:text-[color:var(--color-primary)]">
+                           class="text-[color:var(--font-main)]
+                                  hover:text-[color:var(--color-accent)]">
                             {{ doc.title }}
                         </a>
                     </li>
