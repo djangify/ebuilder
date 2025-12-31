@@ -102,7 +102,6 @@ class ProductAdmin(admin.ModelAdmin):
                 "fields": (
                     "price_pence",
                     "sale_price_pence",
-                    "price_per_hour",
                 )
             },
         ),

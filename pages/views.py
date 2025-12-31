@@ -40,59 +40,57 @@ def _render_page(request, template_name):
 
 
 def home_view(request):
+    """
+    Render the homepage with all content blocks.
+    Uses SiteSettings for configuration.
+    Redirects to shop if homepage_mode is set to SHOP.
+    """
+    from django.shortcuts import redirect
+
     settings_obj = SiteSettings.objects.first()
     if not settings_obj:
+        # Create default settings if none exist
         settings_obj = SiteSettings.objects.create()
+
+    # Check homepage mode and redirect to shop if selected
+    if settings_obj.homepage_mode == "SHOP":
+        return redirect("shop:product_list")
 
     page = get_object_or_404(Page, template="home", published=True)
 
-    # Content blocks
+    # Collect all content blocks
     sections = list(page.sections.filter(published=True))
     three_columns = list(page.three_columns.filter(published=True))
-    galleries = list(page.galleries.filter(published=True))  # ← THIS WAS MISSING
+    galleries = list(page.galleries.filter(published=True))
 
     content_blocks = sorted(
         sections + three_columns + galleries,
         key=lambda block: block.order,
     )
 
-    # Homepage gallery (LIMIT TO 6)
-    homepage_gallery = galleries[0] if galleries else None
-
-    homepage_images = (
-        homepage_gallery.images.filter(published=True).order_by("order", "id")[:6]
-        if homepage_gallery
-        else []
-    )
-
     # Optional blog posts
-    blog_posts = (
-        Post.objects.filter(status="published").order_by("-publish_date")[:3]
-        if settings_obj.show_blog_on_homepage
-        else None
-    )
+    blog_posts = None
+    if settings_obj.show_blog_on_homepage:
+        blog_posts = Post.objects.filter(status="published").order_by("-publish_date")[
+            :3
+        ]
 
     # Optional featured products
-    featured_products = (
-        Product.objects.filter(
+    featured_products = None
+    if settings_obj.show_shop_on_homepage:
+        featured_products = Product.objects.filter(
             is_active=True,
             status="publish",
             featured=True,
         ).order_by("order", "-created")[:4]
-        if settings_obj.show_shop_on_homepage
-        else None
-    )
 
     context = {
         "page": page,
         "content_blocks": content_blocks,
-        "hero": page.heroes.filter(is_active=True).first(),
+        "hero": Hero.objects.filter(is_active=True).first(),
         "hero_banner": HeroBanner.objects.filter(is_active=True).first(),
         "blog_posts": blog_posts,
         "featured_products": featured_products,
-        "homepage_gallery": homepage_gallery,
-        "homepage_images": homepage_images,
-        "gallery_template": "pages/gallery/gallery_home.html",
     }
 
     return render(request, "pages/home.html", context)
