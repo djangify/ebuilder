@@ -16,11 +16,16 @@ stripe.api_key = settings.STRIPE_SECRET_KEY
 # Set up logger
 logger = logging.getLogger("shop")
 
+# ============================================
+# REPLACE product_list function in shop/views/catalog.py
+# ============================================
+
 
 def product_list(request):
     """
     Shop product list page with customisable homepage sections.
     Uses ShopSettings for hero, intro, spotlight, promo blocks and display options.
+    Sections are ordered dynamically based on admin settings.
     """
     query = request.GET.get("q", "").strip()
     category_slug = request.GET.get("category")
@@ -78,6 +83,36 @@ def product_list(request):
     if shop_settings.show_promo_blocks:
         promo_blocks = shop_settings.promo_blocks.filter(published=True)
 
+    # Build ordered sections list
+    sections = []
+
+    if shop_settings.show_intro_section:
+        sections.append(
+            {
+                "type": "intro",
+                "order": shop_settings.intro_order,
+            }
+        )
+
+    if shop_settings.show_promo_blocks and promo_blocks:
+        sections.append(
+            {
+                "type": "promo_blocks",
+                "order": shop_settings.promo_blocks_order,
+            }
+        )
+
+    if shop_settings.show_spotlight:
+        sections.append(
+            {
+                "type": "spotlight",
+                "order": shop_settings.spotlight_order,
+            }
+        )
+
+    # Sort sections by order
+    sections = sorted(sections, key=lambda x: x["order"])
+
     return render(
         request,
         "shop/list.html",
@@ -90,9 +125,8 @@ def product_list(request):
             # Shop Settings context
             "shop_settings": shop_settings,
             "promo_blocks": promo_blocks,
-            "breadcrumbs": [
-                {"title": "Shop", "url": None},
-            ],
+            "sections": sections,
+            # No breadcrumbs for shop list page
         },
     )
 

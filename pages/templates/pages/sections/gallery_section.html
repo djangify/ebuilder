@@ -1,7 +1,7 @@
 {% if block.images.exists %}
 <section class="mt-16 w-full">
   <div class="max-w-7xl mx-auto px-6">
-    {% include gallery_template with block=block %}
+    {% include "pages/gallery/gallery_home.html" with block=block %}
   </div>
 </section>
 {% endif %}

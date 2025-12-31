@@ -1,0 +1,93 @@
+<!-- shop/templates/shop/includes/product_card.html -->
+{% load currency_tags %}
+
+<div class="group bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-1 flex flex-col">
+
+  <!-- Product Image -->
+  <a href="{{ product.get_absolute_url }}" class="block relative overflow-hidden">
+    {% if product.get_image_url %}
+    <div class="aspect-square bg-gray-50">
+      <img 
+        src="{{ product.get_image_url }}" 
+        alt="Product image for {{ product.title }}"
+        class="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300"
+      />
+    </div>
+    {% else %}
+    <div class="aspect-square flex items-center justify-center bg-gradient-to-br from-[color:var(--color-light)] to-gray-100">
+      <svg class="w-16 h-16 text-[color:var(--color-accent)]/40" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+      </svg>
+    </div>
+    {% endif %}
+    
+    <!-- Hover overlay -->
+    <div class="absolute inset-0 bg-[color:var(--color-primary)]/0 group-hover:bg-[color:var(--color-primary)]/10 transition-colors duration-300 flex items-center justify-center">
+      <span class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-white text-[color:var(--color-primary)] px-4 py-2 rounded-full font-semibold text-sm shadow-lg">
+        View Details
+      </span>
+    </div>
+  </a>
+
+  <!-- Product Info -->
+  <div class="p-5 flex flex-col flex-grow">
+    <!-- Title -->
+    <a href="{{ product.get_absolute_url }}">
+      <h3 class="font-bold text-lg text-[color:var(--color-font-main)] hover:text-[color:var(--color-accent)] transition-colors mb-2 line-clamp-2">
+        {{ product.title }}
+      </h3>
+    </a>
+
+    <!-- Description -->
+    <p class="text-sm text-[color:var(--color-font-main)]/70 leading-relaxed mb-4 flex-grow line-clamp-3">
+      {{ product.description|striptags|truncatewords:25|safe }}
+    </p>
+
+    <!-- Reviews -->
+    {% if product.average_rating %}
+    <div class="flex items-center gap-2 mb-4">
+      <div class="flex items-center">
+        {% for i in "12345"|make_list %}
+        <svg class="w-4 h-4 {% if forloop.counter <= product.average_rating %}text-amber-400{% else %}text-gray-200{% endif %}" fill="currentColor" viewBox="0 0 20 20">
+          <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+        </svg>
+        {% endfor %}
+      </div>
+      <span class="text-xs text-[color:var(--color-font-main)]/60">({{ product.reviews.count }})</span>
+    </div>
+    {% endif %}
+
+    <!-- Price & CTA -->
+    <div class="flex items-center justify-between pt-4 border-t border-gray-100">
+      <div>
+        {% if product.is_on_sale %}
+        <span class="text-sm text-[color:var(--color-font-main)]/50 line-through">
+          {{ product.price|currency }}
+        </span>
+        <span class="text-xl font-bold text-emerald-600 ml-2">
+          {{ product.sale_price|currency }}
+        </span>
+        {% else %}
+        <span class="text-xl font-semibold text-[color:var(--color-font-main)]">
+          {{ product.price|currency }}
+        </span>
+        {% endif %}
+      </div>
+      
+      {% if product.is_coming_soon %}
+      <span class="px-3 py-1.5 bg-amber-100 text-amber-700 text-xs font-semibold rounded-full">
+        Coming Soon
+      </span>
+      {% elif product.is_fully_booked %}
+      <span class="px-3 py-1.5 bg-red-100 text-red-700 text-xs font-semibold rounded-full">
+        Sold Out
+      </span>
+      {% else %}
+      <a href="{{ product.get_absolute_url }}" 
+         class="px-4 py-2 bg-[color:var(--color-accent)] text-white text-sm font-semibold rounded-lg hover:bg-[color:var(--color-primary)] transition-colors">
+        View
+      </a>
+      {% endif %}
+    </div>
+  </div>
+</div>

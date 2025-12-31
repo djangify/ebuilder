@@ -48,6 +48,7 @@ db.sqlite3-wal
 **/db.sqlite3
 data/media/*
 data/db/
+data/logs/
 !data/media/.gitkeep
 !data/db/.gitkeep
 static/images
@@ -55,6 +56,7 @@ static/images
 package-lock.json
 package.json
 ruff.toml
+data/logs/*.log
 
 # Lighthouse / Chrome audit reports
 chromewebdata_*.report.html

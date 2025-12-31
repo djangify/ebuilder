@@ -465,7 +465,7 @@ class ShopSettings(models.Model):
         upload_to="shop/hero/",
         blank=True,
         null=True,
-        help_text="Background or side image for the hero section.",
+        help_text="Side image for the hero section.",
     )
     hero_button_text = models.CharField(
         max_length=100,
@@ -551,6 +551,19 @@ class ShopSettings(models.Model):
         null=True,
         blank=True,
         help_text="Only used when display mode is 'Specific Category'.",
+    )
+    # === Section Ordering ===
+    intro_order = models.PositiveIntegerField(
+        default=1,
+        help_text="Display order for intro section (lower numbers appear first).",
+    )
+    promo_blocks_order = models.PositiveIntegerField(
+        default=2,
+        help_text="Display order for promo blocks section.",
+    )
+    spotlight_order = models.PositiveIntegerField(
+        default=3,
+        help_text="Display order for spotlight section.",
     )
 
     # === Promo Blocks Toggle ===

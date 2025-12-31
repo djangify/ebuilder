@@ -450,6 +450,17 @@ class ShopSettingsAdmin(admin.ModelAdmin):
             },
         ),
         (
+            "Section Ordering",
+            {
+                "fields": (
+                    "intro_order",
+                    "promo_blocks_order",
+                    "spotlight_order",
+                ),
+                "description": "Control the display order of sections. Lower numbers appear first. Hero is always at the top, products always at the bottom.",
+            },
+        ),
+        (
             "Promo Blocks",
             {
                 "fields": ("show_promo_blocks",),
