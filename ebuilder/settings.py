@@ -1,5 +1,6 @@
 from pathlib import Path
 import environ
+from django.core.exceptions import DisallowedHost
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -23,6 +24,7 @@ ALLOWED_HOSTS = [
     "www.djangify.com",
     "localhost",
     "127.0.0.1",
+    "corrisonapi.com",
 ]
 
 
@@ -308,6 +310,9 @@ LOGGING = {
         "require_debug_false": {
             "()": "django.utils.log.RequireDebugFalse",
         },
+        "disable_disallowed_host": {
+            "()": "ebuilder.settings.DisableDisallowedHostEmails",
+        },
     },
     "handlers": {
         "console": {
@@ -332,9 +337,9 @@ LOGGING = {
         },
         "mail_admins": {
             "level": "ERROR",
-            "filters": ["require_debug_false"],
             "class": "django.utils.log.AdminEmailHandler",
             "include_html": True,
+            "filters": ["disable_disallowed_host"],
         },
     },
     "loggers": {
@@ -368,3 +373,16 @@ EMAIL_HOST_USER = env("EMAIL_HOST_USER", default="")
 EMAIL_HOST_PASSWORD = env("EMAIL_HOST_PASSWORD", default="")
 DEFAULT_FROM_EMAIL = env("DEFAULT_FROM_EMAIL", default="noreply@example.com")
 SERVER_EMAIL = env("SERVER_EMAIL", default="errors@example.com")
+
+
+IGNORABLE_404_URLS = [
+    r"^/echo\.php",
+]
+
+
+class DisableDisallowedHostEmails:
+    def filter(self, record):
+        if record.exc_info:
+            exc_type, exc, tb = record.exc_info
+            return not isinstance(exc, DisallowedHost)
+        return True

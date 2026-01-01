@@ -11,17 +11,18 @@
 <h3>Order Details:</h3>
 <ul>
 {% for item in items %}
-    <li>{{ item.name }} - Quantity: {{ item.quantity }} </li>
+    <li>{{ item.name }} - Quantity: {{ item.quantity }}</li>
 {% endfor %}
 </ul>
 
 <p><strong>Total: {{ total|currency }}</strong></p>
 
-<p>You can <a href="{% url 'account_login' %}">Login HERE</a> to download your purchase.</p>
-<p>If you have any questions, please don't hesitate to contact us at  {{ support_email }}.</p>
+<p>You can <a href="{{ login_url }}">Login HERE</a> to download your purchase.</p>
+
+<p>If you have any questions, please don't hesitate to contact us at {{ support_email }}.</p>
 
 <p>Best regards,<br>
-{{ homepage_settings.business_name }}<br>
-{{ site_url }}
+{{ site_name }}<br>
+<a href="{{ site_url }}">{{ site_url }}</a>
 </p>
 {% endblock %}

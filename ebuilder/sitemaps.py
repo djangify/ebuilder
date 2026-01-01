@@ -91,8 +91,6 @@ class ShopCategorySitemap(Sitemap):
 
 
 class InfoPageSitemap(Sitemap):
-    """Documentation and policy pages."""
-
     changefreq = "monthly"
     priority = 0.7
 
@@ -100,7 +98,7 @@ class InfoPageSitemap(Sitemap):
         return InfoPage.objects.filter(published=True)
 
     def lastmod(self, obj):
-        return obj.updated
+        return obj.last_updated
 
 
 # Register all sitemaps

@@ -139,9 +139,7 @@ class InfoPageDetailView(DetailView):
         context["breadcrumbs"] = [
             {
                 "title": page.category.name if page.category else "Documentation",
-                "url": (
-                    page.category.get_absolute_url() if page.category else "/docs/"
-                ),
+                "url": page.category.get_absolute_url() if page.category else "/docs/",
             },
             {"title": page.title, "url": None},
         ]
