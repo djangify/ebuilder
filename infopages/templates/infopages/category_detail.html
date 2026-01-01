@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block title %}{{ category.name }} Documentation{% endblock %}
+
+{% block content %}
+<div class="max-w-6xl mx-auto px-4 py-12">
+  <h1 class="text-3xl font-bold mb-6">{{ category.name }}</h1>
+
+  {% if pages %}
+    <ul class="space-y-4">
+      {% for page in pages %}
+        <li>
+          <a href="{{ page.get_absolute_url }}"
+             class="text-[color:var(--color-accent)] hover:underline">
+            {{ page.title }}
+          </a>
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>No documentation pages found in this category.</p>
+  {% endif %}
+</div>
+{% endblock %}
