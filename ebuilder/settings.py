@@ -187,6 +187,10 @@ STATIC_ROOT = BASE_DIR / "staticfiles"
 MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"
 
+# WhiteNoise Configuration
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+# Cache static files for 1 year (immutable because of hashed filenames)
+WHITENOISE_MAX_AGE = 31536000  # 1 year in seconds
 
 # Stripe settings
 STRIPE_PUBLIC_KEY = env("STRIPE_PUBLIC_KEY", default="pk_test_placeholder")

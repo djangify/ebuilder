@@ -29,7 +29,9 @@
   <!-- Canonical URL -->
   <link rel="canonical" href="{{ request.build_absolute_uri }}">
   <!-- Stylesheets -->
-  <link rel="stylesheet" href="{% static 'css/output.css' %}" media="all" onload="this.onload=null;this.removeAttribute('media');">
+  <link rel="stylesheet" href="{% static 'css/output.css' %}" 
+      media="print" onload="this.media='all'">
+  <noscript><link rel="stylesheet" href="{% static 'css/output.css' %}"></noscript>
   
   <!-- Favicon -->
   <link rel="icon" type="image/ico" href="{% static 'images/favicon.ico' %}">
@@ -38,18 +40,8 @@
   <title>{% block title %}Micro-SaaS eCommerce Site Builder | {{ site.name }}{% endblock %}</title>
 
     <!-- Alpine and HTMX CDN scripts -->
-  <script src="https://unpkg.com/htmx.org@1.9.12"></script>
+  <script src="{% static 'js/htmx.min.js' %}" defer></script>
   <script src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
-
-  <!-- MailerLite Universal -->
-  <script>
-      (function(w,d,e,u,f,l,n){w[f]=w[f]||function(){(w[f].q=w[f].q||[])
-      .push(arguments);},l=d.createElement(e),l.async=1,l.src=u,
-      n=d.getElementsByTagName(e)[0],n.parentNode.insertBefore(l,n);})
-      (window,document,'script','https://assets.mailerlite.com/js/universal.js','ml');
-      ml('account', '1703796');
-  </script>
-  <!-- End MailerLite Universal -->
 
 
   {% block extra_meta %}{% endblock %}
@@ -203,7 +195,7 @@
 </script>
 
 
-<script src="https://js.stripe.com/v3/"></script>
+
 <script src="{% static 'js/app.js' %}" defer></script>
 <script src="{% static 'js/messages.js' %}"defer></script>
 <script src="{% static 'js/gallery.js' %}"defer></script>

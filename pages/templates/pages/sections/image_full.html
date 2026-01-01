@@ -1,5 +1,5 @@
 <section class="py-8">
     {% if section.image %}
-    <img src="{{ section.image.url }}" alt="{{ section.title }}" class="w-full rounded-xl shadow">
+    <img src="{{ section.image.url }}" alt="{{ section.title }}"  class="w-full rounded-xl shadow aspect-[16/9] object-cover" loading="lazy">
     {% endif %}
 </section>
