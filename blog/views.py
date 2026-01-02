@@ -31,6 +31,7 @@ def blog_list(request):
     context = {
         "featured_posts": featured_posts,
         "posts": regular_posts_page,
+        "post_list": regular_posts_page.object_list,
         "categories": Category.objects.all(),
         "title": "Blog",
         "meta_description": "Latest blogs and updates",
