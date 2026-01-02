@@ -452,7 +452,9 @@ docker compose exec web pip list | grep adminita
 
 ## 📜 License
 
-eBuilder is open source software. See LICENSE file for details.
+eBuilder is open source software released under the MIT License.
+
+You are free to use, modify, and self-host it. See LICENSE file for details.
 
 **Footer Branding:** The "Powered by eBuilder" footer appears by default and can be removed with a license key. This supports ongoing development while keeping the core platform free.
 
