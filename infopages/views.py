@@ -145,3 +145,24 @@ class InfoPageDetailView(DetailView):
         ]
 
         return context
+
+
+class CategoryHubView(ListView):
+    model = InfoPage
+    template_name = "infopages/category_hub.html"
+    context_object_name = "pages"
+
+    def get_queryset(self):
+        return (
+            InfoPage.objects.filter(page_type="doc", published=True)
+            .select_related("category")
+            .order_by("title")
+        )
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["breadcrumbs"] = [
+            {"title": "Documentation", "url": "/docs/"},
+            {"title": "All Documentation", "url": None},
+        ]
+        return context

@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Documentation Categories{% endblock %}
+
+{% block content %}
+<div class="max-w-6xl mx-auto px-4 py-12">
+
+  <!-- Page header -->
+  <header class="mb-12 text-center">
+    <h1 class="text-4xl font-bold text-[color:var(--color-primary)] mb-2">
+      Documentation Categories
+    </h1>
+    <p class="text-lg text-[color:var(--color-font-main)]">
+      Browse documentation by topic.
+    </p>
+  </header>
+
+  {% if categories_with_counts %}
+    <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+
+      {% for item in categories_with_counts %}
+      <div class="border border-[color:var(--color-accent)] p-6 bg-white">
+
+        <!-- Category title -->
+        <h2 class="text-lg font-semibold text-[color:var(--color-primary)] mb-1">
+          {{ item.category.name }}
+        </h2>
+
+        <p class="text-sm text-[color:var(--color-font-main)]/70 mb-4">
+          {{ item.doc_count }} article{{ item.doc_count|pluralize }}
+        </p>
+
+        <!-- Article links -->
+        {% if item.docs %}
+          <ul class="space-y-2 text-sm">
+            {% for doc in item.docs %}
+              <li>
+                <a href="{{ doc.get_absolute_url }}"
+                   class="text-[color:var(--color-font-main)] hover:text-[color:var(--color-accent)] transition-colors">
+                  {{ doc.title }}
+                </a>
+              </li>
+            {% endfor %}
+          </ul>
+        {% else %}
+          <p class="text-sm text-[color:var(--color-font-main)]/60">
+            No articles yet.
+          </p>
+        {% endif %}
+
+        {% if item.doc_count > item.docs|length %}
+          <p class="mt-4 text-xs">
+            <a href="{{ item.category.get_absolute_url }}"
+               class="hover:underline">
+              View all →
+            </a>
+          </p>
+        {% endif %}
+
+      </div>
+      {% endfor %}
+
+    </div>
+  {% else %}
+    <p class="text-center text-[color:var(--color-font-main)]/70">
+      No documentation categories available yet.
+    </p>
+  {% endif %}
+
+</div>
+{% endblock %}

@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<section class="px-6 md:px-16 py-12 bg-[--color-light] text-[--color-font-main]">
+  <div class="max-w-7xl mx-auto">
+
+    <!-- Page header -->
+    <header class="mb-12 text-center">
+      <h1 class="text-4xl font-bold text-[--color-primary] mb-2">
+        Blog Categories
+      </h1>
+      <p class="text-lg text-[--color-font-main]">
+        Browse articles by topic.
+      </p>
+    </header>
+
+    {% if categories_with_posts %}
+      <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+
+        {% for item in categories_with_posts %}
+        <div class="border border-[--color-accent] p-6 bg-white">
+
+          <!-- Category title -->
+          <h2 class="text-lg font-semibold text-[--color-primary] mb-1">
+            {{ item.category.name }}
+          </h2>
+
+          <p class="text-sm text-[--color-font-main]/70 mb-4">
+            {{ item.posts.count }} article{{ item.posts.count|pluralize }}
+          </p>
+
+          <!-- Article links -->
+          <ul class="space-y-2 text-sm">
+            {% for post in item.posts|slice:":7" %}
+              <li>
+                <a href="{{ post.get_absolute_url }}"
+                   class="text-[--color-font-main] hover:text-[--color-accent] transition">
+                  {{ post.title }}
+                </a>
+              </li>
+            {% endfor %}
+          </ul>
+
+          {% if item.posts.count > 7 %}
+            <p class="mt-4 text-xs">
+              <a href="{{ item.category.get_absolute_url }}"
+                 class="hover:underline">
+                View all →
+              </a>
+            </p>
+          {% endif %}
+
+        </div>
+        {% endfor %}
+
+      </div>
+    {% else %}
+      <p class="text-center text-[--color-font-main]/70">
+        No blog categories available yet.
+      </p>
+    {% endif %}
+
+  </div>
+</section>
+{% endblock %}

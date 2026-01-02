@@ -120,3 +120,34 @@ def post_detail(request, slug):
     }
 
     return render(request, "blog/detail.html", context)
+
+
+def category_hub(request):
+    categories = Category.objects.prefetch_related("post_set").all()
+
+    categories_with_posts = []
+
+    for category in categories:
+        posts = category.post_set.filter(
+            status="published", publish_date__lte=timezone.now()
+        ).order_by("-publish_date")
+
+        if posts.exists():
+            categories_with_posts.append(
+                {
+                    "category": category,
+                    "posts": posts,
+                }
+            )
+
+    context = {
+        "categories_with_posts": categories_with_posts,
+        "title": "Blog Categories",
+        "meta_description": "Browse blog articles by category",
+        "breadcrumbs": [
+            {"title": "Blog", "url": "/blog/"},
+            {"title": "Categories", "url": None},
+        ],
+    }
+
+    return render(request, "blog/category_hub.html", context)

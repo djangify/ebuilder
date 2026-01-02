@@ -7,6 +7,11 @@ urlpatterns = [
     # Documentation hub and categories
     path("docs/", views.DocListView.as_view(), name="docs_index"),
     path(
+        "docs/category/",
+        views.CategoryHubView.as_view(),
+        name="category_hub",
+    ),
+    path(
         "docs/category/<slug:slug>/",
         views.CategoryDetailView.as_view(),
         name="category_detail",
