@@ -1,6 +1,6 @@
 # eBuilder - Self-Hosted eCommerce Platform
 
-![eBuilder eCommerce Platform](https://github.com/djangify/ebuilder/blob/main/responsive-ecommerce.png)
+![eBuilder eCommerce Platform](https://github.com/djangify/ebuilder/blob/de5c5bdf79ca79e21384fd12d863a849fe124da5/open-source-ecommerce-builder.png)
 
 <p align="center">
   <a href="https://www.djangoproject.com/">
@@ -265,8 +265,7 @@ EMAIL_PORT=587
 EMAIL_HOST_USER=your@email.com
 EMAIL_HOST_PASSWORD=your-password
 
-# License (removes footer branding)
-EBUILDER_LICENSE_KEY=  # Leave empty for open source use
+
 ```
 
 ---
