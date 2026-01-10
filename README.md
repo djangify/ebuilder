@@ -494,3 +494,7 @@ Built with:
 *Own your store. Own your data. Own your future.*
 
 
+**Coffee Always Welcome**: https://ko-fi.com/todianedev ❤️
+
+
+Maintained by [Diane Corriette](https://github.com/todiane)
