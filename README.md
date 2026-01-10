@@ -17,38 +17,44 @@
   </a>
 </p>
 
-**A Docker-first, self-hosted eCommerce platform for digital downloads.** Built for creators who want ownership, simplicity, and no SaaS lock-in.
+**A Docker-first, self-hosted eCommerce platform (with international currency) for digital downloads.** Built for creators who want ownership, simplicity, and no SaaS lock-in.
 
 ---
 
 ## 🎯 What is eBuilder?
 
-eBuilder is a complete digital product shop with integrated content management, designed for the self-hosting community. It's not a page builder - it's a fully-functional eCommerce system that you own and control.
+eBuilder is a self-hosted eCommerce platform for selling digital downloads — without SaaS lock-in. It's not a page builder - it's a fully-functional eCommerce system that you own and control.
+
+It gives you a complete, production-ready digital shop built with Django, designed for people who want to own their store, their data, and their income.
+
+No platform dependency.
+No forced upgrades.
+No feature bloat.
 
 **Perfect for:**
-- Digital product creators
+- Creators selling PDFs, guides, templates, or digital tools
 - Course sellers
-- Template designers
+- Digital art designers
 - Asset creators
-- Anyone selling downloadable products
+- Anyone selling downloadable products including audio or video
 
 ---
 
 ## ✨ Features
 
 ### 🛒 **Complete Shop System**
-- Digital product management - limit downloads per product
-- Category organization
+- Digital product management 
+- Secure downloads with per-purchase download limits
+- Category organisation
 - Product reviews and ratings
 - Wishlist functionality
 - Stripe checkout integration
 - Customer dashboard with order history
-- Secure download delivery
 
 ### 📝 **Content Management**
 - **Blog** - Full blogging system with categories, featured posts, and YouTube embeds
 - **Custom Pages** - Create any page structure (About, Gallery, Contact, etc.)
-- **InfoPages** - Documentation and policy pages with category organization
+- **InfoPages** - Documentation and policy pages with category organisation
 - **Dynamic Homepage** - Choose between shop-focused or content-focused layouts
 
 ### 🎨 **Design & UI**
@@ -57,6 +63,17 @@ eBuilder is a complete digital product shop with integrated content management, 
 - Adminita Django admin theme for beautiful backend
 - Dark mode compatible admin interface
 - Accessible (ARIA compliant)
+
+## Admin-First by Design
+
+eBuilder is managed entirely through Django Admin.
+
+- products
+- orders
+- site identity
+- content
+- SEO settings
+- downloads
 
 ### 🔍 **SEO & Discovery**
 - **NEW:** Complete Schema.org structured data
@@ -71,6 +88,15 @@ eBuilder is a complete digital product shop with integrated content management, 
 - Robots.txt with AI bot support
 - Canonical URLs on all pages
 
+
+**eBuilder is software you run yourself.** Once it’s installed, it’s yours. You can:
+
+- host it anywhere
+- move it anytime
+- own your database, files and user data
+
+This project exists for creators and businesses who are tired of renting their livelihood.
+
 ### ⚙️ **Technical Features**
 - Docker-first distribution
 - SQLite by default (with WAL mode for performance)
@@ -80,6 +106,13 @@ eBuilder is a complete digital product shop with integrated content management, 
 - django-allauth for authentication
 - HTMX for dynamic interactions
 - Alpine.js for lightweight JavaScript
+
+##Docker-First & Predictable
+- Docker-based installation
+- Same setup locally and on a VPS
+- SQLite by default (fast, reliable, low maintenance)
+- Optional PostgreSQL support
+- Simple backups and restores
 
 ---
 
@@ -204,7 +237,7 @@ Create a default Open Graph image:
 |-----------|-----------|
 | **Framework** | Django 5.2 LTS |
 | **Frontend** | Tailwind CSS 4, Alpine.js, HTMX |
-| **Database** | SQLite (default) / PostgreSQL (optional) |
+| **Database** | SQLite (default) |
 | **Payments** | Stripe |
 | **Authentication** | django-allauth |
 | **Rich Text** | Trix Editor |
@@ -438,38 +471,29 @@ docker compose exec web pip list | grep adminita
 - ✅ Stripe integration
 - ✅ Full SEO implementation
 - ✅ Mobile responsive
+- ✅ Multi-currency support
 
 ### **Future Considerations**
-- [ ] Multi-currency support
 - [ ] Subscription products
 - [ ] Newsletter integration
 - [ ] Advanced analytics
-- [ ] Plugin system
-- [ ] Managed hosting service
 
 ---
 
 ## 📜 License
 
-eBuilder is open source software released under the MIT License.
+eBuilder is open source software released under the MIT License. See LICENSE file for details.
 
-You are free to use, modify, and self-host it. See LICENSE file for details.
 
-**Footer Branding:** The "Powered by eBuilder" footer appears by default and can be removed with a license key. This supports ongoing development while keeping the core platform free.
+## Open Source, With Sustainable Funding
 
----
+The project is supported by optional managed hosting and updates
 
-## 🤝 Contributing
-
-Contributions welcome! Please:
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Submit a pull request
+You are free to self-host forever.
 
 ---
 
-## 📞 Support & Contact
+## Support & Contact
 
 - **Documentation:** See `templates/includes/seo/` for SEO guides
 - **Issues:** [GitHub Issues](https://github.com/djangify/ebuilder/issues)
@@ -478,7 +502,7 @@ Contributions welcome! Please:
 
 ---
 
-## 🙏 Credits
+## Credits
 
 Built with:
 - [Django](https://www.djangoproject.com/)
