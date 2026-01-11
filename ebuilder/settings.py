@@ -1,4 +1,5 @@
 from pathlib import Path
+import os
 import environ
 from django.core.exceptions import DisallowedHost
 
@@ -19,13 +20,7 @@ SECRET_KEY = env("SECRET_KEY", default="unsafe-secret-key-change-in-production")
 DEBUG = env("DEBUG")
 SITE_URL = "https://www.djangify.com"
 
-ALLOWED_HOSTS = [
-    "djangify.com",
-    "www.djangify.com",
-    "localhost",
-    "127.0.0.1",
-    "corrisonapi.com",
-]
+ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS", "localhost,127.0.0.1").split(",")
 
 
 # CSRF and CORS - read from environment with sensible defaults
@@ -110,16 +105,16 @@ WSGI_APPLICATION = "ebuilder.wsgi.application"
 
 
 # Database - SQLite default for Docker. Use in production
-# DATABASES = {"default": env.db(default="sqlite:////app/db/db.sqlite3")}
+DATABASES = {"default": env.db(default="sqlite:////app/db/db.sqlite3")}
 
 
 # Database - SQLite. Use in development
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
-    }
-}
+# DATABASES = {
+#     "default": {
+#         "ENGINE": "django.db.backends.sqlite3",
+#         "NAME": BASE_DIR / "data" / "db" / "db.sqlite3",
+#     }
+# }
 
 # Custom User Model
 AUTH_USER_MODEL = "accounts.User"
@@ -187,8 +182,15 @@ STATIC_ROOT = BASE_DIR / "staticfiles"
 MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"
 
-# WhiteNoise Configuration
-STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+# WhiteNoise Configuration WITH LESS STRICT compressedstaticfilesstorage
+STORAGES = {
+    "default": {
+        "BACKEND": "django.core.files.storage.FileSystemStorage",
+    },
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedStaticFilesStorage",
+    },
+}
 # Cache static files for 1 year (immutable because of hashed filenames)
 WHITENOISE_MAX_AGE = 31536000  # 1 year in seconds
 
@@ -214,8 +216,8 @@ EMAIL_BACKEND = env(
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 EMAIL_HOST = env("EMAIL_HOST", default="mail.privateemail.com")  # noqa: F405
 EMAIL_PORT = env("EMAIL_PORT", default=587)  # noqa: F405
-EMAIL_HOST_USER = env("EMAIL_HOST_USER")  # noqa: F405
-EMAIL_HOST_PASSWORD = env("EMAIL_HOST_PASSWORD")  # noqa: F405
+EMAIL_HOST_USER = env("EMAIL_HOST_USER", default="")
+EMAIL_HOST_PASSWORD = env("EMAIL_HOST_PASSWORD", default="")  # noqa: F405
 EMAIL_USE_TLS = True
 EMAIL_USE_SSL = False
 DEFAULT_FROM_EMAIL = env("DEFAULT_FROM_EMAIL", default="djangify@djangify.com")
