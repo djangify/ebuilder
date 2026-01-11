@@ -48,6 +48,10 @@ else
     python manage.py migrate --noinput
 fi
 
+# Always collect static files (ensures updates are applied)
+echo "Collecting static files..."
+python manage.py collectstatic --noinput
+
 # Start the application
 echo ""
 echo " Starting eBuilder..."
