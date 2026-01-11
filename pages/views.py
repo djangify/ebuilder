@@ -44,19 +44,23 @@ def home_view(request):
     Render the homepage with all content blocks.
     Uses SiteSettings for configuration.
     Redirects to shop if homepage_mode is set to SHOP.
+    Shows welcome page if no homepage exists.
     """
     from django.shortcuts import redirect
 
     settings_obj = SiteSettings.objects.first()
     if not settings_obj:
-        # Create default settings if none exist
         settings_obj = SiteSettings.objects.create()
 
     # Check homepage mode and redirect to shop if selected
     if settings_obj.homepage_mode == "SHOP":
         return redirect("shop:product_list")
 
-    page = get_object_or_404(Page, template="home", published=True)
+    # Try to get homepage, show welcome page if none exists
+    try:
+        page = Page.objects.get(template="home", published=True)
+    except Page.DoesNotExist:
+        return render(request, "pages/welcome.html", {"settings": settings_obj})
 
     # Collect all content blocks
     sections = list(page.sections.filter(published=True))
