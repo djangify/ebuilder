@@ -1,250 +1,97 @@
 {% extends "base.html" %}
-{% load static %}
 
 {% block title %}{{ page_title }}{% endblock %}
 
-{% block extra_css %}
-<style>
-    .success-container {
-        max-width: 600px;
-        margin: 3rem auto;
-        padding: 2rem;
-        text-align: center;
-    }
-    
-    .success-icon {
-        width: 80px;
-        height: 80px;
-        background: #10b981;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin: 0 auto 1.5rem;
-        animation: scaleIn 0.5s ease-out;
-    }
-    
-    .success-icon svg {
-        width: 40px;
-        height: 40px;
-        color: white;
-    }
-    
-    @keyframes scaleIn {
-        from {
-            transform: scale(0);
-            opacity: 0;
-        }
-        to {
-            transform: scale(1);
-            opacity: 1;
-        }
-    }
-    
-    .success-title {
-        font-size: 2rem;
-        color: #111827;
-        margin-bottom: 1rem;
-    }
-    
-    .success-message {
-        font-size: 1.125rem;
-        color: #6b7280;
-        margin-bottom: 2rem;
-    }
-    
-    .store-url-box {
-        background: #f0fdf4;
-        border: 1px solid #bbf7d0;
-        border-radius: 0.75rem;
-        padding: 1.5rem;
-        margin-bottom: 2rem;
-    }
-    
-    .store-url-label {
-        font-size: 0.875rem;
-        color: #6b7280;
-        margin-bottom: 0.5rem;
-    }
-    
-    .store-url {
-        font-size: 1.25rem;
-        font-weight: 600;
-        color: #059669;
-        word-break: break-all;
-    }
-    
-    .store-url a {
-        color: #059669;
-        text-decoration: none;
-    }
-    
-    .store-url a:hover {
-        text-decoration: underline;
-    }
-    
-    .next-steps {
-        background: #f9fafb;
-        border-radius: 0.75rem;
-        padding: 1.5rem;
-        text-align: left;
-        margin-bottom: 2rem;
-    }
-    
-    .next-steps h3 {
-        font-size: 1.125rem;
-        color: #111827;
-        margin: 0 0 1rem 0;
-    }
-    
-    .next-steps ol {
-        margin: 0;
-        padding-left: 1.5rem;
-        color: #4b5563;
-    }
-    
-    .next-steps li {
-        margin-bottom: 0.75rem;
-        line-height: 1.5;
-    }
-    
-    .next-steps li:last-child {
-        margin-bottom: 0;
-    }
-    
-    .next-steps li strong {
-        color: #111827;
-    }
-    
-    .loading-indicator {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 0.75rem;
-        color: #6b7280;
-        margin-bottom: 1.5rem;
-        padding: 1rem;
-        background: #f3f4f6;
-        border-radius: 0.5rem;
-    }
-    
-    .spinner {
-        width: 20px;
-        height: 20px;
-        border: 3px solid #e5e7eb;
-        border-top-color: #6366f1;
-        border-radius: 50%;
-        animation: spin 1s linear infinite;
-        flex-shrink: 0;
-    }
-    
-    @keyframes spin {
-        to { transform: rotate(360deg); }
-    }
-    
-    .btn {
-        display: inline-block;
-        padding: 0.875rem 1.75rem;
-        border-radius: 0.5rem;
-        font-weight: 600;
-        text-decoration: none;
-        transition: all 0.2s;
-        font-size: 1rem;
-    }
-    
-    .btn-primary {
-        background: #6366f1;
-        color: white;
-    }
-    
-    .btn-primary:hover {
-        background: #4f46e5;
-        color: white;
-    }
-    
-    .btn-secondary {
-        background: #f3f4f6;
-        color: #374151;
-    }
-    
-    .btn-secondary:hover {
-        background: #e5e7eb;
-        color: #374151;
-    }
-    
-    .btn-group {
-        display: flex;
-        gap: 1rem;
-        justify-content: center;
-        flex-wrap: wrap;
-    }
-    
-    .support-note {
-        margin-top: 2rem;
-        font-size: 0.875rem;
-        color: #9ca3af;
-    }
-    
-    .support-note a {
-        color: #6366f1;
-        text-decoration: none;
-    }
-    
-    .support-note a:hover {
-        text-decoration: underline;
-    }
-</style>
-{% endblock %}
-
 {% block content %}
-<div class="success-container">
-    <div class="success-icon">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7" />
-        </svg>
-    </div>
-    
-    <h1 class="success-title">Payment Successful!</h1>
-    <p class="success-message">Thank you for signing up. Your store is being created now.</p>
-    
-    <div class="loading-indicator" id="loading-indicator">
-        <div class="spinner"></div>
-        <span>Setting up your store... This usually takes 30-60 seconds.</span>
-    </div>
-    
-    {% if store_url %}
-    <div class="store-url-box">
-        <div class="store-url-label">Your store will be available at:</div>
-        <div class="store-url">
-            <a href="{{ store_url }}" target="_blank" rel="noopener">{{ store_url }}</a>
+<div class="min-h-screen bg-slate-50 py-12 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-lg mx-auto text-center">
+        
+        <!-- Success Icon -->
+        <div class="w-20 h-20 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-6">
+            <svg class="w-10 h-10 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+            </svg>
         </div>
-    </div>
-    {% endif %}
-    
-    <div class="next-steps">
-        <h3>What happens next?</h3>
-        <ol>
-            <li><strong>Check your email</strong> — We're sending your login details to the email you provided.</li>
-            <li><strong>Wait a moment</strong> — Your store is being set up automatically. It usually takes less than a minute.</li>
-            <li><strong>Log in</strong> — Use the credentials in your email to access your store's admin panel.</li>
-            <li><strong>Start selling!</strong> — Add your products, customise your store, and share it with the world.</li>
-        </ol>
-    </div>
-    
-    <div class="btn-group">
+        
+        <!-- Heading -->
+        <h1 class="text-3xl font-bold text-slate-900 mb-3">Payment Successful!</h1>
+        <p class="text-lg text-slate-600 mb-8">Thank you for signing up. Your store is being created now.</p>
+        
+        <!-- Loading Status -->
+        <div id="loading-indicator" class="bg-white rounded-xl border border-slate-200 p-4 mb-8 flex items-center justify-center gap-3">
+            <svg class="w-5 h-5 text-slate-400 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+            </svg>
+            <span class="text-slate-600">Setting up your store... This usually takes 30-60 seconds.</span>
+        </div>
+        
         {% if store_url %}
-        <a href="{{ store_url }}" class="btn btn-primary" target="_blank" rel="noopener" id="visit-store-btn">
-            Visit Your Store
-        </a>
+        <!-- Store URL Card -->
+        <div class="bg-emerald-50 rounded-xl border border-emerald-200 p-6 mb-8">
+            <p class="text-sm text-slate-600 mb-2">Your store will be available at:</p>
+            <a href="{{ store_url }}" target="_blank" rel="noopener" class="text-xl font-semibold text-emerald-700 hover:text-emerald-800 break-all">
+                {{ store_url }}
+            </a>
+        </div>
         {% endif %}
-        <a href="{% url 'pages:home' %}" class="btn btn-secondary">
-            Back to Home
-        </a>
+        
+        <!-- Next Steps -->
+        <div class="bg-white rounded-xl border border-slate-200 p-6 mb-8 text-left">
+            <h3 class="text-lg font-semibold text-slate-900 mb-4">What happens next?</h3>
+            <ol class="space-y-4">
+                <li class="flex gap-3">
+                    <span class="w-6 h-6 bg-slate-900 text-white rounded-full flex items-center justify-center text-sm font-medium flex-shrink-0">1</span>
+                    <div>
+                        <span class="font-medium text-slate-900">Check your email</span>
+                        <p class="text-slate-600 text-sm">We're sending your login details to the email you provided.</p>
+                    </div>
+                </li>
+                <li class="flex gap-3">
+                    <span class="w-6 h-6 bg-slate-900 text-white rounded-full flex items-center justify-center text-sm font-medium flex-shrink-0">2</span>
+                    <div>
+                        <span class="font-medium text-slate-900">Wait a moment</span>
+                        <p class="text-slate-600 text-sm">Your store is being set up automatically. It usually takes less than a minute.</p>
+                    </div>
+                </li>
+                <li class="flex gap-3">
+                    <span class="w-6 h-6 bg-slate-900 text-white rounded-full flex items-center justify-center text-sm font-medium flex-shrink-0">3</span>
+                    <div>
+                        <span class="font-medium text-slate-900">Log in</span>
+                        <p class="text-slate-600 text-sm">Use the credentials in your email to access your store's admin panel.</p>
+                    </div>
+                </li>
+                <li class="flex gap-3">
+                    <span class="w-6 h-6 bg-slate-900 text-white rounded-full flex items-center justify-center text-sm font-medium flex-shrink-0">4</span>
+                    <div>
+                        <span class="font-medium text-slate-900">Start selling!</span>
+                        <p class="text-slate-600 text-sm">Add your products, customise your store, and share it with the world.</p>
+                    </div>
+                </li>
+            </ol>
+        </div>
+        
+        <!-- Action Buttons -->
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+            {% if store_url %}
+            <a href="{{ store_url }}" target="_blank" rel="noopener" class="inline-flex items-center justify-center px-6 py-3 bg-slate-900 text-white font-semibold rounded-lg hover:bg-slate-800 transition-colors">
+                Visit Your Store
+                <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
+                </svg>
+            </a>
+            {% endif %}
+            <a href="{% url 'pages:home' %}" class="inline-flex items-center justify-center px-6 py-3 bg-white text-slate-700 font-semibold rounded-lg border border-slate-300 hover:bg-slate-50 transition-colors">
+                Back to Home
+            </a>
+        </div>
+        
+        <!-- Support Note -->
+        <p class="mt-8 text-sm text-slate-500">
+            Questions? Contact us at 
+            <a href="mailto:support@djangify.com" class="text-slate-700 hover:text-slate-900">support@djangify.com</a>
+        </p>
+        
     </div>
-    
-    <p class="support-note">
-        Questions? Contact us at <a href="mailto:support@djangify.com">support@djangify.com</a>
-    </p>
 </div>
 {% endblock %}
 
@@ -253,36 +100,26 @@
 <script>
 (function() {
     const loadingIndicator = document.getElementById('loading-indicator');
-    const visitBtn = document.getElementById('visit-store-btn');
     let checkCount = 0;
     const maxChecks = 12;
-    const checkInterval = 10000; // 10 seconds
+    const checkInterval = 10000;
     
     function checkStoreReady() {
         if (checkCount >= maxChecks) {
-            loadingIndicator.innerHTML = '<span style="color: #059669;">✓ Your store should be ready. Check your email for login details!</span>';
+            loadingIndicator.innerHTML = '<svg class="w-5 h-5 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg><span class="text-emerald-700">Your store should be ready. Check your email for login details!</span>';
             return;
         }
         
-        // Try to fetch the store (we can't read the response due to CORS, but we can detect if it responds)
-        fetch('{{ store_url }}/health/', { 
-            method: 'HEAD',
-            mode: 'no-cors'
-        })
-        .then(function() {
-            // If we get here, the store is responding
-            loadingIndicator.innerHTML = '<span style="color: #059669;">✓ Your store is ready!</span>';
-            if (visitBtn) {
-                visitBtn.style.animation = 'pulse 2s infinite';
-            }
-        })
-        .catch(function() {
-            checkCount++;
-            setTimeout(checkStoreReady, checkInterval);
-        });
+        fetch('{{ store_url }}/health/', { method: 'HEAD', mode: 'no-cors' })
+            .then(function() {
+                loadingIndicator.innerHTML = '<svg class="w-5 h-5 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg><span class="text-emerald-700 font-medium">Your store is ready!</span>';
+            })
+            .catch(function() {
+                checkCount++;
+                setTimeout(checkStoreReady, checkInterval);
+            });
     }
     
-    // Start checking after 5 seconds
     setTimeout(checkStoreReady, 5000);
 })();
 </script>

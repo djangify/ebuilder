@@ -124,6 +124,10 @@ DATABASES = {"default": env.db(default="sqlite:////app/db/db.sqlite3")}
 # Custom User Model
 AUTH_USER_MODEL = "accounts.User"
 
+# Provisioner API (for hosting signup)
+PROVISIONER_API_URL = "https://provisioner.djangify.com/api"
+EBUILDER_DOMAIN = "djangify.com"
+
 # Allauth Configuration
 ACCOUNT_LOGIN_METHODS = {"email"}
 ACCOUNT_SIGNUP_FIELDS = [

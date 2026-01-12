@@ -1,126 +1,43 @@
 {% extends "base.html" %}
-{% load static %}
 
 {% block title %}{{ page_title }}{% endblock %}
 
-{% block extra_css %}
-<style>
-    .cancelled-container {
-        max-width: 500px;
-        margin: 4rem auto;
-        padding: 2rem;
-        text-align: center;
-    }
-    
-    .cancelled-icon {
-        width: 80px;
-        height: 80px;
-        background: #fef3c7;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin: 0 auto 1.5rem;
-    }
-    
-    .cancelled-icon svg {
-        width: 40px;
-        height: 40px;
-        color: #d97706;
-    }
-    
-    .cancelled-title {
-        font-size: 1.75rem;
-        color: #111827;
-        margin-bottom: 1rem;
-    }
-    
-    .cancelled-message {
-        font-size: 1.125rem;
-        color: #6b7280;
-        margin-bottom: 2rem;
-        line-height: 1.6;
-    }
-    
-    .btn {
-        display: inline-block;
-        padding: 0.875rem 2rem;
-        border-radius: 0.5rem;
-        font-weight: 600;
-        text-decoration: none;
-        transition: all 0.2s;
-        font-size: 1rem;
-    }
-    
-    .btn-primary {
-        background: #6366f1;
-        color: white;
-    }
-    
-    .btn-primary:hover {
-        background: #4f46e5;
-        color: white;
-    }
-    
-    .btn-link {
-        display: block;
-        margin-top: 1rem;
-        color: #6b7280;
-        text-decoration: none;
-        font-size: 0.9375rem;
-    }
-    
-    .btn-link:hover {
-        color: #4f46e5;
-    }
-    
-    .help-section {
-        margin-top: 2.5rem;
-        padding-top: 2rem;
-        border-top: 1px solid #e5e7eb;
-    }
-    
-    .help-section p {
-        font-size: 0.875rem;
-        color: #9ca3af;
-        margin: 0.5rem 0;
-    }
-    
-    .help-section a {
-        color: #6366f1;
-        text-decoration: none;
-    }
-    
-    .help-section a:hover {
-        text-decoration: underline;
-    }
-</style>
-{% endblock %}
-
 {% block content %}
-<div class="cancelled-container">
-    <div class="cancelled-icon">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-        </svg>
-    </div>
-    
-    <h1 class="cancelled-title">Payment Cancelled</h1>
-    <p class="cancelled-message">
-        No worries! Your payment was not processed and you haven't been charged anything.
-    </p>
-    
-    <a href="{% url 'hosting:signup' %}" class="btn btn-primary">
-        Try Again
-    </a>
-    
-    <a href="{% url 'pages:home' %}" class="btn-link">
-        ← Back to Home
-    </a>
-    
-    <div class="help-section">
-        <p>Having trouble with payment?</p>
-        <p>Contact us at <a href="mailto:support@djangify.com">support@djangify.com</a></p>
+<div class="min-h-screen bg-slate-50 py-12 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-md mx-auto text-center">
+        
+        <!-- Warning Icon -->
+        <div class="w-20 h-20 bg-amber-100 rounded-full flex items-center justify-center mx-auto mb-6">
+            <svg class="w-10 h-10 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+            </svg>
+        </div>
+        
+        <!-- Heading -->
+        <h1 class="text-3xl font-bold text-slate-900 mb-3">Payment Cancelled</h1>
+        <p class="text-lg text-slate-600 mb-8">
+            No worries! Your payment was not processed and you haven't been charged anything.
+        </p>
+        
+        <!-- Action Buttons -->
+        <div class="flex flex-col gap-4">
+            <a href="{% url 'hosting:signup' %}" class="inline-flex items-center justify-center px-6 py-3 bg-slate-900 text-white font-semibold rounded-lg hover:bg-slate-800 transition-colors">
+                Try Again
+            </a>
+            <a href="{% url 'pages:home' %}" class="inline-flex items-center justify-center text-slate-600 hover:text-slate-900 transition-colors">
+                ← Back to Home
+            </a>
+        </div>
+        
+        <!-- Help Section -->
+        <div class="mt-12 pt-8 border-t border-slate-200">
+            <p class="text-slate-500 text-sm">Having trouble with payment?</p>
+            <p class="text-slate-600 text-sm">
+                Contact us at 
+                <a href="mailto:support@djangify.com" class="text-slate-900 hover:underline">support@djangify.com</a>
+            </p>
+        </div>
+        
     </div>
 </div>
 {% endblock %}
