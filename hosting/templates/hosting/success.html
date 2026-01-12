@@ -1,0 +1,290 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}{{ page_title }}{% endblock %}
+
+{% block extra_css %}
+<style>
+    .success-container {
+        max-width: 600px;
+        margin: 3rem auto;
+        padding: 2rem;
+        text-align: center;
+    }
+    
+    .success-icon {
+        width: 80px;
+        height: 80px;
+        background: #10b981;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 1.5rem;
+        animation: scaleIn 0.5s ease-out;
+    }
+    
+    .success-icon svg {
+        width: 40px;
+        height: 40px;
+        color: white;
+    }
+    
+    @keyframes scaleIn {
+        from {
+            transform: scale(0);
+            opacity: 0;
+        }
+        to {
+            transform: scale(1);
+            opacity: 1;
+        }
+    }
+    
+    .success-title {
+        font-size: 2rem;
+        color: #111827;
+        margin-bottom: 1rem;
+    }
+    
+    .success-message {
+        font-size: 1.125rem;
+        color: #6b7280;
+        margin-bottom: 2rem;
+    }
+    
+    .store-url-box {
+        background: #f0fdf4;
+        border: 1px solid #bbf7d0;
+        border-radius: 0.75rem;
+        padding: 1.5rem;
+        margin-bottom: 2rem;
+    }
+    
+    .store-url-label {
+        font-size: 0.875rem;
+        color: #6b7280;
+        margin-bottom: 0.5rem;
+    }
+    
+    .store-url {
+        font-size: 1.25rem;
+        font-weight: 600;
+        color: #059669;
+        word-break: break-all;
+    }
+    
+    .store-url a {
+        color: #059669;
+        text-decoration: none;
+    }
+    
+    .store-url a:hover {
+        text-decoration: underline;
+    }
+    
+    .next-steps {
+        background: #f9fafb;
+        border-radius: 0.75rem;
+        padding: 1.5rem;
+        text-align: left;
+        margin-bottom: 2rem;
+    }
+    
+    .next-steps h3 {
+        font-size: 1.125rem;
+        color: #111827;
+        margin: 0 0 1rem 0;
+    }
+    
+    .next-steps ol {
+        margin: 0;
+        padding-left: 1.5rem;
+        color: #4b5563;
+    }
+    
+    .next-steps li {
+        margin-bottom: 0.75rem;
+        line-height: 1.5;
+    }
+    
+    .next-steps li:last-child {
+        margin-bottom: 0;
+    }
+    
+    .next-steps li strong {
+        color: #111827;
+    }
+    
+    .loading-indicator {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.75rem;
+        color: #6b7280;
+        margin-bottom: 1.5rem;
+        padding: 1rem;
+        background: #f3f4f6;
+        border-radius: 0.5rem;
+    }
+    
+    .spinner {
+        width: 20px;
+        height: 20px;
+        border: 3px solid #e5e7eb;
+        border-top-color: #6366f1;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+        flex-shrink: 0;
+    }
+    
+    @keyframes spin {
+        to { transform: rotate(360deg); }
+    }
+    
+    .btn {
+        display: inline-block;
+        padding: 0.875rem 1.75rem;
+        border-radius: 0.5rem;
+        font-weight: 600;
+        text-decoration: none;
+        transition: all 0.2s;
+        font-size: 1rem;
+    }
+    
+    .btn-primary {
+        background: #6366f1;
+        color: white;
+    }
+    
+    .btn-primary:hover {
+        background: #4f46e5;
+        color: white;
+    }
+    
+    .btn-secondary {
+        background: #f3f4f6;
+        color: #374151;
+    }
+    
+    .btn-secondary:hover {
+        background: #e5e7eb;
+        color: #374151;
+    }
+    
+    .btn-group {
+        display: flex;
+        gap: 1rem;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+    
+    .support-note {
+        margin-top: 2rem;
+        font-size: 0.875rem;
+        color: #9ca3af;
+    }
+    
+    .support-note a {
+        color: #6366f1;
+        text-decoration: none;
+    }
+    
+    .support-note a:hover {
+        text-decoration: underline;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="success-container">
+    <div class="success-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7" />
+        </svg>
+    </div>
+    
+    <h1 class="success-title">Payment Successful!</h1>
+    <p class="success-message">Thank you for signing up. Your store is being created now.</p>
+    
+    <div class="loading-indicator" id="loading-indicator">
+        <div class="spinner"></div>
+        <span>Setting up your store... This usually takes 30-60 seconds.</span>
+    </div>
+    
+    {% if store_url %}
+    <div class="store-url-box">
+        <div class="store-url-label">Your store will be available at:</div>
+        <div class="store-url">
+            <a href="{{ store_url }}" target="_blank" rel="noopener">{{ store_url }}</a>
+        </div>
+    </div>
+    {% endif %}
+    
+    <div class="next-steps">
+        <h3>What happens next?</h3>
+        <ol>
+            <li><strong>Check your email</strong> — We're sending your login details to the email you provided.</li>
+            <li><strong>Wait a moment</strong> — Your store is being set up automatically. It usually takes less than a minute.</li>
+            <li><strong>Log in</strong> — Use the credentials in your email to access your store's admin panel.</li>
+            <li><strong>Start selling!</strong> — Add your products, customise your store, and share it with the world.</li>
+        </ol>
+    </div>
+    
+    <div class="btn-group">
+        {% if store_url %}
+        <a href="{{ store_url }}" class="btn btn-primary" target="_blank" rel="noopener" id="visit-store-btn">
+            Visit Your Store
+        </a>
+        {% endif %}
+        <a href="{% url 'pages:home' %}" class="btn btn-secondary">
+            Back to Home
+        </a>
+    </div>
+    
+    <p class="support-note">
+        Questions? Contact us at <a href="mailto:support@djangify.com">support@djangify.com</a>
+    </p>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+{% if store_url %}
+<script>
+(function() {
+    const loadingIndicator = document.getElementById('loading-indicator');
+    const visitBtn = document.getElementById('visit-store-btn');
+    let checkCount = 0;
+    const maxChecks = 12;
+    const checkInterval = 10000; // 10 seconds
+    
+    function checkStoreReady() {
+        if (checkCount >= maxChecks) {
+            loadingIndicator.innerHTML = '<span style="color: #059669;">✓ Your store should be ready. Check your email for login details!</span>';
+            return;
+        }
+        
+        // Try to fetch the store (we can't read the response due to CORS, but we can detect if it responds)
+        fetch('{{ store_url }}/health/', { 
+            method: 'HEAD',
+            mode: 'no-cors'
+        })
+        .then(function() {
+            // If we get here, the store is responding
+            loadingIndicator.innerHTML = '<span style="color: #059669;">✓ Your store is ready!</span>';
+            if (visitBtn) {
+                visitBtn.style.animation = 'pulse 2s infinite';
+            }
+        })
+        .catch(function() {
+            checkCount++;
+            setTimeout(checkStoreReady, checkInterval);
+        });
+    }
+    
+    // Start checking after 5 seconds
+    setTimeout(checkStoreReady, 5000);
+})();
+</script>
+{% endif %}
+{% endblock %}

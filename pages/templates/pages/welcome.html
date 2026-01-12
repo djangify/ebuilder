@@ -18,12 +18,13 @@
         
         <p class="text-lg text-gray-600 mb-8">
             Your ecommerce store is ready! Log in to the admin panel to start adding products, 
-            customize your pages, and launch your business.
+            create your pages, and launch your business.
         </p>
         
         <div class="flex flex-col sm:flex-row gap-4 justify-center">
             <a href="{% url 'admin:index' %}" 
-               class="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 transition-colors">
+              class="inline-flex items-center uppercase border bg-[color:var(--color-light)] border-[color:var(--color-accent)] text-[color:var(--color-font-main)] text-xs sm:text-sm px-5 py-2 rounded font-bold hover:bg-[color:var(--color-secondary)] hover:border-[color:var(--color-secondary)] hover:text-[color:var(--font-main)] transition">
+
                 <svg class="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
                 </svg>
@@ -56,7 +57,7 @@
                 </li>
                 <li class="flex items-start">
                     <span class="text-indigo-600 mr-2">4.</span>
-                    Customize your site settings
+                    Configure your site settings
                 </li>
             </ul>
         </div>

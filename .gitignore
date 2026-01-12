@@ -62,3 +62,5 @@ data/logs/*.log
 
 # Lighthouse / Chrome audit reports
 chromewebdata_*.report.html
+
+

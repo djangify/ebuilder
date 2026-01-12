@@ -23,11 +23,12 @@ urlpatterns = [
         {"sitemaps": sitemaps},
         name="django.contrib.sitemaps.views.sitemap",
     ),
-    path("", include("infopages.urls")),  # this is okay because it uses specific slugs
     # Robots.txt
     path("robots.txt", project_views.robots_txt, name="robots_txt"),
     # Pages app - handles homepage and dynamic pages (MUST BE LAST)
+    path("", include("hosting.urls")),
     path("", include("pages.urls")),
+    path("", include("infopages.urls")),  # this is okay because it uses specific slugs
 ]
 
 # Error handlers

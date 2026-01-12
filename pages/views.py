@@ -66,9 +66,10 @@ def home_view(request):
     sections = list(page.sections.filter(published=True))
     three_columns = list(page.three_columns.filter(published=True))
     galleries = list(page.galleries.filter(published=True))
+    faq_blocks = list(page.faqs.filter(published=True))
 
     content_blocks = sorted(
-        sections + three_columns + galleries,
+        sections + three_columns + galleries + faq_blocks,
         key=lambda block: block.order,
     )
 

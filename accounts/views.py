@@ -85,7 +85,7 @@ def delete_account_view(request):
             user.delete()
             logout(request)
             messages.success(request, "Your account has been permanently deleted.")
-            return redirect("core:home")
+            return redirect("pages:home")
         else:
             messages.error(request, "Please type DELETE to confirm account deletion.")
 

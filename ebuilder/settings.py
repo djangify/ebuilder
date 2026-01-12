@@ -13,7 +13,7 @@ env = environ.Env(
     CSRF_TRUSTED_ORIGINS=(list, []),
     CORS_ALLOWED_ORIGINS=(list, []),
 )
-env.read_env(BASE_DIR / ".env")
+env.read_env(str(BASE_DIR / ".env"))
 
 # Security settings
 SECRET_KEY = env("SECRET_KEY", default="unsafe-secret-key-change-in-production")
@@ -24,20 +24,24 @@ ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS", "localhost,127.0.0.1").split(","
 
 
 # CSRF and CORS - read from environment with sensible defaults
-CSRF_TRUSTED_ORIGINS = env("CSRF_TRUSTED_ORIGINS") or [
-    "http://localhost:8000",
-    "http://127.0.0.1:8000",
-    "https://djangify.com",
-    "https://www.djangify.com",
-]
+CSRF_TRUSTED_ORIGINS = env.list(
+    "CSRF_TRUSTED_ORIGINS",
+    default=[
+        "http://localhost:8000",
+        "http://127.0.0.1:8000",
+        "https://djangify.com",
+        "https://www.djangify.com",
+    ],
+)
 
 
-CORS_ALLOWED_ORIGINS = env("CORS_ALLOWED_ORIGINS") or [
-    "http://localhost:8000",
-    "http://127.0.0.1:8000",
-    "https://djangify.com",
-    "https://www.djangify.com",
-]
+CORS_ALLOWED_ORIGINS = env.list(
+    "CORS_ALLOWED_ORIGINS",
+    default=[
+        "https://djangify.com",
+        "https://www.djangify.com",
+    ],
+)
 
 
 # Application definition
@@ -57,6 +61,7 @@ INSTALLED_APPS = [
     "blog",
     "shop",
     "pages",
+    "hosting",
     "allauth",
     "allauth.account",
     "allauth.socialaccount",
@@ -202,9 +207,21 @@ STRIPE_WEBHOOK_SECRET = env("STRIPE_WEBHOOK_SECRET", default="whsec_placeholder"
 CART_SESSION_ID = "cart"
 ADMIN_EMAIL = env("ADMIN_EMAIL", default="admin@example.com")
 
-# Cookie security - set to True in production with HTTPS
+# Cookies
 SESSION_COOKIE_SECURE = env.bool("SESSION_COOKIE_SECURE", default=False)
 CSRF_COOKIE_SECURE = env.bool("CSRF_COOKIE_SECURE", default=False)
+SESSION_COOKIE_HTTPONLY = True
+CSRF_COOKIE_HTTPONLY = False  # required by Django
+
+# HTTPS / proxy
+SECURE_SSL_REDIRECT = True
+SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+USE_X_FORWARDED_HOST = True
+
+# Security headers
+SECURE_BROWSER_XSS_FILTER = True
+SECURE_CONTENT_TYPE_NOSNIFF = True
+SECURE_REFERRER_POLICY = "strict-origin-when-cross-origin"
 
 
 # Email settings - defaults to console for easy local development
@@ -222,16 +239,16 @@ EMAIL_USE_TLS = True
 EMAIL_USE_SSL = False
 DEFAULT_FROM_EMAIL = env("DEFAULT_FROM_EMAIL", default="djangify@djangify.com")
 
-# =============================================================================
+# ================================================================
 # TINYMCE CONFIGURATION (Self-hosted, FREE plugins only)
-# =============================================================================
+# ==================================================================
 
 TINYMCE_DEFAULT_CONFIG = {
     # Core settings
     "height": 500,
     "menubar": "file edit view insert format tools table help",
-    "branding": False,  # Removes "Powered by TinyMCE"
-    "promotion": False,  # Removes upgrade prompts
+    "branding": False,
+    "promotion": False,
     # FREE plugins only - no premium plugins = no console errors
     "plugins": [
         "advlist",  # Advanced list formatting
@@ -291,9 +308,9 @@ TINYMCE_DEFAULT_CONFIG = {
     "remove_script_host": True,
     "document_base_url": "/",
 }
-# =============================================================================
+# ==================================================================
 # LOGGING CONFIGURATION
-# =============================================================================
+# ==================================================================
 
 # Create logs directory path
 LOG_DIR = BASE_DIR / "data" / "logs"
