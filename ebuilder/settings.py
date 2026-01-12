@@ -94,6 +94,7 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
+                "django.contrib.sites.context_processors.site",
                 "shop.context_processors.cart",
                 "pages.context_processors.ebuilder_settings",
                 "pages.context_processors.published_pages",

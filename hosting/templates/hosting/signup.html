@@ -1,343 +1,388 @@
 {% extends "base.html" %}
+{% load static %}
 
-{% block title %}{{ page_title }}{% endblock %}
+{% block title %}Sign Up for Managed Hosting{% endblock %}
+
 
 {% block content %}
-<div class="min-h-screen bg-slate-50 py-12 px-4 sm:px-6 lg:px-8">
-    <div class="max-w-md mx-auto">
+<div class="min-h-screen bg-gradient-to-b from-slate-50 to-white py-12">
+    <div class="container mx-auto px-4 max-w-lg">
         
         <!-- Header -->
         <div class="text-center mb-8">
             <h1 class="text-3xl font-bold text-slate-900 mb-2">Start Your Online Store</h1>
             <p class="text-slate-600">Get your own professional eBuilder store in minutes.</p>
         </div>
-        
+
         <!-- Pricing Card -->
-        <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 mb-8">
-            <div class="text-center mb-6">
-                <div class="flex items-baseline justify-center gap-1">
-                    <span class="text-4xl font-bold text-slate-900">£12</span>
-                    <span class="text-slate-500">/ month</span>
-                </div>
-            </div>
+        <div class="bg-white rounded-2xl shadow-xl border border-slate-200 overflow-hidden mb-8">
             
-            <ul class="space-y-3 text-slate-700">
-                <li class="flex items-center gap-3">
-                    <svg class="w-5 h-5 text-emerald-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                    </svg>
-                    <span>Fully managed hosting</span>
-                </li>
-                <li class="flex items-center gap-3">
-                    <svg class="w-5 h-5 text-emerald-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                    </svg>
-                    <span>Your own subdomain (yourstore.djangify.com)</span>
-                </li>
-                <li class="flex items-center gap-3">
-                    <svg class="w-5 h-5 text-emerald-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                    </svg>
-                    <span>Automatic backups</span>
-                </li>
-                <li class="flex items-center gap-3">
-                    <svg class="w-5 h-5 text-emerald-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                    </svg>
-                    <span>SSL certificate included</span>
-                </li>
-                <li class="flex items-center gap-3">
-                    <svg class="w-5 h-5 text-emerald-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                    </svg>
-                    <span>Email support</span>
-                </li>
-            </ul>
-        </div>
-        
-        <!-- Error Container -->
-        <div id="error-container"></div>
-        
-        <!-- Signup Form -->
-        <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6">
-            <form id="signup-form" class="space-y-6">
-                
-                <!-- Subdomain Field -->
-                <div>
-                    <label for="subdomain" class="block text-sm font-semibold text-slate-900 mb-2">
-                        Choose your subdomain
-                    </label>
-                    <div class="flex">
+            <!-- Price Header -->
+            <div class="bg-gradient-to-r from-indigo-600 to-purple-600 text-white p-6 text-center">
+                <div class="text-4xl font-bold">£12<span class="text-lg font-normal opacity-80">/ month</span></div>
+            </div>
+
+            <!-- Features -->
+            <div class="p-6 border-b border-slate-100">
+                <ul class="space-y-3">
+                    <li class="flex items-center text-slate-700">
+                        <svg class="w-5 h-5 text-green-500 mr-3 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                        </svg>
+                        Fully managed hosting
+                    </li>
+                    <li class="flex items-center text-slate-700">
+                        <svg class="w-5 h-5 text-green-500 mr-3 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                        </svg>
+                        Your own subdomain (yourstore.djangify.com)
+                    </li>
+                    <li class="flex items-center text-slate-700">
+                        <svg class="w-5 h-5 text-green-500 mr-3 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                        </svg>
+                        Automatic backups
+                    </li>
+                    <li class="flex items-center text-slate-700">
+                        <svg class="w-5 h-5 text-green-500 mr-3 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                        </svg>
+                        SSL certificate included
+                    </li>
+                    <li class="flex items-center text-slate-700">
+                        <svg class="w-5 h-5 text-green-500 mr-3 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                        </svg>
+                        Email support
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Signup Form -->
+            <div class="p-6">
+                <form id="signup-form" method="POST">
+                    {% csrf_token %}
+                    
+                    <!-- Subdomain Field -->
+                    <div class="mb-4">
+                        <label for="subdomain" class="block text-sm font-medium text-slate-700 mb-1">
+                            Choose your subdomain
+                        </label>
+                        <div class="flex rounded-lg shadow-sm">
+                            <input 
+                                type="text" 
+                                id="subdomain" 
+                                name="subdomain"
+                                class="flex-1 min-w-0 block w-full px-4 py-3 rounded-l-lg border border-slate-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-slate-900"
+                                placeholder="yourstore"
+                                required
+                                pattern="[a-z0-9][a-z0-9-]*[a-z0-9]|[a-z0-9]"
+                                minlength="2"
+                                maxlength="63"
+                            >
+                            <span class="inline-flex items-center px-4 rounded-r-lg border border-l-0 border-slate-300 bg-slate-50 text-slate-500 text-sm">
+                                .djangify.com
+                            </span>
+                        </div>
+                        <p id="subdomain-feedback" class="mt-1 text-sm text-slate-500">
+                            Use lowercase letters, numbers, and hyphens only.
+                        </p>
+                    </div>
+
+                    <!-- Store Name Field -->
+                    <div class="mb-4">
+                        <label for="site_name" class="block text-sm font-medium text-slate-700 mb-1">
+                            Store name
+                        </label>
                         <input 
                             type="text" 
-                            id="subdomain" 
-                            name="subdomain" 
-                            class="flex-1 min-w-0 px-4 py-3 border border-slate-300 rounded-l-lg focus:ring-2 focus:ring-slate-900 focus:border-slate-900 outline-none transition-colors"
-                            placeholder="your-store-name"
+                            id="site_name" 
+                            name="site_name"
+                            class="block w-full px-4 py-3 rounded-lg border border-slate-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-slate-900"
+                            placeholder="Jane's Online Shop"
                             required
-                            autocomplete="off"
-                            autocapitalize="none"
-                            spellcheck="false"
+                            maxlength="255"
                         >
-                        <span class="inline-flex items-center px-4 py-3 bg-slate-100 border border-l-0 border-slate-300 rounded-r-lg text-slate-600 text-sm">
-                            .{{ ebuilder_domain }}
+                        <p class="mt-1 text-sm text-slate-500">
+                            This will appear as your store's title.
+                        </p>
+                    </div>
+
+                    <!-- Email Field -->
+                    <div class="mb-6">
+                        <label for="email" class="block text-sm font-medium text-slate-700 mb-1">
+                            Email address
+                        </label>
+                        <input 
+                            type="email" 
+                            id="email" 
+                            name="email"
+                            class="block w-full px-4 py-3 rounded-lg border border-slate-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-slate-900"
+                            placeholder="you@example.com"
+                            required
+                        >
+                        <p class="mt-1 text-sm text-slate-500">
+                            We'll send your login details here.
+                        </p>
+                    </div>
+
+                    <!-- Error Message -->
+                    <div id="error-message" class="hidden mb-4 p-4 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm">
+                    </div>
+
+                    <!-- Submit Button -->
+                    <button 
+                        type="submit" 
+                        id="submit-btn"
+                        disabled
+                        class="w-full bg-indigo-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition-colors disabled:bg-slate-300 disabled:cursor-not-allowed"
+                    >
+                        <span id="btn-text">Continue to Payment</span>
+                        <span id="btn-loading" class="hidden">
+                            <svg class="animate-spin inline w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24">
+                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
+                            </svg>
+                            Processing...
                         </span>
-                    </div>
-                    <div id="subdomain-status" class="mt-2 text-sm hidden">
-                        <span class="status-icon"></span>
-                        <span class="status-text"></span>
-                    </div>
-                    <p class="mt-2 text-sm text-slate-500">Use lowercase letters, numbers, and hyphens only.</p>
-                </div>
-                
-                <!-- Store Name Field -->
-                <div>
-                    <label for="site_name" class="block text-sm font-semibold text-slate-900 mb-2">
-                        Store name
-                    </label>
-                    <input 
-                        type="text" 
-                        id="site_name" 
-                        name="site_name" 
-                        class="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-900 focus:border-slate-900 outline-none transition-colors"
-                        placeholder="Jane's Digital Shop"
-                        required
-                        maxlength="255"
-                    >
-                    <p class="mt-2 text-sm text-slate-500">This will appear as your store's title.</p>
-                </div>
-                
-                <!-- Email Field -->
-                <div>
-                    <label for="email" class="block text-sm font-semibold text-slate-900 mb-2">
-                        Email address
-                    </label>
-                    <input 
-                        type="email" 
-                        id="email" 
-                        name="email" 
-                        class="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-900 focus:border-slate-900 outline-none transition-colors"
-                        placeholder="you@example.com"
-                        required
-                    >
-                    <p class="mt-2 text-sm text-slate-500">We'll send your login details here.</p>
-                </div>
-                
-                <!-- Submit Button -->
-                <button 
-                    type="submit" 
-                    id="submit-btn" 
-                    class="w-full py-3 px-4 bg-slate-900 text-white font-semibold rounded-lg hover:bg-slate-800 focus:ring-2 focus:ring-offset-2 focus:ring-slate-900 transition-colors disabled:bg-slate-400 disabled:cursor-not-allowed"
-                    disabled
-                >
-                    Continue to Payment
-                </button>
-                
-                <!-- Secure Note -->
-                <p class="text-center text-sm text-slate-500 flex items-center justify-center gap-2">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
-                    </svg>
-                    Secure payment via Stripe. Cancel anytime.
-                </p>
-            </form>
+                    </button>
+
+                    <p class="mt-4 text-center text-xs text-slate-500">
+                        <svg class="inline w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+                        </svg>
+                        Secure payment via Stripe. Cancel anytime.
+                    </p>
+                </form>
+            </div>
         </div>
-        
     </div>
 </div>
-{% endblock %}
 
-{% block extra_js %}
 <script>
 (function() {
-    const PROVISIONER_API = '{{ provisioner_api_url }}';
-    const EBUILDER_DOMAIN = '{{ ebuilder_domain }}';
+    // Configuration - this should match your Django settings
+    const PROVISIONER_API_URL = '{{ provisioner_api_url|default:"https://provisioner.djangify.com/api" }}';
     
+    // DOM elements
     const form = document.getElementById('signup-form');
     const subdomainInput = document.getElementById('subdomain');
     const siteNameInput = document.getElementById('site_name');
     const emailInput = document.getElementById('email');
     const submitBtn = document.getElementById('submit-btn');
-    const subdomainStatus = document.getElementById('subdomain-status');
-    const errorContainer = document.getElementById('error-container');
+    const btnText = document.getElementById('btn-text');
+    const btnLoading = document.getElementById('btn-loading');
+    const feedback = document.getElementById('subdomain-feedback');
+    const errorMessage = document.getElementById('error-message');
     
+    // State
+    let subdomainValid = false;
     let subdomainAvailable = false;
     let checkTimeout = null;
     
+    // Helper to show error
     function showError(message) {
-        errorContainer.innerHTML = '<div class="mb-4 p-4 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm">' + escapeHtml(message) + '</div>';
+        errorMessage.textContent = message;
+        errorMessage.classList.remove('hidden');
     }
     
-    function clearErrors() {
-        errorContainer.innerHTML = '';
+    function hideError() {
+        errorMessage.classList.add('hidden');
     }
     
-    function escapeHtml(text) {
-        const div = document.createElement('div');
-        div.textContent = text;
-        return div.innerHTML;
-    }
-    
-    function updateSubmitButton() {
-        const subdomainValid = subdomainInput.value.length > 0 && subdomainAvailable;
-        const siteNameValid = siteNameInput.value.trim().length > 0;
-        const emailValid = emailInput.validity.valid && emailInput.value.length > 0;
-        submitBtn.disabled = !(subdomainValid && siteNameValid && emailValid);
-    }
-    
-    function normalizeSubdomain(value) {
-        return value.toLowerCase().replace(/[^a-z0-9-]/g, '').replace(/^-+|-+$/g, '').substring(0, 63);
-    }
-    
-    function showSubdomainStatus(type, message) {
-        subdomainStatus.classList.remove('hidden');
-        subdomainStatus.className = 'mt-2 text-sm flex items-center gap-2';
+    // Validate subdomain format
+    function validateSubdomainFormat(subdomain) {
+        subdomain = subdomain.toLowerCase().trim();
         
-        let icon = '';
-        if (type === 'available') {
-            subdomainStatus.classList.add('text-emerald-600');
-            icon = '<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>';
-            subdomainInput.classList.remove('border-red-300');
-            subdomainInput.classList.add('border-emerald-300');
-        } else if (type === 'taken') {
-            subdomainStatus.classList.add('text-red-600');
-            icon = '<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>';
-            subdomainInput.classList.remove('border-emerald-300');
-            subdomainInput.classList.add('border-red-300');
-        } else {
-            subdomainStatus.classList.add('text-slate-500');
-            icon = '<svg class="w-4 h-4 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>';
-            subdomainInput.classList.remove('border-emerald-300', 'border-red-300');
+        // Check length
+        if (subdomain.length < 2) {
+            return { valid: false, message: 'Subdomain must be at least 2 characters.' };
+        }
+        if (subdomain.length > 63) {
+            return { valid: false, message: 'Subdomain must be 63 characters or less.' };
         }
         
-        subdomainStatus.innerHTML = icon + '<span>' + message + '</span>';
-    }
-    
-    async function checkSubdomain(subdomain) {
-        if (!subdomain || subdomain.length < 2) {
-            subdomainStatus.classList.add('hidden');
-            subdomainInput.classList.remove('border-emerald-300', 'border-red-300');
-            subdomainAvailable = false;
-            updateSubmitButton();
-            return;
+        // Check format
+        if (!/^[a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?$/.test(subdomain)) {
+            return { valid: false, message: 'Use lowercase letters, numbers, and hyphens. Must start and end with a letter or number.' };
         }
         
-        const validFormat = /^[a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?$/.test(subdomain);
-        if (!validFormat) {
-            showSubdomainStatus('taken', 'Invalid format. Use lowercase letters, numbers, and hyphens.');
-            subdomainAvailable = false;
-            updateSubmitButton();
-            return;
-        }
-        
-        const reserved = ['www', 'api', 'admin', 'mail', 'ftp', 'test', 'staging', 'app', 'blog', 'shop', 'store'];
+        // Reserved subdomains
+        const reserved = ['www', 'api', 'admin', 'mail', 'ftp', 'test', 'staging', 'app', 'provisioner', 'docs'];
         if (reserved.includes(subdomain)) {
-            showSubdomainStatus('taken', '"' + subdomain + '" is reserved. Choose another name.');
-            subdomainAvailable = false;
-            updateSubmitButton();
-            return;
+            return { valid: false, message: `"${subdomain}" is reserved. Please choose another.` };
         }
         
-        showSubdomainStatus('checking', 'Checking availability...');
-        
+        return { valid: true, message: '' };
+    }
+    
+    // Check subdomain availability via API
+    async function checkSubdomainAvailability(subdomain) {
         try {
-            const response = await fetch(PROVISIONER_API + '/check-subdomain/', {
+            const response = await fetch(`${PROVISIONER_API_URL}/check-subdomain/`, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ subdomain: subdomain }),
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ subdomain: subdomain })
             });
             
             const data = await response.json();
             
-            if (normalizeSubdomain(subdomainInput.value) !== subdomain) return;
-            
-            if (data.available) {
-                showSubdomainStatus('available', subdomain + '.' + EBUILDER_DOMAIN + ' is available!');
-                subdomainAvailable = true;
+            if (response.ok) {
+                return data;
             } else {
-                showSubdomainStatus('taken', data.error || subdomain + '.' + EBUILDER_DOMAIN + ' is already taken.');
-                subdomainAvailable = false;
+                return { available: false, error: data.error || 'Error checking availability' };
             }
         } catch (error) {
             console.error('Error checking subdomain:', error);
-            showSubdomainStatus('taken', 'Could not check availability. Please try again.');
-            subdomainAvailable = false;
+            return { available: false, error: 'Could not check availability. Please try again.' };
         }
-        
-        updateSubmitButton();
     }
     
-    subdomainInput.addEventListener('input', function(e) {
-        const normalized = normalizeSubdomain(e.target.value);
-        if (normalized !== e.target.value) e.target.value = normalized;
+    // Update subdomain feedback UI
+    function updateSubdomainFeedback(message, type) {
+        feedback.textContent = message;
+        feedback.className = 'mt-1 text-sm ' + {
+            'default': 'text-slate-500',
+            'error': 'text-red-600',
+            'success': 'text-green-600',
+            'loading': 'text-slate-400'
+        }[type];
         
+        // Update input border color
+        subdomainInput.className = subdomainInput.className.replace(
+            /border-(slate|red|green)-\d+/g, 
+            type === 'error' ? 'border-red-500' : type === 'success' ? 'border-green-500' : 'border-slate-300'
+        );
+    }
+    
+    // Check if form is valid and update button state
+    function updateFormState() {
+        const isValid = subdomainValid && 
+                       subdomainAvailable && 
+                       siteNameInput.value.trim().length > 0 && 
+                       emailInput.value.trim().length > 0 &&
+                       emailInput.validity.valid;
+        
+        submitBtn.disabled = !isValid;
+    }
+    
+    // Handle subdomain input change
+    async function handleSubdomainChange() {
+        const subdomain = subdomainInput.value.toLowerCase().trim();
+        
+        // Clear previous timeout
+        if (checkTimeout) clearTimeout(checkTimeout);
+        
+        // Reset state
+        subdomainValid = false;
         subdomainAvailable = false;
-        updateSubmitButton();
+        hideError();
+        updateFormState();
         
-        clearTimeout(checkTimeout);
-        if (normalized) {
-            checkTimeout = setTimeout(function() { checkSubdomain(normalized); }, 500);
-        } else {
-            subdomainStatus.classList.add('hidden');
-            subdomainInput.classList.remove('border-emerald-300', 'border-red-300');
-        }
-    });
-    
-    subdomainInput.addEventListener('blur', function(e) {
-        const subdomain = normalizeSubdomain(e.target.value);
-        if (subdomain && !subdomainAvailable) {
-            clearTimeout(checkTimeout);
-            checkSubdomain(subdomain);
-        }
-    });
-    
-    siteNameInput.addEventListener('input', updateSubmitButton);
-    emailInput.addEventListener('input', updateSubmitButton);
-    
-    form.addEventListener('submit', async function(e) {
-        e.preventDefault();
-        clearErrors();
-        
-        if (!subdomainAvailable) {
-            showError('Please choose an available subdomain.');
+        if (subdomain.length === 0) {
+            updateSubdomainFeedback('Use lowercase letters, numbers, and hyphens only.', 'default');
             return;
         }
         
-        const subdomain = normalizeSubdomain(subdomainInput.value);
+        // Validate format first
+        const validation = validateSubdomainFormat(subdomain);
+        if (!validation.valid) {
+            updateSubdomainFeedback(validation.message, 'error');
+            return;
+        }
+        
+        subdomainValid = true;
+        updateSubdomainFeedback('Checking availability...', 'loading');
+        
+        // Debounce API call
+        checkTimeout = setTimeout(async () => {
+            const result = await checkSubdomainAvailability(subdomain);
+            
+            if (result.available) {
+                subdomainAvailable = true;
+                updateSubdomainFeedback(`✓ ${subdomain}.djangify.com is available!`, 'success');
+            } else {
+                subdomainAvailable = false;
+                updateSubdomainFeedback(result.error || 'This subdomain is already taken.', 'error');
+            }
+            
+            updateFormState();
+        }, 500);
+    }
+    
+    // Handle form submission
+    async function handleSubmit(e) {
+        e.preventDefault();
+        hideError();
+        
+        // Get form values
+        const subdomain = subdomainInput.value.toLowerCase().trim();
         const siteName = siteNameInput.value.trim();
         const email = emailInput.value.trim();
         
-        if (!subdomain || !siteName || !email) {
-            showError('Please fill in all fields.');
+        // Double-check validation
+        if (!subdomainValid || !subdomainAvailable) {
+            showError('Please enter a valid, available subdomain.');
             return;
         }
         
+        // Show loading state
         submitBtn.disabled = true;
-        submitBtn.innerHTML = '<svg class="w-5 h-5 animate-spin inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>Redirecting to payment...';
+        btnText.classList.add('hidden');
+        btnLoading.classList.remove('hidden');
         
         try {
-            const response = await fetch(PROVISIONER_API + '/create-checkout/', {
+            // Create checkout session via provisioner API
+            const response = await fetch(`${PROVISIONER_API_URL}/create-checkout/`, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ subdomain: subdomain, site_name: siteName, email: email }),
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    subdomain: subdomain,
+                    site_name: siteName,
+                    email: email
+                })
             });
             
             const data = await response.json();
             
             if (response.ok && data.checkout_url) {
+                // Redirect to Stripe Checkout
                 window.location.href = data.checkout_url;
             } else {
-                throw new Error(data.error || (data.subdomain && data.subdomain[0]) || 'Failed to create checkout session');
+                showError(data.error || 'Something went wrong. Please try again.');
+                // Reset button
+                btnText.classList.remove('hidden');
+                btnLoading.classList.add('hidden');
+                submitBtn.disabled = false;
             }
         } catch (error) {
             console.error('Checkout error:', error);
-            showError(error.message || 'Something went wrong. Please try again.');
+            showError('Could not connect to payment service. Please try again.');
+            // Reset button
+            btnText.classList.remove('hidden');
+            btnLoading.classList.add('hidden');
             submitBtn.disabled = false;
-            submitBtn.textContent = 'Continue to Payment';
         }
+    }
+    
+    // Event listeners
+    subdomainInput.addEventListener('input', function() {
+        // Convert to lowercase as user types
+        this.value = this.value.toLowerCase().replace(/[^a-z0-9-]/g, '');
+        handleSubdomainChange();
     });
     
-    updateSubmitButton();
+    siteNameInput.addEventListener('input', updateFormState);
+    emailInput.addEventListener('input', updateFormState);
+    
+    form.addEventListener('submit', handleSubmit);
+    
+    // Initial state
+    updateFormState();
 })();
 </script>
 {% endblock %}

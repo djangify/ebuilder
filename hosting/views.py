@@ -14,65 +14,40 @@ from django.conf import settings
 from django.views.decorators.http import require_GET
 
 
-# Configuration - pulls from Django settings with sensible defaults
-PROVISIONER_API_URL = getattr(
-    settings, "PROVISIONER_API_URL", "https://provisioner.ebuilder.host/api"
-)
-EBUILDER_DOMAIN = getattr(settings, "EBUILDER_DOMAIN", "djangify.com")
-
-
 def signup(request):
     """
-    Main signup page with form for subdomain, store name, and email.
-
-    The form uses JavaScript to:
-    1. Check subdomain availability via provisioner API
-    2. Create Stripe checkout session via provisioner API
-    3. Redirect to Stripe Checkout
+    Main signup page for managed hosting.
+    The form is handled client-side with JavaScript that calls the provisioner API.
     """
     context = {
-        "provisioner_api_url": PROVISIONER_API_URL,
-        "ebuilder_domain": EBUILDER_DOMAIN,
-        "page_title": "Sign Up for Managed Hosting",
+        "provisioner_api_url": getattr(
+            settings, "PROVISIONER_API_URL", "https://provisioner.djangify.com/api"
+        ),
+        "ebuilder_domain": getattr(settings, "EBUILDER_DOMAIN", "djangify.com"),
     }
     return render(request, "hosting/signup.html", context)
 
 
-@require_GET
 def signup_success(request):
     """
-    Success page shown after Stripe checkout completes.
-
-    Query params:
-    - session_id: Stripe checkout session ID
-    - subdomain: The subdomain they chose
-
-    The provisioner handles the actual container creation via webhook.
+    Success page after Stripe checkout completes.
+    Stripe redirects here with session_id parameter.
     """
-    session_id = request.GET.get("session_id", "")
-    subdomain = request.GET.get("subdomain", "")
-
-    # Construct the store URL for display
-    store_url = f"https://{subdomain}.{EBUILDER_DOMAIN}" if subdomain else None
+    session_id = request.GET.get("session_id")
+    subdomain = request.GET.get("subdomain")
 
     context = {
         "session_id": session_id,
         "subdomain": subdomain,
-        "store_url": store_url,
-        "ebuilder_domain": EBUILDER_DOMAIN,
-        "page_title": "Welcome to eBuilder!",
+        "store_url": f"https://{subdomain}.{getattr(settings, 'EBUILDER_DOMAIN', 'djangify.com')}"
+        if subdomain
+        else None,
     }
-    return render(request, "hosting/success.html", context)
+    return render(request, "hosting/signup_success.html", context)
 
 
-@require_GET
 def signup_cancelled(request):
     """
     Page shown when user cancels Stripe checkout.
-
-    No payment was taken - just offer them a way to try again.
     """
-    context = {
-        "page_title": "Payment Cancelled",
-    }
-    return render(request, "hosting/cancelled.html", context)
+    return render(request, "hosting/signup_cancelled.html")
