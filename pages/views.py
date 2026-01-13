@@ -130,9 +130,7 @@ def gallery_view(request):
         "galleries": galleries,
     }
 
-    return render(request, "pages/gallery/gallery.html", context)
-
-    return render(request, "pages/gallery/gallery.html", context)
+    return render(request, "pages/gallery/gallery_home.html", context)
 
 
 def detail_view(request, slug):
