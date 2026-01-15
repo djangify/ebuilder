@@ -20,7 +20,7 @@ SECRET_KEY = env("SECRET_KEY", default="unsafe-secret-key-change-in-production")
 DEBUG = env("DEBUG")
 SITE_URL = "https://www.djangify.com"
 
-ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS", "localhost,127.0.0.1").split(",")
+ALLOWED_HOSTS = ["*"]
 
 
 # CSRF and CORS - read from environment with sensible defaults
@@ -219,7 +219,7 @@ SESSION_COOKIE_HTTPONLY = True
 CSRF_COOKIE_HTTPONLY = False  # required by Django
 
 # HTTPS / proxy
-SECURE_SSL_REDIRECT = True
+SECURE_SSL_REDIRECT = False
 SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 USE_X_FORWARDED_HOST = True
 

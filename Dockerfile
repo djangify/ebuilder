@@ -25,10 +25,10 @@ RUN chmod +x /entrypoint.sh
 # Create data directories
 RUN mkdir -p /app/media /app/db /app/staticfiles
 
-# Collect static files DURING BUILD (important for WhiteNoise)
+# COLLECT STATIC FILES DURING BUILD
 RUN python manage.py collectstatic --noinput
 
-# Create non-root user for security
+# Non-root user
 RUN useradd -m appuser && chown -R appuser:appuser /app
 USER appuser
 

@@ -5,6 +5,8 @@ services:
     restart: unless-stopped
     env_file:
       - .env
+    environment:
+      - ALLOWED_HOSTS=*
     volumes:
       - ./data/media:/app/media
       - ./data/db:/app/db
