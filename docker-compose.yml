@@ -1,16 +1,15 @@
 services:
   web:
-    image: djangify/ebuilder-web:latest
+    build: .
     container_name: ebuilder_web
     restart: unless-stopped
     env_file:
       - .env
-    environment:
-      - ALLOWED_HOSTS=*
     volumes:
-      - ./data/media:/app/media
       - ./data/db:/app/db
+      - ./data/media:/app/media
       - ./data/logs:/app/logs
+      - ./staticfiles:/app/staticfiles
     ports:
       - "8000:8000"
     healthcheck:

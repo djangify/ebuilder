@@ -5,7 +5,7 @@ ENV PYTHONUNBUFFERED=1
 
 WORKDIR /app
 
-# System dependencies (curl needed for healthcheck)
+# System dependencies
 RUN apt-get update && apt-get install -y \
   build-essential \
   curl \
@@ -18,15 +18,12 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Application code
 COPY . /app/
 
-# Copy entrypoint script
+# Entrypoint
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 
-# Create data directories
-RUN mkdir -p /app/media /app/db /app/staticfiles
-
-# COLLECT STATIC FILES DURING BUILD
-RUN python manage.py collectstatic --noinput
+# Required directories
+RUN mkdir -p /app/media /app/db /app/logs /app/staticfiles
 
 # Non-root user
 RUN useradd -m appuser && chown -R appuser:appuser /app
