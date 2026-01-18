@@ -22,6 +22,8 @@ SITE_URL = "https://www.djangify.com"
 
 ALLOWED_HOSTS = ["*"]
 
+SECURE_HSTS_SECONDS = 31536000
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True
 
 # CSRF and CORS - read from environment with sensible defaults
 CSRF_TRUSTED_ORIGINS = env.list(
