@@ -1,57 +1,46 @@
-{% if homepage_images %}
-    {% if block.title %}
-        <h2 class="text-2xl font-semibold mb-10 text-center tracking-tight">
-            {{ block.title }}
-        </h2>
-    {% endif %}
+{% extends "base.html" %}
 
-    <div class="max-w-7xl mx-auto px-4 mb-12">
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-2 auto-rows-[280px]">
+{% block content %}
+<div class="max-w-7xl mx-auto px-4 py-12">
 
-            {% for image in homepage_images %}
-                {% cycle 'one' 'two' 'three' 'four' 'five' 'six' as position silent %}
-                <figure
-                    class="relative group overflow-hidden bg-[color:var(--color-light)]
-                    {% if position == 'one' %}
-                        sm:col-span-1 lg:col-span-3
-                    {% elif position == 'two' %}
-                        sm:col-span-2 lg:col-span-6
-                    {% elif position == 'three' %}
-                        sm:col-span-1 lg:col-span-3
-                    {% elif position == 'four' %}
-                        sm:col-span-2 lg:col-span-6
-                    {% elif position == 'five' %}
-                        sm:col-span-1 lg:col-span-3
-                    {% else %}
-                        sm:col-span-1 lg:col-span-3
-                    {% endif %}
-                    "
-                >
-                    <a
-                        hx-get="{% url 'pages:gallery_image_modal' image.pk %}"
-                        hx-target="#gallery-modal"
-                        hx-swap="innerHTML"
-                        class="block w-full h-full cursor-zoom-in"
-                    >
-                        <img
-                            src="{{ image.image.url }}"
-                            alt="{{ image.alt_text }}"
-                            class="w-full h-full object-cover"
-                            loading="lazy"
-                        >
-                    </a>
-                </figure>
-            {% endfor %}
+    <h1 class="text-3xl font-bold text-center mb-12">Gallery</h1>
 
-        </div>
-    </div>
-
-    <div class="text-center">
-        {% if page %}
-            <a href="{% url 'pages:gallery' %}"
-            class="inline-block mb-8 px-6 py-3 border border-black text-black hover:bg-black hover:text-white transition">
-                SEE MORE IMAGES
-            </a>
+    {% for block in galleries %}
+        {% if block.title %}
+            <h2 class="text-2xl font-semibold mt-8 mb-8 text-center tracking-tight">
+                {{ block.title }}
+            </h2>
         {% endif %}
-    </div>
-{% endif %}
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-2 auto-rows-[280px] mb-16">
+            {% for image in block.images.all %}
+                {% if image.published %}
+                    {% cycle 'one' 'two' 'three' 'four' 'five' 'six' as position silent %}
+                    <figure class="relative group overflow-hidden bg-[color:var(--color-light)]
+                        {% if position == 'one' %}sm:col-span-1 lg:col-span-3
+                        {% elif position == 'two' %}sm:col-span-2 lg:col-span-6
+                        {% elif position == 'three' %}sm:col-span-1 lg:col-span-3
+                        {% elif position == 'four' %}sm:col-span-2 lg:col-span-6
+                        {% elif position == 'five' %}sm:col-span-1 lg:col-span-3
+                        {% else %}sm:col-span-1 lg:col-span-3{% endif %}">
+                        <a hx-get="{% url 'pages:gallery_image_modal' image.pk %}"
+                           hx-target="#gallery-modal"
+                           hx-swap="innerHTML"
+                           class="block w-full h-full cursor-zoom-in">
+                            <img src="{{ image.image.url }}"
+                                 alt="{{ image.alt_text }}"
+                                 class="w-full h-full object-cover"
+                                 loading="lazy">
+                        </a>
+                    </figure>
+                {% endif %}
+            {% endfor %}
+        </div>
+    {% empty %}
+        <p class="text-center text-gray-500">No gallery images yet.</p>
+    {% endfor %}
+
+</div>
+
+<div id="gallery-modal" class="fixed inset-0 z-50 hidden bg-black/80"></div>
+{% endblock %}

@@ -58,16 +58,12 @@ class SiteSettings(models.Model):
         default=False,
         help_text="Show the latest 3 blog posts on the homepage.",
     )
-    show_gallery_on_homepage = models.BooleanField(
-        default=False,
-        help_text="Show gallery images on the homepage.",
-    )
 
     # === Navbar / Branding ===
     business_name = models.CharField(
         "Business Name",
         max_length=150,
-        default="My Site",
+        default="My eCommerce Site",
         help_text="Displayed in the navbar next to the logo.",
     )
     logo_image = models.ImageField(
@@ -281,7 +277,12 @@ class ThreeColumnBlock(models.Model):
 
 
 class GalleryBlock(models.Model):
-    page = models.ForeignKey(Page, on_delete=models.CASCADE, related_name="galleries")
+    page = models.ForeignKey(
+        Page,
+        on_delete=models.CASCADE,
+        related_name="galleries",
+        help_text="This gallery will display on the selected page. Use 'order' to control its position relative to other content blocks.",
+    )
     title = models.CharField(max_length=200, blank=True)
     order = models.PositiveIntegerField(default=0)
     published = models.BooleanField(default=True)

@@ -243,7 +243,6 @@ class SiteSettingsAdmin(admin.ModelAdmin):
                     "homepage_mode",
                     "show_shop_on_homepage",
                     "show_blog_on_homepage",
-                    "show_gallery_on_homepage",
                 ),
                 "description": "Control what appears on the homepage.",
             },
