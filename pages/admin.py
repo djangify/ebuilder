@@ -265,8 +265,11 @@ class SiteSettingsAdmin(admin.ModelAdmin):
                 "fields": (
                     "default_meta_title",
                     "default_meta_description",
+                    "default_meta_keywords",
+                    "og_image",
+                    "facebook_app_id",
                 ),
-                "description": "Default SEO metadata for pages without their own.",
+                "description": "Default SEO metadata and social sharing settings.",
             },
         ),
     )

@@ -127,10 +127,31 @@ class SiteSettings(models.Model):
         help_text="Default meta title for pages without their own.",
     )
     default_meta_description = models.CharField(
+        "Default Meta Description",
+        max_length=160,
+        blank=True,
+        default="Welcome to our online store",
+        help_text="Default description for pages without their own (max 160 chars)",
+    )
+    default_meta_keywords = models.CharField(
+        "Default Meta Keywords",
         max_length=255,
         blank=True,
+        default="online store, digital products",
+        help_text="Default keywords for SEO",
+    )
+    og_image = models.ImageField(
+        "Default OG Image",
+        upload_to="site/og/",
+        blank=True,
         null=True,
-        help_text="Default meta description for pages without their own.",
+        help_text="Default social sharing image (1200x630px recommended)",
+    )
+    facebook_app_id = models.CharField(
+        "Facebook App ID",
+        max_length=50,
+        blank=True,
+        help_text="Optional Facebook App ID for social features",
     )
 
     updated = models.DateTimeField(auto_now=True)

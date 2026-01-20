@@ -18,7 +18,7 @@ env.read_env(str(BASE_DIR / ".env"))
 # Security settings
 SECRET_KEY = env("SECRET_KEY", default="unsafe-secret-key-change-in-production")
 DEBUG = env("DEBUG")
-SITE_URL = "https://www.djangify.com"
+SITE_URL = env("SITE_URL", default="http://localhost:8000")
 
 ALLOWED_HOSTS = ["*"]
 
@@ -230,17 +230,6 @@ SECURE_BROWSER_XSS_FILTER = True
 SECURE_CONTENT_TYPE_NOSNIFF = True
 SECURE_REFERRER_POLICY = "strict-origin-when-cross-origin"
 
-
-# Email settings for production
-EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
-EMAIL_HOST = env("EMAIL_HOST", default="mail.privateemail.com")  # noqa: F405
-EMAIL_PORT = env("EMAIL_PORT", default=587)  # noqa: F405
-EMAIL_HOST_USER = env("EMAIL_HOST_USER", default="")
-EMAIL_HOST_PASSWORD = env("EMAIL_HOST_PASSWORD", default="")  # noqa: F405
-EMAIL_USE_TLS = True
-EMAIL_USE_SSL = False
-DEFAULT_FROM_EMAIL = env("DEFAULT_FROM_EMAIL", default="djangify@djangify.com")
-
 # ================================================================
 # TINYMCE CONFIGURATION (Self-hosted, FREE plugins only)
 # ==================================================================
@@ -381,9 +370,9 @@ LOGGING = {
     },
 }
 
-# =============================================================================
+# ===================================================================
 # EMAIL CONFIGURATION (for error notifications)
-# =============================================================================
+# =================================================================
 
 ADMINS = [
     ("Diane", env("ADMIN_EMAIL", default="your-email@example.com")),

@@ -3,27 +3,33 @@
 <html lang="en-GB">
  <head>
     <!-- Preconnect & Prefetch -->
-  <link rel="preconnect" href="https://www.djangify.com" crossorigin>
-  <link rel="dns-prefetch" href="https://www.djangify.com">
+  <link rel="preconnect" href="{{ site_url }}" crossorigin>
+  <link rel="dns-prefetch" href="{{ site_url }}">
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
   <!-- Primary Meta Description -->
   {% block meta_description %}
-  <meta name="description" content="Djangify helps creators and entrepreneurs build ecommerce sites that are self-owned, practical and ready to grow.">
+    <meta name="description" content="Djangify helps creators and entrepreneurs build ecommerce sites that are self-owned, practical and ready to grow.">
   {% endblock %}
 
   <!-- Keywords -->
-  <meta name="keywords" content="{% block meta_keywords %}mini ecommerce site, ecommerce builder, ecommerce site builder, mini ecommerce store, AI search ready websites, Django ecommerce, digital product systems, build online shops, ecommerce setup, digital business guides{% endblock %}">
+  <meta name="keywords" content="{% block meta_keywords %}{{ site_settings.default_meta_keywords|default:'online store, digital products' }}{% endblock %}">
 
   <!-- Open Graph / Social -->
   {% block open_graph_tags %}
-  <meta property="og:title" content="Build Your Mini eCommerce Site with Djangify">
-  <meta property="og:description" content="Djangify helps creators and entrepreneurs build mini ecommerce sites that are practical and ready to grow.">
+  <meta property="og:title" content="{{ site_name }}">
+  <meta property="og:description" content="{{ site_settings.default_meta_description|default:'Welcome to our online store' }}">
   <meta property="og:type" content="website">
   <meta property="og:url" content="{{ request.build_absolute_uri }}">
-  <meta property="og:image" content="{% static 'images/djangify-logo.png' %}">
-  <meta property="fb:app_id" content="2433552923679047">
+  {% if site_settings.og_image %}
+  <meta property="og:image" content="{{ request.scheme }}://{{ request.get_host }}{{ site_settings.og_image.url }}">
+  {% elif site_settings.logo_image %}
+  <meta property="og:image" content="{{ request.scheme }}://{{ request.get_host }}{{ site_settings.logo_image.url }}">
+  {% endif %}
+  {% if site_settings.facebook_app_id %}
+  <meta property="fb:app_id" content="{{ site_settings.facebook_app_id }}">
+  {% endif %}
   {% endblock %}
 
   <!-- Canonical URL -->
@@ -37,7 +43,7 @@
   <link rel="icon" type="image/ico" href="{% static 'images/favicon.ico' %}">
 
   <!-- Page Title -->
-  <title>{% block title %}Micro-SaaS eCommerce Site Builder | {{ site.name }}{% endblock %}</title>
+  <title>{% block title %}{{ site_name }}{% endblock %}</title>
 
     <!-- Alpine and HTMX CDN scripts -->
   <script src="{% static 'js/htmx.min.js' %}" defer></script>
@@ -50,25 +56,25 @@
   {
     "@context": "https://schema.org",
     "@type": "WebSite",
-    "name": "Djangify",
-    "url": "https://djangify.com/",
-    "description": "Djangify helps content creators and entrepreneurs build mini ecommerce sites. Simple, practical, and ready to grow.",
+    "name": "{{ site_name }}",
+    "url": "{{ site_url }}",
+    "description": "{{ site_settings.default_meta_description|default:'Welcome to our online store' }}",
     "publisher": {
       "@type": "Organization",
-      "name": "Djangify",
+      "name": "{{ site_name }}"{% if site_settings.logo_image %},
       "logo": {
         "@type": "ImageObject",
-        "url": "https://djangify.com/static/images/djangify-logo.png"
-      }
+        "url": "{{ request.scheme }}://{{ request.get_host }}{{ site_settings.logo_image.url }}"
+      }{% endif %}
     },
     "potentialAction": {
       "@type": "SearchAction",
-      "target": "https://djangify.com/shop/search/?q={search_term_string}",
+      "target": "{{ site_url }}/shop/search/?q={search_term_string}",
       "query-input": "required name=search_term_string"
     }
   }
   </script>
-</head>
+  </head>
 
   <body>
     <!-- Skip to main content link for keyboard users -->
