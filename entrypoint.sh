@@ -16,6 +16,7 @@ if [ ! -f "$INIT_MARKER" ]; then
         python manage.py create_admin_from_env
     fi
 
+    python manage.py create_demo_product
     python manage.py collectstatic --noinput
 
     echo "$(date -Iseconds)" > "$INIT_MARKER"
