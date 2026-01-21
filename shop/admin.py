@@ -33,7 +33,7 @@ class CategoryAdmin(admin.ModelAdmin):
 
 class ProductImageInline(admin.TabularInline):
     model = ProductImage
-    extra = 1
+    extra = 0
     fields = ["image", "alt_text", "order"]
     ordering = ["order"]
 

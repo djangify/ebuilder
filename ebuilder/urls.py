@@ -25,10 +25,9 @@ urlpatterns = [
     ),
     # Robots.txt
     path("robots.txt", project_views.robots_txt, name="robots_txt"),
-    # Pages app - handles homepage and dynamic pages (MUST BE LAST)
     path("", include("hosting.urls")),
-    path("", include("pages.urls")),
-    path("", include("infopages.urls")),  # this is okay because it uses specific slugs
+    path("", include("infopages.urls")),
+    path("", include("pages.urls")),  # Pages app catch-all must be last
 ]
 
 # Error handlers

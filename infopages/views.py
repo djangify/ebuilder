@@ -136,11 +136,19 @@ class InfoPageDetailView(DetailView):
         context["related_pages"] = related_pages
 
         # --- Breadcrumbs ---
+
+        if page.category:
+            parent_title = page.category.name
+            parent_url = page.category.get_absolute_url()
+        elif page.page_type == "policy":
+            parent_title = "Policies"
+            parent_url = "/policies/"
+        else:
+            parent_title = "Documentation"
+            parent_url = "/docs/"
+
         context["breadcrumbs"] = [
-            {
-                "title": page.category.name if page.category else "Documentation",
-                "url": page.category.get_absolute_url() if page.category else "/docs/",
-            },
+            {"title": parent_title, "url": parent_url},
             {"title": page.title, "url": None},
         ]
 
