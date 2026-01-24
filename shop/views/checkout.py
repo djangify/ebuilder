@@ -85,6 +85,8 @@ def payment_success(request):
         return redirect("shop:cart_detail")
 
     try:
+        stripe_config = ConfigManager.get_stripe_config()
+        stripe.api_key = stripe_config["secret_key"]
         payment_intent = stripe.PaymentIntent.retrieve(payment_intent_id)
         if payment_intent.status != "succeeded":
             messages.error(request, "Payment was not successful.")

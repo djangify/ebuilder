@@ -297,7 +297,9 @@ class ProductAdmin(admin.ModelAdmin):
             if not content_type.startswith("image/"):
                 raise ValidationError("URL must point to an image file")
 
-            if not any(content_type.endswith(ext) for ext in ["/jpeg", "/jpg", "/png"]):
+            if not any(
+                content_type.endswith(ext) for ext in ["/jpeg", "/jpg", "/png", "/webp"]
+            ):
                 raise ValidationError("Only JPG and PNG images are allowed")
 
         except requests.RequestException:
