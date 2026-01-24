@@ -17,7 +17,6 @@ from .checkout import (
     checkout,
     payment_success,
     payment_cancel,
-    stripe_webhook,
 )
 
 from .downloads import (

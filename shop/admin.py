@@ -67,6 +67,41 @@ class ShopPromoBlockForm(forms.ModelForm):
 
 
 class ShopSettingsForm(forms.ModelForm):
+    # Override encrypted fields to use PasswordInput with proper rendering
+    stripe_secret_key = forms.CharField(
+        required=False,
+        widget=forms.PasswordInput(
+            attrs={
+                "autocomplete": "new-password",
+                "class": "vTextField",
+                "placeholder": "sk_test_... or sk_live_...",
+            }
+        ),
+        help_text="sk_test_... or sk_live_... (encrypted at rest)",
+    )
+    stripe_webhook_secret = forms.CharField(
+        required=False,
+        widget=forms.PasswordInput(
+            attrs={
+                "autocomplete": "new-password",
+                "class": "vTextField",
+                "placeholder": "whsec_...",
+            }
+        ),
+        help_text="whsec_... (encrypted at rest)",
+    )
+    email_host_password = forms.CharField(
+        required=False,
+        widget=forms.PasswordInput(
+            attrs={
+                "autocomplete": "new-password",
+                "class": "vTextField",
+                "placeholder": "Enter password",
+            }
+        ),
+        help_text="Your SMTP password or app password (encrypted at rest)",
+    )
+
     class Meta:
         model = ShopSettings
         fields = "__all__"
@@ -75,6 +110,21 @@ class ShopSettingsForm(forms.ModelForm):
             "intro_body": RichTextWidget(),
             "spotlight_body": RichTextWidget(),
         }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # Don't show decrypted values in password fields for security
+        # User must re-enter if they want to change
+        if self.instance and self.instance.pk:
+            for field_name in [
+                "stripe_secret_key",
+                "stripe_webhook_secret",
+                "email_host_password",
+            ]:
+                if getattr(self.instance, field_name, None):
+                    self.fields[field_name].widget.attrs["placeholder"] = (
+                        "••••••••••••••••"
+                    )
 
 
 @admin.register(Product)
@@ -476,6 +526,34 @@ class ShopSettingsAdmin(admin.ModelAdmin):
                     "display_category",
                 ),
                 "description": "Control which products appear and pagination.",
+            },
+        ),
+        (
+            "Stripe Configuration",
+            {
+                "fields": (
+                    "stripe_live_mode",
+                    "stripe_public_key",
+                    "stripe_secret_key",
+                    "stripe_webhook_secret",
+                ),
+                "description": "Payment gateway settings. Leave blank to use .env values. Secrets are encrypted at rest.",
+                "classes": ("collapse",),
+            },
+        ),
+        (
+            "Email Configuration",
+            {
+                "fields": (
+                    "email_host",
+                    "email_port",
+                    "email_use_tls",
+                    "email_host_user",
+                    "email_host_password",
+                    "email_from_address",
+                ),
+                "description": "SMTP settings for transactional emails. Leave blank to use .env values.",
+                "classes": ("collapse",),
             },
         ),
     )

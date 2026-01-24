@@ -3,13 +3,9 @@ from ..models import Product, ProductDownload
 from django.views.decorators.http import require_POST
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
-from django.conf import settings
-import stripe
 import logging
 from ..cart import Cart
 
-
-stripe.api_key = settings.STRIPE_SECRET_KEY
 
 logger = logging.getLogger("shop")
 

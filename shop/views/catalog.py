@@ -1,17 +1,13 @@
 # shop/views/catalog.py
 from ..models import Category, Product, OrderItem
 from django.shortcuts import render, get_object_or_404
-from django.conf import settings
 from django.core.paginator import Paginator
-import stripe
 from django.db.models import Q, Count
 import logging
 from shop.forms import ProductReviewForm
 from ..models import WishList
-from ..models import ShopSettings, ShopPromoBlock
-
-
-stripe.api_key = settings.STRIPE_SECRET_KEY
+from ..models import ShopSettings
+from ..config_manager import ConfigManager
 
 # Set up logger
 logger = logging.getLogger("shop")
@@ -121,7 +117,7 @@ def product_list(request):
             "categories": categories,
             "current_category": current_category,
             "query": query,
-            "STRIPE_PUBLIC_KEY": settings.STRIPE_PUBLIC_KEY,
+            "STRIPE_PUBLIC_KEY": ConfigManager.get("stripe_public_key"),
             # Shop Settings context
             "shop_settings": shop_settings,
             "promo_blocks": promo_blocks,
@@ -178,7 +174,7 @@ def product_detail(request, slug):
             "related_products": related_products,
             "has_purchased": has_purchased,
             "order_item": order_item,
-            "STRIPE_PUBLIC_KEY": settings.STRIPE_PUBLIC_KEY,
+            "STRIPE_PUBLIC_KEY": ConfigManager.get("stripe_public_key"),
             "form": review_form,
             "images": images,
             "breadcrumbs": [

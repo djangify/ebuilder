@@ -1,19 +1,14 @@
 # shop/views/checkout.py
+from django.conf import settings
 from django.contrib import messages
 from django.shortcuts import render, redirect
-from django.views.decorators.http import require_POST
-from django.views.decorators.csrf import csrf_exempt
-from django.http import HttpResponse
-from django.conf import settings
 from ..models import Order, OrderItem
 from pages.models import SiteSettings
 from ..emails import send_order_confirmation_email
 from ..cart import Cart
+from ..config_manager import ConfigManager
 import stripe
 import logging
-
-
-stripe.api_key = settings.STRIPE_SECRET_KEY
 
 # Set up logger
 logger = logging.getLogger("shop")
@@ -47,6 +42,8 @@ def checkout(request):
             currency = getattr(settings, "STRIPE_CURRENCY", "gbp")
 
         # Create a new PaymentIntent each time user loads checkout
+        stripe_config = ConfigManager.get_stripe_config()
+        stripe.api_key = stripe_config["secret_key"]
         intent = stripe.PaymentIntent.create(
             amount=int(total_price * 100),
             currency=currency,  # Now uses database setting
@@ -59,7 +56,7 @@ def checkout(request):
 
         context = {
             "client_secret": intent.client_secret,
-            "STRIPE_PUBLIC_KEY": settings.STRIPE_PUBLIC_KEY,
+            "STRIPE_PUBLIC_KEY": stripe_config["public_key"],
             "cart": cart,
             "payment_intent_id": intent.id,
         }
@@ -166,63 +163,3 @@ def payment_cancel(request):
     """Handle cancelled payment."""
     messages.error(request, "Payment was cancelled.")
     return redirect("shop:cart_detail")
-
-
-# ============================================================
-# Webhook handlers for Stripe events
-# ============================================================
-
-
-def handle_successful_payment(payment_intent):
-    """
-    Handle successful payment from webhook.
-    Updates order status - no download links sent.
-    """
-    order = Order.objects.filter(payment_intent_id=payment_intent.id).first()
-    if order and not order.paid:
-        order.paid = True
-        order.status = "completed"
-        order.save()
-
-        try:
-            send_order_confirmation_email(order)
-        except Exception as e:
-            logger.error(f"Error sending order confirmation email: {str(e)}")
-
-
-def handle_failed_payment(payment_intent):
-    """Handle failed payment from webhook."""
-    order = Order.objects.filter(payment_intent_id=payment_intent.id).first()
-    if order:
-        order.status = "failed"
-        order.save()
-
-
-@csrf_exempt
-@require_POST
-def stripe_webhook(request):
-    """
-    Handle Stripe webhook events.
-    """
-    payload = request.body
-    sig_header = request.META.get("HTTP_STRIPE_SIGNATURE")
-
-    try:
-        event = stripe.Webhook.construct_event(
-            payload, sig_header, settings.STRIPE_WEBHOOK_SECRET
-        )
-    except ValueError as e:
-        logger.error(f"Invalid payload: {str(e)}")
-        return HttpResponse(status=400)
-    except stripe.error.SignatureVerificationError as e:
-        logger.error(f"Invalid signature: {str(e)}")
-        return HttpResponse(status=400)
-
-    if event.type == "payment_intent.succeeded":
-        payment_intent = event.data.object
-        handle_successful_payment(payment_intent)
-    elif event.type == "payment_intent.payment_failed":
-        payment_intent = event.data.object
-        handle_failed_payment(payment_intent)
-
-    return HttpResponse(status=200)

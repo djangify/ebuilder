@@ -4,6 +4,7 @@ from django.urls import reverse
 from django.conf import settings
 import uuid
 from decimal import Decimal
+from .fields import EncryptedCharField
 from ebuilder.storage import SecureStorage, PublicStorage
 from django.db.models import Avg
 from ebuilder.utils import custom_slugify
@@ -570,6 +571,74 @@ class ShopSettings(models.Model):
     show_promo_blocks = models.BooleanField(
         default=False,
         help_text="Display promotional column blocks on the shop homepage.",
+    )
+
+    # === Stripe Configuration ===
+    stripe_public_key = models.CharField(
+        "Stripe Public Key",
+        max_length=255,
+        blank=True,
+        default="",
+        help_text="pk_test_... or pk_live_... (falls back to .env if empty)",
+    )
+    stripe_secret_key = EncryptedCharField(
+        "Stripe Secret Key",
+        max_length=500,
+        blank=True,
+        default="",
+        help_text="sk_test_... or sk_live_... (encrypted at rest)",
+    )
+    stripe_webhook_secret = EncryptedCharField(
+        "Stripe Webhook Secret",
+        max_length=500,
+        blank=True,
+        default="",
+        help_text="whsec_... (encrypted at rest)",
+    )
+    stripe_live_mode = models.BooleanField(
+        "Stripe Live Mode",
+        default=False,
+        help_text="Enable for production payments. Disable for test mode.",
+    )
+
+    # === Email Configuration ===
+    email_host = models.CharField(
+        "SMTP Host",
+        max_length=255,
+        blank=True,
+        default="",
+        help_text="e.g., smtp.gmail.com, smtp.sendgrid.net",
+    )
+    email_port = models.PositiveIntegerField(
+        "SMTP Port",
+        default=587,
+        help_text="Usually 587 (TLS) or 465 (SSL)",
+    )
+    email_use_tls = models.BooleanField(
+        "Use TLS",
+        default=True,
+        help_text="Enable TLS encryption (recommended)",
+    )
+    email_host_user = models.CharField(
+        "SMTP Username",
+        max_length=255,
+        blank=True,
+        default="",
+        help_text="Your SMTP username or email address",
+    )
+    email_host_password = EncryptedCharField(
+        "SMTP Password",
+        max_length=500,
+        blank=True,
+        default="",
+        help_text="Your SMTP password or app password (encrypted at rest)",
+    )
+    email_from_address = models.EmailField(
+        "From Email Address",
+        max_length=254,
+        blank=True,
+        default="",
+        help_text="Default sender address for outgoing emails",
     )
 
     updated = models.DateTimeField(auto_now=True)

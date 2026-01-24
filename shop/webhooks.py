@@ -1,12 +1,12 @@
 # shop/webhooks.py
 import stripe
 import logging
-from django.conf import settings
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
 from .models import Order
 from .emails import send_order_confirmation_email, send_admin_new_order_email
+from .config_manager import ConfigManager
 
 logger = logging.getLogger(__name__)
 
@@ -21,9 +21,8 @@ def stripe_webhook(request):
     sig_header = request.META.get("HTTP_STRIPE_SIGNATURE")
 
     try:
-        event = stripe.Webhook.construct_event(
-            payload, sig_header, settings.STRIPE_WEBHOOK_SECRET
-        )
+        webhook_secret = ConfigManager.get("stripe_webhook_secret")
+        event = stripe.Webhook.construct_event(payload, sig_header, webhook_secret)
     except (ValueError, stripe.error.SignatureVerificationError) as e:
         logger.error(f"Stripe webhook error: {str(e)}")
         return HttpResponse(status=400)
