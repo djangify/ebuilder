@@ -126,6 +126,43 @@ class ShopSettingsForm(forms.ModelForm):
                         "••••••••••••••••"
                     )
 
+    def save(self, commit=True):
+        """
+        Preserve existing encrypted field values when form field is empty.
+        This prevents updating one field from wiping out the others.
+        """
+        instance = super().save(commit=False)
+
+        # List of encrypted fields to preserve
+        encrypted_fields = [
+            "stripe_secret_key",
+            "stripe_webhook_secret",
+            "email_host_password",
+        ]
+
+        # If this is an existing record, preserve empty encrypted fields
+        if self.instance and self.instance.pk:
+            for field_name in encrypted_fields:
+                new_value = self.cleaned_data.get(field_name, "")
+                if not new_value:
+                    # Keep the existing value from the database
+                    # We need to get the raw database value, not the decrypted one
+                    from shop.models import ShopSettings
+
+                    try:
+                        db_instance = ShopSettings.objects.get(pk=self.instance.pk)
+                        existing_value = getattr(db_instance, field_name, "")
+                        if existing_value:
+                            setattr(instance, field_name, existing_value)
+                    except ShopSettings.DoesNotExist:
+                        pass
+
+        if commit:
+            instance.save()
+            self.save_m2m()
+
+        return instance
+
 
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
