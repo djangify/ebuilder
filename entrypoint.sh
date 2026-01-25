@@ -11,6 +11,20 @@ if [ ! -f "$INIT_MARKER" ]; then
     echo "First boot detected"
 
     python manage.py migrate --noinput
+    # Configure Django Sites framework with customer domain
+    python -c "
+import django; django.setup()
+from django.contrib.sites.models import Site
+import os
+Site.objects.update_or_create(
+    id=1,
+    defaults={
+        'domain': os.environ.get('SHOP_DOMAIN', 'localhost'),
+        'name': os.environ.get('SITE_NAME', 'My Shop')
+    }
+)
+print(f\"Site configured: {os.environ.get('SHOP_DOMAIN', 'localhost')}\")"
+
 
     if [ -n "$ADMIN_EMAIL" ] && [ -n "$ADMIN_PASSWORD" ]; then
         python manage.py create_admin_from_env
