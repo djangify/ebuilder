@@ -2,6 +2,7 @@
 
 from django.contrib import admin
 from django import forms
+from django.contrib.sites.models import Site
 from django.utils.html import format_html
 from .models import (
     Page,
@@ -472,3 +473,7 @@ class DashboardSettingsAdmin(admin.ModelAdmin):
     def has_delete_permission(self, request, obj=None):
         # Prevent deletion of the singleton
         return False
+
+
+# Unregister the Sites admin
+admin.site.unregister(Site)

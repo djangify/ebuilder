@@ -66,7 +66,6 @@ INSTALLED_APPS = [
     "hosting",
     "allauth",
     "allauth.account",
-    "allauth.socialaccount",
     "widget_tweaks",
     "tinymce",
 ]
