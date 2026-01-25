@@ -1,12 +1,45 @@
 # shop/emails.py
-from django.core.mail import EmailMultiAlternatives
+# shop/emails.py
+from django.core.mail import EmailMultiAlternatives, get_connection
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
 from django.conf import settings
 from pages.models import SiteSettings
+from .config_manager import ConfigManager
 import logging
 
 logger = logging.getLogger("shop.emails")
+
+
+def get_email_connection():
+    """
+    Get email connection using ConfigManager settings.
+    This allows database-configured SMTP to override .env settings.
+    """
+    config = ConfigManager.get_email_config()
+
+    # Check if we have database/admin configured SMTP
+    if config["host"]:
+        logger.info(f"Using configured SMTP: {config['host']}:{config['port']}")
+        return get_connection(
+            backend="django.core.mail.backends.smtp.EmailBackend",
+            host=config["host"],
+            port=config["port"],
+            username=config["username"],
+            password=config["password"],
+            use_tls=config["use_tls"],
+            fail_silently=False,
+        )
+    else:
+        # Fall back to Django's default settings
+        logger.info("Using Django default email backend")
+        return get_connection()
+
+
+def get_from_email():
+    """Get the from email address from config or settings."""
+    config = ConfigManager.get_email_config()
+    return config["from_address"] or settings.DEFAULT_FROM_EMAIL
 
 
 def get_email_context():
@@ -88,12 +121,15 @@ def send_order_confirmation_email(order):
         text_content = strip_tags(html_content)
 
         subject = f"Order Confirmation #{order.order_id}"
-        from_email = settings.DEFAULT_FROM_EMAIL
+        from_email = get_from_email()
         recipient_list = [order.email]
 
         logger.info(f"Sending email from {from_email} to {recipient_list}")
 
-        msg = EmailMultiAlternatives(subject, text_content, from_email, recipient_list)
+        connection = get_email_connection()
+        msg = EmailMultiAlternatives(
+            subject, text_content, from_email, recipient_list, connection=connection
+        )
         msg.attach_alternative(html_content, "text/html")
         msg.send()
 
@@ -146,12 +182,15 @@ def send_admin_new_order_email(order):
         text_content = strip_tags(html_content)
 
         subject = f"New Order #{order.order_id}"
-        from_email = settings.DEFAULT_FROM_EMAIL
+        from_email = get_from_email()
         admin_email = getattr(settings, "ADMIN_EMAIL", settings.DEFAULT_FROM_EMAIL)
 
         logger.info(f"Sending admin email from {from_email} to {admin_email}")
 
-        msg = EmailMultiAlternatives(subject, text_content, from_email, [admin_email])
+        connection = get_email_connection()
+        msg = EmailMultiAlternatives(
+            subject, text_content, from_email, [admin_email], connection=connection
+        )
         msg.attach_alternative(html_content, "text/html")
         msg.send()
 
