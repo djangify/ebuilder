@@ -12,17 +12,21 @@
           transition-all duration-500 ease-out
           opacity-100 translate-y-0
           {% if message.tags == 'success' %}
-            bg-[color:var(--color-light)]
-            border-[color:var(--color-secondary)]
-            text-[color:var(--color-primary)]
+            bg-green-100
+            border-green-500
+            text-green-900
           {% elif message.tags == 'error' %}
-            bg-[color:var(--color-light)]
-            border-[color:var(--color-accent)]
-            text-[color:var(--color-dark)]
+            bg-rose-100
+            border-rose-500
+            text-rose-900
+          {% elif message.tags == 'warning' %}
+            bg-amber-100
+            border-amber-500
+            text-amber-900
           {% else %}
-            bg-[color:var(--color-light)]
-            border-[color:var(--color-primary)]
-            text-[color:var(--color-font-main)]
+            bg-blue-100
+            border-blue-500
+            text-blue-900
           {% endif %}
         "
         role="alert"
