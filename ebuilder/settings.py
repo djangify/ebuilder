@@ -63,7 +63,6 @@ INSTALLED_APPS = [
     "blog",
     "shop",
     "pages",
-    "hosting",
     "allauth",
     "allauth.account",
     "widget_tweaks",
@@ -96,7 +95,6 @@ TEMPLATES = [
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
                 "shop.context_processors.cart",
-                "hosting.context_processors.current_site",
                 "pages.context_processors.ebuilder_settings",
                 "pages.context_processors.published_pages",
                 "pages.context_processors.site_settings",
@@ -125,10 +123,6 @@ DATABASES = {"default": env.db(default="sqlite:////app/db/db.sqlite3")}
 
 # Custom User Model
 AUTH_USER_MODEL = "accounts.User"
-
-# Provisioner API (for hosting signup)
-PROVISIONER_API_URL = "https://provisioner.djangify.com/api"
-EBUILDER_DOMAIN = "djangify.com"
 
 # Allauth Configuration
 ACCOUNT_LOGIN_METHODS = {"email"}
