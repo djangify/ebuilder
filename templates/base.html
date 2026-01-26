@@ -35,9 +35,8 @@
   <!-- Canonical URL -->
   <link rel="canonical" href="{{ request.build_absolute_uri }}">
   <!-- Stylesheets -->
-  <link rel="stylesheet" href="{% static 'css/output.css' %}" 
-      media="print" onload="this.media='all'">
-  <noscript><link rel="stylesheet" href="{% static 'css/output.css' %}"></noscript>
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="{% static 'css/output.css' %}">
   
   <!-- Favicon -->
   <link rel="icon" type="image/ico" href="{% static 'images/favicon.ico' %}">
@@ -80,13 +79,7 @@
   <body>
     <!-- Skip to main content link for keyboard users -->
     <a href="#main-content" 
-      style="position: absolute; 
-              left: -9999px; 
-              width: 1px; 
-              height: 1px; 
-              overflow: hidden;"
-      onfocus="this.style.cssText='position: absolute; top: 10px; left: 10px; z-index: 9999; background: #1e3a8a; color: white; padding: 8px 16px; border-radius: 4px; font-weight: 600;'"
-      onblur="this.style.cssText='position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden;'">
+       class="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-[9999] focus:bg-[#1e3a8a] focus:text-white focus:px-4 focus:py-2 focus:rounded focus:font-semibold">
       Skip to main content
     </a>
      {% if messages %}
@@ -120,7 +113,7 @@
   aria-modal="true"
   aria-labelledby="cookie-title"
   aria-hidden="true"
-  class="fixed bottom-0 inset-x-0 border-t border-[var(--color-secondary)] bg-[color:var(--color-light)] shadow-md z-50 hidden"
+  class="fixed bottom-0 inset-x-0 border-t border-[var(--color-secondary)] bg-[color:var(--color-light)] shadow-md z-50 translate-y-full opacity-0 transition-all duration-300"
 >
   <div class="max-w-5xl mx-auto px-6 py-6 text-center">
     <h2 id="cookie-title" class="sr-only">Cookie Consent</h2>
@@ -149,54 +142,47 @@
      hx-swap="innerHTML">
 </div>
 <!-- Cookie Consent Script (works first time, then gone) -->
+<!-- Cookie Consent Script (prevents layout shift) -->
 <script>
 (function () {
-  function ready(fn) {
-    if (document.readyState !== 'loading') { fn(); }
-    else { document.addEventListener('DOMContentLoaded', fn); }
+  var banner = document.getElementById('cookie-banner');
+  if (!banner) return;
+
+  // Check consent immediately (no DOM ready wait needed for localStorage)
+  var decision = null;
+  try { decision = localStorage.getItem('cookieConsent'); } catch (e) {}
+  
+  if (decision === 'accepted' || decision === 'declined') {
+    // Already decided - remove from DOM immediately
+    banner.remove();
+    return;
   }
 
-  ready(function () {
-    try {
-      var banner = document.getElementById('cookie-banner');
-      if (!banner) return;
+  // Show banner with transform animation (no layout shift)
+  requestAnimationFrame(function() {
+    banner.classList.remove('translate-y-full', 'opacity-0');
+    banner.classList.add('translate-y-0', 'opacity-100');
+    banner.setAttribute('aria-hidden', 'false');
+  });
 
-      var accept = document.getElementById('accept-cookies');
-      var decline = document.getElementById('decline-cookies');
+  function hideAndRemember(value) {
+    try { localStorage.setItem('cookieConsent', value); } catch (e) {}
+    banner.classList.add('translate-y-full', 'opacity-0');
+    banner.classList.remove('translate-y-0', 'opacity-100');
+    setTimeout(function() { banner.remove(); }, 300);
+  }
 
-      // If already decided, remove banner entirely and bail
-      var decision = null;
-      try { decision = localStorage.getItem('cookieConsent'); } catch (e) {}
-      if (decision === 'accepted' || decision === 'declined') {
-        if (banner.parentNode) banner.parentNode.removeChild(banner);
-        return;
-      }
+  var accept = document.getElementById('accept-cookies');
+  var decline = document.getElementById('decline-cookies');
 
-      // Show the banner (ignore classes; force visible)
-      banner.style.display = 'block';
-      banner.setAttribute('aria-hidden', 'false');
+  if (accept) accept.addEventListener('click', function (e) {
+    e.preventDefault();
+    hideAndRemember('accepted');
+  });
 
-      function hideAndRemember(value) {
-        try { localStorage.setItem('cookieConsent', value); } catch (e) {}
-        // Remove from DOM so it *cannot* linger due to CSS
-        if (banner && banner.parentNode) {
-          banner.parentNode.removeChild(banner);
-        }
-      }
-
-      if (accept) accept.addEventListener('click', function (e) {
-        e.preventDefault();
-        hideAndRemember('accepted');
-      });
-
-      if (decline) decline.addEventListener('click', function (e) {
-        e.preventDefault();
-        hideAndRemember('declined');
-      });
-    } catch (err) {
-      // Fail-closed: if something unexpected happens, don't block the page
-      console.error('Cookie banner error:', err);
-    }
+  if (decline) decline.addEventListener('click', function (e) {
+    e.preventDefault();
+    hideAndRemember('declined');
   });
 })();
 </script>

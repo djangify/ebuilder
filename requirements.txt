@@ -1,4 +1,4 @@
-adminita==0.1.10
+adminita==0.1.11
 asgiref==3.11.0
 beautifulsoup4==4.14.3
 certifi==2025.11.12
@@ -12,6 +12,7 @@ gunicorn==21.2.0
 idna==3.11
 packaging==25.0
 pillow==12.0.0
+pillow-heif==1.2.0
 requests==2.32.5
 soupsieve==2.8.1
 sqlparse==0.5.5

@@ -522,6 +522,63 @@ class Hero(models.Model):
         page_name = self.page.title if self.page else "Unassigned"
         return f"{page_name} - {self.title}"
 
+    def save(self, *args, **kwargs):
+        """Compress and optimize hero image on save."""
+        super().save(*args, **kwargs)
+
+        if self.image:
+            self._compress_image()
+
+    def _compress_image(self):
+        """Compress image to WebP format with optimized quality."""
+        try:
+            img = PILImage.open(self.image.path)
+
+            # Skip if already small enough (under 50KB)
+            import os
+
+            if os.path.getsize(self.image.path) < 50 * 1024:
+                return
+
+            # Convert RGBA to RGB (WebP handles transparency but smaller without)
+            if img.mode in ("RGBA", "P"):
+                # Create white background for transparency
+                background = PILImage.new("RGB", img.size, (255, 255, 255))
+                if img.mode == "P":
+                    img = img.convert("RGBA")
+                background.paste(
+                    img, mask=img.split()[-1] if img.mode == "RGBA" else None
+                )
+                img = background
+            elif img.mode != "RGB":
+                img = img.convert("RGB")
+
+            # Resize if wider than 1920px (plenty for hero images)
+            max_width = 1920
+            if img.width > max_width:
+                ratio = max_width / img.width
+                new_height = int(img.height * ratio)
+                img = img.resize((max_width, new_height), PILImage.Resampling.LANCZOS)
+
+            # Save as WebP with good compression
+            webp_path = os.path.splitext(self.image.path)[0] + ".webp"
+            img.save(webp_path, "WEBP", quality=75, method=6)
+
+            # Remove old file if different format
+            old_path = self.image.path
+            if old_path != webp_path and os.path.exists(old_path):
+                os.remove(old_path)
+
+            # Update model field to new filename (without triggering save loop)
+            new_name = os.path.splitext(self.image.name)[0] + ".webp"
+            Hero.objects.filter(pk=self.pk).update(image=new_name)
+
+        except Exception as e:
+            import logging
+
+            logger = logging.getLogger(__name__)
+            logger.warning(f"Could not compress Hero image {self.pk}: {e}")
+
 
 class HeroBanner(models.Model):
     """
