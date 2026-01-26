@@ -7,9 +7,11 @@
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
 
     <!-- Blog Section Title and Intro -->
-    <a href="{% url 'blog:list' %}" class="hover:text-[color:var(--color-secondary)] transition-colors">
+     <a href="{% url 'blog:list' %}" 
+       aria-label="View all blog posts{% if homepage_settings.blog_section_title %}: {{ homepage_settings.blog_section_title }}{% endif %}"
+       class="hover:text-[color:var(--color-secondary)] transition-colors">
       <h2 class="text-3xl sm:text-4xl lg:text-4xl font-semibold tracking-tight text-[color:var(--color-font-main)] mb-2">
-        {{ homepage_settings.blog_section_title }}
+        {{ homepage_settings.blog_section_title|default:"Latest Blog Posts" }}
       </h2>
     </a>
 
@@ -23,16 +25,18 @@
           <article class="flex flex-col justify-between border border-[color:var(--color-accent)] rounded-xl shadow-sm overflow-hidden hover:shadow-lg transition-all duration-300 hover:-translate-y-1 bg-white min-h-[460px]">
 
             <!-- Thumbnail -->
+          
             <a href="{{ post.get_absolute_url }}" class="block overflow-hidden">
               <div class="h-48">
                 {% if post.image %}
-                  <img src="{{ post.image.url }}" alt="{{ post.title }}" class="w-full h-full object-cover transition-transform duration-500 hover:scale-105">
+                  <img src="{{ post.image.url }}" alt="{{ post.title }}" width="400" height="192" loading="lazy" class="w-full h-full object-cover transition-transform duration-500 hover:scale-105">
                 {% elif post.external_image_url %}
-                  <img src="{{ post.external_image_url }}" alt="{{ post.title }}" class="w-full h-full object-cover transition-transform duration-500 hover:scale-105">
+                  <img src="{{ post.external_image_url }}" alt="{{ post.title }}" width="400" height="192" loading="lazy" class="w-full h-full object-cover transition-transform duration-500 hover:scale-105">
                 {% elif post.youtube_url %}
                   {% with post.youtube_url|youtube_id as video_id %}
                     <img src="https://img.youtube.com/vi/{{ video_id }}/maxresdefault.jpg"
                          alt="{{ post.title }}"
+                         width="400" height="192" loading="lazy"
                          class="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
                          onerror="this.onerror=null; this.src='https://img.youtube.com/vi/{{ video_id }}/hqdefault.jpg';">
                   {% endwith %}

@@ -45,9 +45,10 @@
   <!-- Page Title -->
   <title>{% block title %}{{ site_name }}{% endblock %}</title>
 
+   
     <!-- Alpine and HTMX CDN scripts -->
-  <script src="{% static 'js/htmx.min.js' %}" defer></script>
-  <script src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+    <script src="https://unpkg.com/htmx.org@2.0.4/dist/htmx.min.js" defer></script>
+    <script src="https://unpkg.com/alpinejs@3.14.8/dist/cdn.min.js" defer></script>
 
 
   {% block extra_meta %}{% endblock %}
@@ -205,9 +206,9 @@
 <script src="{% static 'js/app.js' %}" defer></script>
 <script src="{% static 'js/messages.js' %}"defer></script>
 <script src="{% static 'js/gallery.js' %}"defer></script>
-<script src="{% static 'js/modal-accessibility.js' %}"></script>
-<script src="{% static 'js/cart-accessibility.js' %}"></script>
-<div id="gallery-modal"></div>
+<script src="{% static 'js/modal-accessibility.js' %}" defer></script>
+<script src="{% static 'js/cart-accessibility.js' %}" defer></script>
+
 
 <!-- ARIA Live Region for dynamic announcements -->
 <div id="a11y-announcer" 

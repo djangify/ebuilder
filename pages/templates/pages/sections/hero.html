@@ -1,4 +1,3 @@
-
 <!-- HERO SECTION -->
 {% if hero %}
 <section 
@@ -6,9 +5,17 @@
   class="relative w-full flex items-center justify-center text-center overflow-hidden"
   role="banner"
   aria-label="Hero Section"
+  {% if hero.image %}style="min-height: 500px;"{% endif %}
 >
   {% if hero.image %}
-    <div class="absolute inset-0 bg-cover bg-center" style="background-image: url('{{ hero.image.url }}');"></div>
+    <!-- Use img tag instead of background-image for better LCP -->
+    <img 
+      src="{{ hero.image.url }}" 
+      alt="{{ hero.title }}"
+      fetchpriority="high"
+      decoding="async"
+      class="absolute inset-0 w-full h-full object-cover"
+    >
     <div class="absolute inset-0 bg-[var(--color-light)]/70"></div>
   {% else %}
     <div class="absolute inset-0 bg-[var(--color-light)]"></div>
