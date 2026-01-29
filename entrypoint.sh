@@ -31,6 +31,7 @@ print(f\"Site configured: {os.environ.get('SHOP_DOMAIN', 'localhost')}\")"
     fi
 
     python manage.py create_demo_product
+    python manage.py create_default_policies
     python manage.py collectstatic --noinput
 
     echo "$(date -Iseconds)" > "$INIT_MARKER"
