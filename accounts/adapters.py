@@ -9,6 +9,9 @@ from .validators import (
     validate_honeypot,
     validate_form_timing,
 )
+from django.core.mail import EmailMultiAlternatives, get_connection
+from django.template.loader import render_to_string
+from shop.config_manager import ConfigManager
 import logging
 
 logger = logging.getLogger(__name__)
@@ -71,8 +74,10 @@ class CustomAccountAdapter(DefaultAccountAdapter):
 
     def send_mail(self, template_prefix, email, context):
         """
-        Override to inject site settings into all email templates.
-        This ensures homepage_settings, site_url, support_email etc. are available.
+        Override to:
+        1. Inject site settings into all email templates
+        2. Use database-configured SMTP (via ConfigManager) instead of Django defaults
+        3. Handle email failures gracefully so signup doesn't crash
         """
         # Get site settings from database
         try:
@@ -83,17 +88,14 @@ class CustomAccountAdapter(DefaultAccountAdapter):
         # Build the extra context
         if site_settings:
             extra_context = {
-                # Primary site settings
                 "homepage_settings": site_settings,
                 "site_settings": site_settings,
                 "site_name": site_settings.business_name,
                 "site_url": site_settings.site_url,
                 "support_email": site_settings.support_email,
                 "business_name": site_settings.business_name,
-                # Currency
                 "currency_symbol": site_settings.currency_symbol,
                 "currency_code": site_settings.currency_code,
-                # Colors (NEW)
                 "primary_color": site_settings.primary_color,
                 "secondary_color": site_settings.secondary_color,
                 "accent_color": site_settings.accent_color,
@@ -101,7 +103,6 @@ class CustomAccountAdapter(DefaultAccountAdapter):
                 "link_hover_color": site_settings.link_hover_color,
             }
         else:
-            # Fallbacks if SiteSettings doesn't exist
             extra_context = {
                 "homepage_settings": None,
                 "site_settings": None,
@@ -113,13 +114,13 @@ class CustomAccountAdapter(DefaultAccountAdapter):
                 "business_name": "My Store",
                 "currency_symbol": "£",
                 "currency_code": "GBP",
-                # Color fallbacks (NEW)
                 "primary_color": "#0f172a",
                 "secondary_color": "#334155",
                 "accent_color": "#475569",
                 "link_color": "#2563eb",
                 "link_hover_color": "#1d4ed8",
             }
+
         # Add user's first name if user object exists in context
         if "user" in context and context["user"]:
             user = context["user"]
@@ -133,5 +134,67 @@ class CustomAccountAdapter(DefaultAccountAdapter):
             if key not in context:
                 context[key] = value
 
-        # Call parent send_mail with enriched context
-        return super().send_mail(template_prefix, email, context)
+        # === NEW: Use ConfigManager for SMTP connection ===
+        try:
+            email_config = ConfigManager.get_email_config()
+
+            # Check if email is configured
+            if not email_config.get("host"):
+                logger.warning(
+                    f"Email not configured - skipping {template_prefix} email to {email}"
+                )
+                return  # Silently skip if no email configured
+
+            # Get email connection using database config
+            connection = get_connection(
+                backend="django.core.mail.backends.smtp.EmailBackend",
+                host=email_config["host"],
+                port=email_config["port"],
+                username=email_config["username"],
+                password=email_config["password"],
+                use_tls=email_config["use_tls"],
+                fail_silently=False,
+            )
+
+            # Render email templates
+            subject_template = f"{template_prefix}_subject.txt"
+            body_template = f"{template_prefix}_message.txt"
+            html_template = f"{template_prefix}_message.html"
+
+            # Get subject (strip newlines)
+            subject = render_to_string(subject_template, context).strip()
+
+            # Get text body
+            text_body = render_to_string(body_template, context)
+
+            # Try to get HTML body (optional)
+            try:
+                html_body = render_to_string(html_template, context)
+            except Exception:
+                html_body = None
+
+            # Get from address
+            from_email = email_config.get("from_address") or settings.DEFAULT_FROM_EMAIL
+
+            # Create and send email
+            msg = EmailMultiAlternatives(
+                subject=subject,
+                body=text_body,
+                from_email=from_email,
+                to=[email],
+                connection=connection,
+            )
+
+            if html_body:
+                msg.attach_alternative(html_body, "text/html")
+
+            msg.send()
+            logger.info(f"Email sent successfully: {template_prefix} to {email}")
+
+        except Exception as e:
+            # Log the error but don't crash the signup flow
+            logger.error(
+                f"Failed to send {template_prefix} email to {email}: {str(e)}",
+                exc_info=True,
+            )
+            # Don't re-raise - allow signup to complete even if email fails
