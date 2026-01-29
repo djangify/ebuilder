@@ -232,7 +232,7 @@ class SiteSettingsAdmin(admin.ModelAdmin):
                     "link_color",
                     "link_hover_color",
                 ),
-                "description": "Customize your site's color scheme. Changes apply immediately - no rebuild needed!",
+                "description": "You can change your site's color scheme. Changes apply immediately. Choose from Hex #, RGB and HSL",
             },
         ),
         (

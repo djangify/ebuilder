@@ -31,6 +31,14 @@
 
     <form method="POST" class="space-y-4">
       {% csrf_token %}
+      <!-- Honeypot trap - invisible to humans, bots fill it -->
+      <div style="position: absolute; left: -9999px; top: -9999px;" aria-hidden="true">
+        <label for="website_url">Leave this empty</label>
+        <input type="text" name="website_url" id="website_url" tabindex="-1" autocomplete="off">
+      </div>
+      
+      <!-- Time trap - tracks when form was loaded -->
+      <input type="hidden" name="form_timestamp" value="{{ form_timestamp }}">
       <div>
         <label for="first_name" class="block text-sm font-medium text-[color:var(--color-primary)] mb-1">First Name</label>
         <input type="text" name="first_name" value="{{ form.first_name.value|default_if_none:'' }}" id="first_name" required class="w-full rounded-md border border-[color:var(--color-secondary-contrast)] p-2 focus:ring-2 focus:ring-[color:var(--color-primary)]">

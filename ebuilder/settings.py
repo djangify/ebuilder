@@ -103,6 +103,7 @@ TEMPLATES = [
                 "pages.context_processors.home_url",
                 "pages.context_processors.current_site",
                 "pages.context_processors.dashboard_settings",
+                "accounts.context_processors.form_timestamp",
             ],
         },
     },
@@ -112,16 +113,16 @@ WSGI_APPLICATION = "ebuilder.wsgi.application"
 
 
 # Database - SQLite default for Docker. Use in production
-# DATABASES = {"default": env.db(default="sqlite:////app/db/db.sqlite3")}
+DATABASES = {"default": env.db(default="sqlite:////app/db/db.sqlite3")}
 
 
 # Database - SQLite. Use in development
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "data" / "db" / "db.sqlite3",
-    }
-}
+# DATABASES = {
+#     "default": {
+#         "ENGINE": "django.db.backends.sqlite3",
+#         "NAME": BASE_DIR / "data" / "db" / "db.sqlite3",
+#     }
+# }
 
 # Custom User Model
 AUTH_USER_MODEL = "accounts.User"

@@ -3,6 +3,12 @@
 from allauth.account.adapter import DefaultAccountAdapter
 from pages.models import SiteSettings
 from django.conf import settings
+from django.contrib import messages
+from .validators import (
+    validate_not_disposable_email,
+    validate_honeypot,
+    validate_form_timing,
+)
 import logging
 
 logger = logging.getLogger(__name__)
@@ -36,6 +42,32 @@ class CustomAccountAdapter(DefaultAccountAdapter):
             )
 
         return user
+
+    def is_open_for_signup(self, request):
+        """
+        Check honeypot and time trap before allowing signup.
+        This runs before the form is even processed.
+        """
+        # Check honeypot
+        if validate_honeypot(request):
+            messages.error(request, "Registration failed. Please try again.")
+            return False
+
+        # Check timing (form submitted too fast = bot)
+        if validate_form_timing(request, min_seconds=3):
+            messages.error(request, "Please take your time filling out the form.")
+            return False
+
+        return True
+
+    def clean_email(self, email):
+        """
+        Validate email is not from a disposable domain.
+        Called by allauth during signup.
+        """
+        email = super().clean_email(email)
+        validate_not_disposable_email(email)
+        return email
 
     def send_mail(self, template_prefix, email, context):
         """
