@@ -1,6 +1,6 @@
 # pages/context_processors.py
 from django.contrib.sites.models import Site
-from .models import Page, SiteSettings
+from .models import Page, SiteSettings, DashboardSettings
 from django.conf import settings
 
 
@@ -108,8 +108,21 @@ def home_url(request):
 def current_site(request):
     """Make the current Site object available in templates."""
     try:
-        site = Site.objects.get_current(request)
-    except Exception:
+        site = Site.objects.get_current()
+    except Site.DoesNotExist:
         site = None
 
-    return {"current_site": site}
+    return {"site": site}
+
+
+def dashboard_settings(request):
+    """
+    Makes DashboardSettings data globally available.
+    Used by dashboard.html and support.html templates.
+    Now includes announcement_bar_text (moved from HomePageSettings).
+    """
+    try:
+        settings = DashboardSettings.objects.first()
+    except Exception:
+        settings = None
+    return {"dashboard_settings": settings}
