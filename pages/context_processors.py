@@ -1,6 +1,6 @@
 # pages/context_processors.py
 from django.contrib.sites.models import Site
-from .models import Page, SiteSettings, DashboardSettings
+from .models import Page, SiteSettings
 from django.conf import settings
 
 
@@ -23,9 +23,15 @@ def ebuilder_settings(request):
             "site_name": site_settings.business_name,
             "support_email": site_settings.support_email,
             "site_author": site_settings.site_author or site_settings.business_name,
-            # Currency settings (NEW)
+            # Currency settings
             "currency_symbol": site_settings.currency_symbol,
             "currency_code": site_settings.currency_code,
+            # Color theme settings
+            "primary_color": site_settings.primary_color,
+            "secondary_color": site_settings.secondary_color,
+            "accent_color": site_settings.accent_color,
+            "link_color": site_settings.link_color,
+            "link_hover_color": site_settings.link_hover_color,
         }
     else:
         # Fallbacks if SiteSettings doesn't exist yet
@@ -38,6 +44,12 @@ def ebuilder_settings(request):
             # Currency fallbacks
             "currency_symbol": "£",
             "currency_code": "GBP",
+            # Color fallbacks
+            "primary_color": "#0f172a",
+            "secondary_color": "#334155",
+            "accent_color": "#475569",
+            "link_color": "#2563eb",
+            "link_hover_color": "#1d4ed8",
         }
 
 
@@ -96,20 +108,8 @@ def home_url(request):
 def current_site(request):
     """Make the current Site object available in templates."""
     try:
-        site = Site.objects.get_current()
-    except Site.DoesNotExist:
-        site = None
-    return {"site": site}
-
-
-def dashboard_settings(request):
-    """
-    Makes DashboardSettings data globally available.
-    Used by dashboard.html and support.html templates.
-    Now includes announcement_bar_text (moved from HomePageSettings).
-    """
-    try:
-        settings = DashboardSettings.objects.first()
+        site = Site.objects.get_current(request)
     except Exception:
-        settings = None
-    return {"dashboard_settings": settings}
+        site = None
+
+    return {"current_site": site}

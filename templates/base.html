@@ -48,7 +48,24 @@
     <!-- Alpine and HTMX CDN scripts -->
     <script src="https://unpkg.com/htmx.org@2.0.4/dist/htmx.min.js" defer></script>
     <script src="https://unpkg.com/alpinejs@3.14.8/dist/cdn.min.js" defer></script>
-
+    
+    <!-- Dynamic Color Theme from Site Settings -->
+    <style>
+      :root {
+        /* Brand colors - overrides compiled Tailwind defaults */
+        --color-primary: {{ primary_color }};
+        --color-secondary: {{ secondary_color }};
+        --color-accent: {{ accent_color }};
+        --color-link: {{ link_color }};
+        --color-link-hover: {{ link_hover_color }};
+        
+    /* Derived colors for consistency */
+    --color-brand-primary: {{ primary_color }};
+    --color-primary-contrast: #ffffff;
+    --color-secondary-contrast: #111827;
+    --color-accent-contrast: #ffffff;
+  }
+</style>
 
   {% block extra_meta %}{% endblock %}
   <!-- Website JSON-LD Schema -->

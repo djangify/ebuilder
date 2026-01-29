@@ -36,7 +36,37 @@ class SiteSettings(models.Model):
         default="£",
         help_text="Symbol displayed before prices (e.g., £, $, €)",
     )
-
+    # === Color Theme ===
+    primary_color = models.CharField(
+        "Primary Color",
+        max_length=7,
+        default="#0f172a",
+        help_text="Main brand color (hex format, e.g., #0f172a)",
+    )
+    secondary_color = models.CharField(
+        "Secondary Color",
+        max_length=7,
+        default="#334155",
+        help_text="Secondary brand color (hex format)",
+    )
+    accent_color = models.CharField(
+        "Accent Color",
+        max_length=7,
+        default="#475569",
+        help_text="Accent/highlight color (hex format)",
+    )
+    link_color = models.CharField(
+        "Link Color",
+        max_length=7,
+        default="#2563eb",
+        help_text="Default link color (hex format)",
+    )
+    link_hover_color = models.CharField(
+        "Link Hover Color",
+        max_length=7,
+        default="#1d4ed8",
+        help_text="Link color on hover (hex format)",
+    )
     # === Homepage Mode ===
     HOMEPAGE_CHOICES = [
         ("SHOP", "Shop Homepage"),

@@ -58,9 +58,15 @@ class CustomAccountAdapter(DefaultAccountAdapter):
                 "site_url": site_settings.site_url,
                 "support_email": site_settings.support_email,
                 "business_name": site_settings.business_name,
-                # Currency (if needed in emails)
+                # Currency
                 "currency_symbol": site_settings.currency_symbol,
                 "currency_code": site_settings.currency_code,
+                # Colors (NEW)
+                "primary_color": site_settings.primary_color,
+                "secondary_color": site_settings.secondary_color,
+                "accent_color": site_settings.accent_color,
+                "link_color": site_settings.link_color,
+                "link_hover_color": site_settings.link_hover_color,
             }
         else:
             # Fallbacks if SiteSettings doesn't exist
@@ -75,8 +81,13 @@ class CustomAccountAdapter(DefaultAccountAdapter):
                 "business_name": "My Store",
                 "currency_symbol": "£",
                 "currency_code": "GBP",
+                # Color fallbacks (NEW)
+                "primary_color": "#0f172a",
+                "secondary_color": "#334155",
+                "accent_color": "#475569",
+                "link_color": "#2563eb",
+                "link_hover_color": "#1d4ed8",
             }
-
         # Add user's first name if user object exists in context
         if "user" in context and context["user"]:
             user = context["user"]

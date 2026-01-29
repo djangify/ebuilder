@@ -213,28 +213,26 @@ class FAQBlockInline(admin.StackedInline):
 
 @admin.register(SiteSettings)
 class SiteSettingsAdmin(admin.ModelAdmin):
+    """Admin interface for site-wide settings."""
+
     fieldsets = (
-        (
-            "Site Identity",
-            {
-                "fields": (
-                    "business_name",
-                    "site_url",
-                    "support_email",
-                    "site_author",
-                    "logo_image",
-                ),
-                "description": "Core site information used throughout templates and emails.",
-            },
-        ),
         (
             "Currency",
             {
+                "fields": ("currency_code", "currency_symbol"),
+            },
+        ),
+        (
+            "Color Theme",
+            {
                 "fields": (
-                    "currency_code",
-                    "currency_symbol",
+                    "primary_color",
+                    "secondary_color",
+                    "accent_color",
+                    "link_color",
+                    "link_hover_color",
                 ),
-                "description": "Currency settings for your store. Change currency_code to match your Stripe account.",
+                "description": "Customize your site's color scheme. Changes apply immediately - no rebuild needed!",
             },
         ),
         (
@@ -245,19 +243,37 @@ class SiteSettingsAdmin(admin.ModelAdmin):
                     "show_shop_on_homepage",
                     "show_blog_on_homepage",
                 ),
-                "description": "Control what appears on the homepage.",
+            },
+        ),
+        (
+            "Branding",
+            {
+                "fields": ("business_name", "logo_image"),
+            },
+        ),
+        (
+            "Site Identity",
+            {
+                "fields": ("site_url", "support_email", "site_author"),
             },
         ),
         (
             "Footer",
             {
                 "fields": (
-                    ("social_1_name", "social_1_url"),
-                    ("social_2_name", "social_2_url"),
+                    "social_1_name",
+                    "social_1_url",
+                    "social_2_name",
+                    "social_2_url",
                     "copyright_text",
-                    "newsletter_embed_html",
                 ),
-                "description": "Footer social links, copyright, and newsletter signup.",
+            },
+        ),
+        (
+            "Newsletter",
+            {
+                "fields": ("newsletter_embed_html",),
+                "classes": ("collapse",),
             },
         ),
         (
@@ -270,10 +286,37 @@ class SiteSettingsAdmin(admin.ModelAdmin):
                     "og_image",
                     "facebook_app_id",
                 ),
-                "description": "Default SEO metadata and social sharing settings.",
+                "classes": ("collapse",),
             },
         ),
     )
+
+    def formfield_for_dbfield(self, db_field, request, **kwargs):
+        """Use color picker for color fields."""
+        if db_field.name in [
+            "primary_color",
+            "secondary_color",
+            "accent_color",
+            "link_color",
+            "link_hover_color",
+        ]:
+            from django.forms import TextInput
+
+            kwargs["widget"] = TextInput(
+                attrs={
+                    "type": "color",
+                    "style": "height: 50px; width: 100px; cursor: pointer;",
+                }
+            )
+        return super().formfield_for_dbfield(db_field, request, **kwargs)
+
+    def has_add_permission(self, request):
+        """Only allow one SiteSettings instance."""
+        return not SiteSettings.objects.exists()
+
+    def has_delete_permission(self, request, obj=None):
+        """Prevent deletion of singleton."""
+        return False
 
 
 @admin.register(Page)

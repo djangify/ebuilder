@@ -29,6 +29,7 @@ pnpm-debug.log*
 .venv/
 stderr.log
 staticfiles/
+venv/
 
 .json
 media/

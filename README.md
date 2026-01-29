@@ -1,4 +1,4 @@
-# eBuilder - Self-Hosted eCommerce Platform
+#  Self-Hosted Digital eCommerce Platform
 
 ![eBuilder eCommerce Platform](https://github.com/djangify/ebuilder/blob/de5c5bdf79ca79e21384fd12d863a849fe124da5/open-source-ecommerce-builder.png)
 
@@ -21,7 +21,7 @@
 
 ---
 
-## 🎯 What is eBuilder?
+## 🎯 What is eCommerce Builder (aka eBuilder)?
 
 eBuilder is a self-hosted eCommerce platform for selling digital downloads — without SaaS lock-in. It's not a page builder - it's a fully-functional eCommerce system that you own and control.
 
@@ -66,7 +66,7 @@ No feature bloat.
 
 ## Admin-First by Design
 
-eBuilder is managed entirely through Django Admin.
+The eCommerce builder is managed entirely through Django Admin.
 
 - products
 - orders
@@ -89,7 +89,7 @@ eBuilder is managed entirely through Django Admin.
 - Canonical URLs on all pages
 
 
-**eBuilder is software you run yourself.** Once it’s installed, it’s yours. You can:
+**The eCommerce builder is software you run yourself.** Once it’s installed, it’s yours. You can:
 
 - host it anywhere
 - move it anytime
