@@ -33,7 +33,8 @@ class CategoryAdmin(admin.ModelAdmin):
 
 class ProductImageInline(admin.TabularInline):
     model = ProductImage
-    extra = 0
+    extra = 1
+    max_num = 3  # Limits total images to 3
     fields = ["image", "alt_text", "order"]
     ordering = ["order"]
 
