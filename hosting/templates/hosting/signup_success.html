@@ -3,89 +3,154 @@
 {% block title %}Payment Successful{% endblock %}
 
 {% block content %}
-<div class="min-h-screen bg-slate-50 py-12 px-4 sm:px-6 lg:px-8">
-    <div class="max-w-lg mx-auto text-center">
+<section class="min-h-[80vh] w-full py-16 relative overflow-hidden">
+  <!-- This is the success page for MANAGED HOSTING PURCHASES  -->
+  <!-- Subtle decorative elements -->
+  <div class="absolute top-0 left-1/4 w-72 h-72 bg-emerald-200/30 rounded-full blur-3xl"></div>
+  <div class="absolute bottom-0 right-1/4 w-96 h-96 bg-teal-200/20 rounded-full blur-3xl"></div>
+  
+  <div class="max-w-2xl mx-auto px-6 relative z-10">
+    
+    <!-- Main Card -->
+    <div class="bg-white/80 backdrop-blur-sm rounded-2xl shadow-xl shadow-emerald-900/5 border border-emerald-100 p-8 md:p-12">
 
-        <!-- Success Icon -->
-        <div class="w-20 h-20 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-6">
-            <svg class="w-10 h-10 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                      d="M5 13l4 4L19 7"></path>
+      <!-- Success Icon with ring -->
+      <div class="flex justify-center mb-8">
+        <div class="relative">
+          <div class="absolute inset-0 bg-emerald-400/20 rounded-full scale-150 animate-pulse"></div>
+          <div class="relative w-20 h-20 bg-gradient-to-br from-emerald-400 to-teal-500 rounded-full flex items-center justify-center shadow-lg shadow-emerald-500/30">
+            <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path>
             </svg>
+          </div>
         </div>
+      </div>
 
-        <!-- Heading -->
-        <h1 class="text-3xl font-bold text-slate-900 mb-4">
-            Payment successful
+      <!-- Title & Message -->
+      <div class="text-center mb-8">
+        <h1 class="text-3xl md:text-4xl font-bold text-gray-900 mb-3">
+          Payment Successful!
         </h1>
-
-        <p class="text-lg text-slate-600 mb-8">
-            Thank you for your purchase. Your eCommerce site is now live.
+        <p class="text-lg text-gray-600 leading-relaxed">
+          Thank you for your purchase. Your eCommerce site is now live and ready to use.
         </p>
+      </div>
 
-        <!-- Summary -->
-        <div class="bg-white rounded-xl border border-slate-200 p-6 mb-8 text-left">
-            <p class="text-slate-700 mb-4">
-                Here’s a quick summary of what you’ve just set up:
-            </p>
-
-            <ul class="space-y-3 text-slate-700">
-                <br>
-                    <span class="font-medium">Your store URL:</span><br>
-                    <span class="break-all text-slate-900">{{ store_url }}</span>
-                
-
-                {% if product_name %}
-                <li>
-                    <span class="font-medium">Plan:</span>
-                    {{ product_name }}
-                </li>
-                {% endif %}
-
-                {% if price_display %}
-                <li>
-                    <span class="font-medium">Price:</span>
-                    {{ price_display }}
-                </li>
-                {% endif %}
-            </ul>
-        </div>
-
-        <!-- Email Notice -->
-        <div class="bg-white rounded-xl border border-slate-200 p-6 mb-8 text-left">
-            <p class="text-slate-700 mb-4">
-                We’ve sent an email to you with:
-            </p>
-            <ul class="list-disc pl-5 space-y-2 text-slate-700">
-                <li>Your admin login details</li>
-                <li>Your customer portal login details</li>
-                <li>Everything you need to get started</li>
-            </ul>
-
-            <p class="mt-4 text-slate-700">
-                By the time you open that email, your site will already be available.
-            </p>
-        </div>
-
-        <!-- Closing -->
-        <p class="text-slate-700 mb-8">
-            Congratulations and good luck with your new store.
-        </p>
-
-        <a href="{% url 'pages:home' %}"
-           class="inline-flex items-center justify-center px-6 py-3 bg-slate-900 text-white font-semibold rounded-lg hover:bg-slate-800 transition-colors">
-            Back to home
-        </a>
-
-        <!-- Support -->
-        <p class="mt-8 text-sm text-slate-500">
-            Need help? Email
-            <a href="mailto:support@djangify.com"
-               class="text-slate-700 hover:text-slate-900">
-                djangify@djangify.com
+      <!-- Store URL Card -->
+      <div class="bg-gradient-to-br from-emerald-50 to-teal-50 border border-emerald-200 rounded-xl p-6 mb-6">
+        <div class="flex items-start gap-4">
+          <div class="w-10 h-10 bg-emerald-100 rounded-full flex items-center justify-center flex-shrink-0">
+            <svg class="w-5 h-5 text-emerald-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"></path>
+            </svg>
+          </div>
+          <div class="flex-1">
+            <h3 class="text-sm font-medium text-emerald-900 mb-2">Your Store URL</h3>
+            <a href="{{ store_url }}" target="_blank" class="text-emerald-700 hover:text-emerald-800 font-medium break-all underline decoration-emerald-300 hover:decoration-emerald-500 transition-colors">
+              {{ store_url }}
             </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Plan Details (if available) -->
+      {% if product_name or price_display %}
+      <div class="bg-gray-50 rounded-xl p-6 mb-6 border border-gray-100">
+        <div class="flex items-center gap-3 mb-4">
+          <div class="w-8 h-8 bg-gray-200 rounded-lg flex items-center justify-center">
+            <svg class="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+            </svg>
+          </div>
+          <h2 class="text-lg font-semibold text-gray-900">Subscription Details</h2>
+        </div>
+        <div class="space-y-3">
+          {% if product_name %}
+          <div class="flex justify-between items-center py-2 border-b border-gray-200">
+            <span class="text-gray-600">Plan</span>
+            <span class="font-medium text-gray-900">{{ product_name }}</span>
+          </div>
+          {% endif %}
+          {% if price_display %}
+          <div class="flex justify-between items-center py-2">
+            <span class="text-gray-600">Price</span>
+            <span class="text-lg font-bold text-gray-900">{{ price_display }}</span>
+          </div>
+          {% endif %}
+        </div>
+      </div>
+      {% endif %}
+
+      <!-- Email Notice -->
+      <div class="bg-blue-50 border border-blue-200 rounded-xl p-6 mb-8">
+        <div class="flex items-start gap-4">
+          <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0">
+            <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+            </svg>
+          </div>
+          <div>
+            <h3 class="text-lg font-semibold text-blue-900 mb-2">Check Your Email</h3>
+            <p class="text-blue-800 mb-3">
+              We have sent you an email containing:
+            </p>
+            <ul class="space-y-1 text-blue-800">
+              <li class="flex items-start gap-2">
+                <svg class="w-5 h-5 text-blue-600 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                </svg>
+                <span>Your admin login details</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <svg class="w-5 h-5 text-blue-600 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                </svg>
+                <span>Your customer portal login details</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <svg class="w-5 h-5 text-blue-600 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                </svg>
+                <span>Everything you need to get started</span>
+              </li>
+            </ul>
+            <p class="mt-4 text-sm text-blue-700">
+              By the time you open that email, your site will already be available.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Action Button -->
+      <div class="flex flex-col items-center gap-4 mb-6">
+        <a href="{% url 'pages:home' %}"
+           class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3.5 bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white font-semibold rounded-xl shadow-lg shadow-emerald-500/25 transition-all">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
+          </svg>
+          Back to Home
+        </a>
+      </div>
+
+      <!-- Support -->
+      <div class="text-center pt-6 border-t border-gray-200">
+        <p class="text-sm text-gray-500">
+          Need help? Contact us at 
+          <a href="mailto:support@djangify.com" class="text-emerald-600 hover:text-emerald-700 font-medium">
+            djangify@djangify.com
+          </a>
         </p>
+      </div>
+
+      <!-- Congratulations -->
+      <div class="text-center mt-6">
+        <p class="text-gray-600 italic">
+          🎉 Congratulations and good luck with your new store!
+        </p>
+      </div>
 
     </div>
-</div>
+    
+  </div>
+</section>
 {% endblock %}
