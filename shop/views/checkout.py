@@ -22,6 +22,15 @@ def checkout(request):
     if not request.user.is_authenticated:
         return redirect("account_login")
 
+    # Check if demo mode or Stripe not configured
+    stripe_config = ConfigManager.get_stripe_config()
+    if stripe_config is None:
+        messages.error(
+            request,
+            "Payment processing is not available at this time. Please contact the store owner.",
+        )
+        return redirect("shop:cart_detail")
+
     cart = Cart(request)
     if len(cart) == 0:
         messages.error(request, "Your cart is empty.")
@@ -42,7 +51,6 @@ def checkout(request):
             currency = getattr(settings, "STRIPE_CURRENCY", "gbp")
 
         # Create a new PaymentIntent each time user loads checkout
-        stripe_config = ConfigManager.get_stripe_config()
         stripe.api_key = stripe_config["secret_key"]
         intent = stripe.PaymentIntent.create(
             amount=int(total_price * 100),

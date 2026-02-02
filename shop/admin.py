@@ -498,6 +498,13 @@ class ShopSettingsAdmin(admin.ModelAdmin):
 
     fieldsets = (
         (
+            "Demo Site Settings",
+            {
+                "fields": ("is_demo_site",),
+                "description": "Enable demo mode for sites being built for sale. Disables payments until Stripe is configured.",
+            },
+        ),
+        (
             "Hero Section",
             {
                 "fields": (
@@ -604,3 +611,46 @@ class ShopSettingsAdmin(admin.ModelAdmin):
 
     def has_delete_permission(self, request, obj=None):
         return False
+
+    def changelist_view(self, request, extra_context=None):
+        """Add warning banner if Stripe not configured or in demo mode"""
+        extra_context = extra_context or {}
+
+        try:
+            settings = ShopSettings.objects.first()
+            if settings:
+                # Check if demo mode
+                if settings.is_demo_site:
+                    extra_context["demo_mode_warning"] = True
+
+                # Check if Stripe configured
+                stripe_configured = bool(
+                    settings.stripe_secret_key and settings.stripe_public_key
+                )
+                if not stripe_configured:
+                    extra_context["stripe_not_configured"] = True
+
+        except ShopSettings.DoesNotExist:
+            extra_context["stripe_not_configured"] = True
+
+        return super().changelist_view(request, extra_context)
+
+    def change_view(self, request, object_id, form_url="", extra_context=None):
+        """Add warning to change form"""
+        extra_context = extra_context or {}
+
+        try:
+            settings = ShopSettings.objects.get(pk=object_id)
+            if settings.is_demo_site:
+                extra_context["demo_mode_warning"] = True
+
+            stripe_configured = bool(
+                settings.stripe_secret_key and settings.stripe_public_key
+            )
+            if not stripe_configured:
+                extra_context["stripe_not_configured"] = True
+
+        except ShopSettings.DoesNotExist:
+            pass
+
+        return super().change_view(request, object_id, form_url, extra_context)

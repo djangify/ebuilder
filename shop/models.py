@@ -600,6 +600,11 @@ class ShopSettings(models.Model):
         default=False,
         help_text="Enable for production payments. Disable for test mode.",
     )
+    is_demo_site = models.BooleanField(
+        "Demo Site Mode",
+        default=False,
+        help_text="Enable for sites being built for sale. Disables Stripe payments until configured by buyer.",
+    )
 
     # === Email Configuration ===
     email_host = models.CharField(

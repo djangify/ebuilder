@@ -1,0 +1,29 @@
+{% extends "admin/change_form.html" %}
+
+{% block content %}
+    {% if demo_mode_warning %}
+    <div style="background: #fff3cd; border: 2px solid #856404; border-radius: 8px; padding: 20px; margin: 20px 0;">
+        <h2 style="margin: 0 0 10px 0; color: #856404;">⚠️ Demo Site Mode Enabled</h2>
+        <p style="margin: 0 0 10px 0; font-size: 14px;">
+            This site is currently in <strong>Demo Mode</strong>. Payment processing is disabled.
+        </p>
+        <p style="margin: 0; font-size: 13px; color: #666;">
+            To enable payments: Configure your Stripe credentials below and uncheck "Demo Site Mode".
+        </p>
+    </div>
+    {% endif %}
+
+    {% if stripe_not_configured %}
+    <div style="background: #f8d7da; border: 2px solid #721c24; border-radius: 8px; padding: 20px; margin: 20px 0;">
+        <h2 style="margin: 0 0 10px 0; color: #721c24;">🔒 Stripe Not Configured</h2>
+        <p style="margin: 0 0 10px 0; font-size: 14px;">
+            Stripe payment credentials are required to process transactions.
+        </p>
+        <p style="margin: 0; font-size: 13px; color: #666;">
+            Enter your Stripe Public Key and Secret Key in the "Stripe Configuration" section below.
+        </p>
+    </div>
+    {% endif %}
+
+    {{ block.super }}
+{% endblock %}

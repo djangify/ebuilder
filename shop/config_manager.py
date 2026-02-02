@@ -120,14 +120,59 @@ class ConfigManager:
         return env_value
 
     @classmethod
-    def get_stripe_config(cls) -> dict:
-        """Get all Stripe configuration."""
-        return {
-            "public_key": cls.get("stripe_public_key"),
-            "secret_key": cls.get("stripe_secret_key"),
-            "webhook_secret": cls.get("stripe_webhook_secret"),
-            "live_mode": cls.get("stripe_live_mode"),
-        }
+    def get_stripe_config(cls):
+        """
+        Returns Stripe configuration from database or .env.
+        Returns None if in demo mode (regardless of keys) or if no keys configured.
+        """
+        from shop.models import ShopSettings
+
+        try:
+            shop_settings = ShopSettings.objects.first()
+
+            # CRITICAL: If demo mode is ON, ALWAYS block payments (even if keys exist)
+            if shop_settings and shop_settings.is_demo_site:
+                return None
+
+            # Not in demo mode, proceed with normal config
+            public_key = (
+                shop_settings.stripe_public_key
+                if shop_settings and shop_settings.stripe_public_key
+                else os.getenv("STRIPE_PUBLIC_KEY", "")
+            )
+            secret_key = (
+                shop_settings.stripe_secret_key
+                if shop_settings and shop_settings.stripe_secret_key
+                else os.getenv("STRIPE_SECRET_KEY", "")
+            )
+            webhook_secret = (
+                shop_settings.stripe_webhook_secret
+                if shop_settings and shop_settings.stripe_webhook_secret
+                else os.getenv("STRIPE_WEBHOOK_SECRET", "")
+            )
+
+            # Return None if no credentials available
+            if not public_key or not secret_key:
+                return None
+
+            return {
+                "public_key": public_key,
+                "secret_key": secret_key,
+                "webhook_secret": webhook_secret,
+            }
+        except Exception:
+            # Fallback to .env if database unavailable
+            public_key = os.getenv("STRIPE_PUBLIC_KEY", "")
+            secret_key = os.getenv("STRIPE_SECRET_KEY", "")
+
+            if not public_key or not secret_key:
+                return None
+
+            return {
+                "public_key": public_key,
+                "secret_key": secret_key,
+                "webhook_secret": os.getenv("STRIPE_WEBHOOK_SECRET", ""),
+            }
 
     @classmethod
     def get_email_config(cls) -> dict:
