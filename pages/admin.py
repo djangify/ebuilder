@@ -56,6 +56,7 @@ class HeroInline(admin.StackedInline):
                     "subtitle",
                     "body",
                     "image",
+                    "video_url",
                     "button_text",
                     "button_link",
                     "order",
@@ -416,7 +417,8 @@ class HeroAdmin(admin.ModelAdmin):
         (
             "Media",
             {
-                "fields": ("image",),
+                "fields": ("video_url", "image"),
+                "description": "Video takes priority if both are provided. Leave both empty for text-only hero.",
             },
         ),
         (

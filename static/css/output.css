@@ -1229,12 +1229,6 @@
   .bg-\[var\(--color-light\)\] {
     background-color: var(--color-light);
   }
-  .bg-\[var\(--color-light\)\]\/70 {
-    background-color: color-mix(in srgb, #f8fafc 70%, transparent);
-    @supports (color: color-mix(in lab, red, red)) {
-      background-color: color-mix(in oklab, var(--color-light) 70%, transparent);
-    }
-  }
   .bg-\[var\(--color-primary\)\] {
     background-color: var(--color-primary);
   }
@@ -1243,6 +1237,12 @@
   }
   .bg-amber-500 {
     background-color: var(--color-amber-500);
+  }
+  .bg-black\/30 {
+    background-color: color-mix(in srgb, #000 30%, transparent);
+    @supports (color: color-mix(in lab, red, red)) {
+      background-color: color-mix(in oklab, var(--color-black) 30%, transparent);
+    }
   }
   .bg-black\/80 {
     background-color: color-mix(in srgb, #000 80%, transparent);
@@ -1519,9 +1519,6 @@
   }
   .py-4 {
     padding-block: calc(var(--spacing) * 4);
-  }
-  .py-5 {
-    padding-block: calc(var(--spacing) * 5);
   }
   .py-6 {
     padding-block: calc(var(--spacing) * 6);
@@ -2066,12 +2063,32 @@
       }
     }
   }
+  .group-hover\:scale-110 {
+    &:is(:where(.group):hover *) {
+      @media (hover: hover) {
+        --tw-scale-x: 110%;
+        --tw-scale-y: 110%;
+        --tw-scale-z: 110%;
+        scale: var(--tw-scale-x) var(--tw-scale-y);
+      }
+    }
+  }
   .group-hover\:bg-\[color\:var\(--color-primary\)\]\/10 {
     &:is(:where(.group):hover *) {
       @media (hover: hover) {
         background-color: color-mix(in srgb, #0f172a 10%, transparent);
         @supports (color: color-mix(in lab, red, red)) {
           background-color: color-mix(in oklab, var(--color-primary) 10%, transparent);
+        }
+      }
+    }
+  }
+  .group-hover\:bg-black\/40 {
+    &:is(:where(.group):hover *) {
+      @media (hover: hover) {
+        background-color: color-mix(in srgb, #000 40%, transparent);
+        @supports (color: color-mix(in lab, red, red)) {
+          background-color: color-mix(in oklab, var(--color-black) 40%, transparent);
         }
       }
     }
@@ -2915,6 +2932,11 @@
       display: none;
     }
   }
+  .lg\:grid-cols-2 {
+    @media (width >= 64rem) {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
   .lg\:grid-cols-3 {
     @media (width >= 64rem) {
       grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -2964,9 +2986,9 @@
       padding-inline: calc(var(--spacing) * 16);
     }
   }
-  .lg\:py-28 {
+  .lg\:py-24 {
     @media (width >= 64rem) {
-      padding-block: calc(var(--spacing) * 28);
+      padding-block: calc(var(--spacing) * 24);
     }
   }
   .lg\:text-3xl {

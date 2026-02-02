@@ -538,6 +538,11 @@ class Hero(models.Model):
         null=True,
         help_text="Background image for the hero section.",
     )
+    video_url = models.URLField(
+        max_length=500,
+        blank=True,
+        help_text="YouTube or Vimeo embed URL (takes priority over image)",
+    )
     button_text = models.CharField(max_length=100, blank=True)
     button_link = models.URLField(blank=True)
     is_active = models.BooleanField(default=True)
@@ -558,6 +563,29 @@ class Hero(models.Model):
 
         if self.image:
             self._compress_image()
+
+    def get_youtube_video_id(self):
+        """Extract YouTube video ID from URL."""
+        if not self.video_url:
+            return None
+
+        url = self.video_url
+
+        if "youtu.be" in url:
+            return url.split("/")[-1].split("?")[0]
+        elif "youtube.com/watch?v=" in url:
+            return url.split("v=")[1].split("&")[0]
+        elif "youtube.com/embed/" in url:
+            return url.split("/embed/")[1].split("?")[0]
+
+        return None
+
+    def get_youtube_embed_url(self):
+        """Get privacy-enhanced YouTube embed URL."""
+        video_id = self.get_youtube_video_id()
+        if video_id:
+            return f"https://www.youtube-nocookie.com/embed/{video_id}?rel=0&modestbranding=1"
+        return None
 
     def _compress_image(self):
         """Compress image to WebP format with optimized quality."""
