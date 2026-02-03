@@ -280,7 +280,22 @@ class PageSection(models.Model):
     title = models.CharField(max_length=200, blank=True)
     subtitle = models.CharField(max_length=300, blank=True)
     body = models.TextField(blank=True, null=True)
-    image = models.ImageField(upload_to="pages/sections/", blank=True, null=True)
+    image = models.ImageField(
+        upload_to="pages/sections/",
+        blank=True,
+        null=True,
+        help_text="🔹 TWO COLUMN ONLY - Leave blank for Text Block, Features Grid, and CTA sections",
+    )
+    IMAGE_POSITION_CHOICES = [
+        ("left", "Image Left, Text Right"),
+        ("right", "Image Right, Text Left"),
+    ]
+    image_position = models.CharField(
+        max_length=10,
+        choices=IMAGE_POSITION_CHOICES,
+        default="left",
+        help_text="🔹 TWO COLUMN ONLY - Choose image placement (ignored for other section types)",
+    )
     button_text = models.CharField(max_length=100, blank=True)
     button_link = models.URLField(blank=True)
     order = models.PositiveIntegerField(default=0)

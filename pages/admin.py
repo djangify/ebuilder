@@ -83,6 +83,7 @@ class PageSectionInline(admin.StackedInline):
                     "subtitle",
                     "body",
                     "image",
+                    "image_position",
                     "button_text",
                     "button_link",
                     "order",

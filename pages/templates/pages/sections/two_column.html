@@ -1,39 +1,77 @@
 <section class="py-16 bg-[color:var(--color-light)]">
    
-    <div class="max-w-6xl mx-auto px-6 grid md:grid-cols-2 gap-12 ">
+    <div class="max-w-6xl mx-auto px-6 grid md:grid-cols-2 gap-12">
 
-        {% if section.image %}
-        <div>
-            <img src="{{ section.image.url }}"
-                 alt="{{ section.title }}"
-                 class="rounded-xl shadow" loading="lazy">
-        </div>
-        {% endif %}
-
-        <div>
+        {% if section.image_position == 'right' %}
+            {# Text on left, image on right #}
             <div>
-                {% if section.title %}
-                <h2 class="text-3xl font-bold">{{ section.title }}</h2>
+                <div>
+                    {% if section.title %}
+                    <h2 class="text-3xl font-bold">{{ section.title }}</h2>
+                    {% endif %}
+                    {% if section.subtitle %}
+                    <p class="text-lg text-gray-600 mb-4">
+                        {{ section.subtitle }}
+                    </p>
+                    {% endif %}
+                    {{ section.body|safe }}
+                </div>
+
+                {% if section.button_text and section.button_link %}
+                <div class="mt-6">
+                    <a 
+                        href="{{ section.button_link }}"
+                        class="uppercase inline-block px-6 py-3 bg-[color:var(--color-primary)] text-[color:var(--color-light)] border border-[color:var(--color-primary)] rounded-md hover:bg-[color:var(--color-accent)] transition-colors font-semibold tracking-wide shadow-sm"
+                    >
+                        {{ section.button_text }}
+                    </a>
+                </div>
                 {% endif %}
-                {% if section.subtitle %}
-                <p class="text-lg text-gray-600 mb-4">
-                    {{ section.subtitle }}
-                </p>
-                {% endif %}
-                {{ section.body|safe }}
             </div>
 
-            {% if section.button_text and section.button_link %}
-            <div class="mt-6">
-                <a 
-                    href="{{ section.button_link }}"
-                    class="uppercase inline-block px-6 py-3 bg-[color:var(--color-primary)] text-[color:var(--color-light)] border border-[color:var(--color-primary)] rounded-md hover:bg-[color:var(--color-accent)] transition-colors font-semibold tracking-wide shadow-sm"
-                >
-                    {{ section.button_text }}
-                </a>
+            {% if section.image %}
+            <div>
+                <img src="{{ section.image.url }}"
+                     alt="{{ section.title }}"
+                     class="rounded-xl shadow" loading="lazy">
             </div>
             {% endif %}
-        </div>
+
+        {% else %}
+            {# Image on left, text on right (default) #}
+            {% if section.image %}
+            <div>
+                <img src="{{ section.image.url }}"
+                     alt="{{ section.title }}"
+                     class="rounded-xl shadow" loading="lazy">
+            </div>
+            {% endif %}
+
+            <div>
+                <div>
+                    {% if section.title %}
+                    <h2 class="text-3xl font-bold">{{ section.title }}</h2>
+                    {% endif %}
+                    {% if section.subtitle %}
+                    <p class="text-lg text-gray-600 mb-4">
+                        {{ section.subtitle }}
+                    </p>
+                    {% endif %}
+                    {{ section.body|safe }}
+                </div>
+
+                {% if section.button_text and section.button_link %}
+                <div class="mt-6">
+                    <a 
+                        href="{{ section.button_link }}"
+                        class="uppercase inline-block px-6 py-3 bg-[color:var(--color-primary)] text-[color:var(--color-light)] border border-[color:var(--color-primary)] rounded-md hover:bg-[color:var(--color-accent)] transition-colors font-semibold tracking-wide shadow-sm"
+                    >
+                        {{ section.button_text }}
+                    </a>
+                </div>
+                {% endif %}
+            </div>
+        {% endif %}
 
     </div>
 </section>

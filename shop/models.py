@@ -436,7 +436,7 @@ class WishList(models.Model):
 
 
 # ============================================
-# ADD TO END OF shop/models.py
+# SHOP SETTINGS
 # ============================================
 
 
