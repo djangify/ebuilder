@@ -535,6 +535,10 @@ class ShopSettings(models.Model):
         default=12,
         help_text="Number of products to show per page.",
     )
+    show_products_on_homepage = models.BooleanField(
+        default=True,
+        help_text="Display product grid on shop homepage. Turn off if using only spotlight/promo sections.",
+    )
 
     PRODUCT_DISPLAY_CHOICES = [
         ("all", "All Products"),

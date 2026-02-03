@@ -296,6 +296,11 @@ class PageSection(models.Model):
         default="left",
         help_text="🔹 TWO COLUMN ONLY - Choose image placement (ignored for other section types)",
     )
+    admin_note = models.CharField(
+        max_length=255,
+        default="Images are ONLY used for Two Column sections. Images will NOT show for Text, Features, or CTA sections.",
+        editable=False,
+    )
     button_text = models.CharField(max_length=100, blank=True)
     button_link = models.URLField(blank=True)
     order = models.PositiveIntegerField(default=0)

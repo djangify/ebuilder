@@ -568,6 +568,7 @@ class ShopSettingsAdmin(admin.ModelAdmin):
             "Display Options",
             {
                 "fields": (
+                    "show_products_on_homepage",
                     "products_per_page",
                     "product_display_mode",
                     "display_category",

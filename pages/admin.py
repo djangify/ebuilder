@@ -72,6 +72,7 @@ class PageSectionInline(admin.StackedInline):
     form = PageSectionForm
     extra = 1
     can_delete = True
+    readonly_fields = ("admin_note",)
 
     fieldsets = (
         (
@@ -82,13 +83,14 @@ class PageSectionInline(admin.StackedInline):
                     "title",
                     "subtitle",
                     "body",
+                    "admin_note",
                     "image",
                     "image_position",
                     "button_text",
                     "button_link",
                     "order",
                     "published",
-                )
+                ),
             },
         ),
     )
