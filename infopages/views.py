@@ -23,7 +23,7 @@ class DocListView(TemplateView):
                 {
                     "category": category,
                     "doc_count": docs_qs.count(),
-                    "docs": list(docs_qs[:7]),
+                    "docs": list(docs_qs[:12]),
                 }
             )
 
@@ -130,7 +130,7 @@ class InfoPageDetailView(DetailView):
                     published=True,
                 )
                 .exclude(id=page.id)
-                .order_by("title")[:5]
+                .order_by("title")[:7]
             )
 
         context["related_pages"] = related_pages
