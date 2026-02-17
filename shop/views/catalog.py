@@ -164,10 +164,15 @@ def product_detail(request, slug):
 
     # Additional product images
     images = product.images.all()
+    template = (
+        "shop/detail_landing.html"
+        if product.layout_mode == "landing"
+        else "shop/detail.html"
+    )
 
     return render(
         request,
-        "shop/detail.html",
+        template,
         {
             "product": product,
             "wishlist_items": wishlist_items,

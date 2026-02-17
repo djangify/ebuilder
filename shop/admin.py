@@ -192,6 +192,7 @@ class ProductAdmin(admin.ModelAdmin):
             {
                 "fields": (
                     "public_id",
+                    "layout_mode",
                     "title",
                     "slug",
                     "category",

@@ -205,7 +205,7 @@
         <div class="{% if shop_settings.spotlight_image_position == 'left' %}md:order-1{% endif %}">
           <img src="{{ shop_settings.spotlight_image.url }}" 
                alt="{{ shop_settings.spotlight_title }}" 
-               class="w-full h-auto rounded-lg shadow-xl">
+               class="w-full h-auto rounded-md shadow-md max-w-sm">
         </div>
         {% endif %}
         

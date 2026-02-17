@@ -10,16 +10,16 @@
 
   <!-- Primary Meta Description -->
   {% block meta_description %}
-    <meta name="description" content="Djangify helps creators and entrepreneurs build ecommerce sites that are self-owned, practical and ready to grow.">
+    <meta name="description" content="Djangify is a digital eCommerce platform for selling downloads, available as managed hosting or self-hosted. Designed for independent creators who want to sell downloadable products. Build ecommerce sites that are self-owned, practical and ready to grow.">
   {% endblock %}
 
   <!-- Keywords -->
-  <meta name="keywords" content="{% block meta_keywords %}{{ site_settings.default_meta_keywords|default:'online store, digital products' }}{% endblock %}">
+  <meta name="keywords" content="{% block meta_keywords %}{{ site_settings.default_meta_keywords|default:'eCommerce builder, digital products' }}{% endblock %}">
 
   <!-- Open Graph / Social -->
   {% block open_graph_tags %}
   <meta property="og:title" content="{{ site_name }}">
-  <meta property="og:description" content="{{ site_settings.default_meta_description|default:'Welcome to our online store' }}">
+  <meta property="og:description" content="{{ site_settings.default_meta_description|default:'Welcome to our digital storefront' }}">
   <meta property="og:type" content="website">
   <meta property="og:url" content="{{ request.build_absolute_uri }}">
   {% if site_settings.og_image %}
@@ -35,12 +35,9 @@
   <!-- Canonical URL -->
   <link rel="canonical" href="{{ request.build_absolute_uri }}">
   <!-- Stylesheets -->
-  <!-- Stylesheets -->
   <link rel="stylesheet" href="{% static 'css/output.css' %}">
-  
   <!-- Favicon -->
   <link rel="icon" type="image/ico" href="{% static 'images/favicon.ico' %}">
-
   <!-- Page Title -->
   <title>{% block title %}{{ site_name }}{% endblock %}</title>
 

@@ -1,0 +1,111 @@
+{% load static %}
+
+<!DOCTYPE html>
+
+<html lang="en-GB">
+<head>
+   <!-- Preconnect & Prefetch -->
+  <link rel="preconnect" href="{{ site_url }}" crossorigin>
+  <link rel="dns-prefetch" href="{{ site_url }}">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Primary Meta Description -->
+  {% block meta_description %}
+    <meta name="description" content="Djangify is a digital eCommerce platform for selling downloads, available as managed hosting or self-hosted. Designed for independent creators who want to sell downloadable products. Build ecommerce sites that are self-owned, practical and ready to grow.">
+  {% endblock %}
+
+  <!-- Keywords -->
+  <meta name="keywords" content="{% block meta_keywords %}{{ site_settings.default_meta_keywords|default:'eCommerce builder, digital products' }}{% endblock %}">
+
+  <!-- Open Graph / Social -->
+  {% block open_graph_tags %}
+  <meta property="og:title" content="{{ site_name }}">
+  <meta property="og:description" content="{{ site_settings.default_meta_description|default:'Welcome to our digital storefront' }}">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="{{ request.build_absolute_uri }}">
+  {% if site_settings.og_image %}
+  <meta property="og:image" content="{{ request.scheme }}://{{ request.get_host }}{{ site_settings.og_image.url }}">
+  {% elif site_settings.logo_image %}
+  <meta property="og:image" content="{{ request.scheme }}://{{ request.get_host }}{{ site_settings.logo_image.url }}">
+  {% endif %}
+  {% if site_settings.facebook_app_id %}
+  <meta property="fb:app_id" content="{{ site_settings.facebook_app_id }}">
+  {% endif %}
+  {% endblock %}
+  <!-- Canonical URL -->
+  <link rel="canonical" href="{{ request.build_absolute_uri }}">
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="{% static 'css/output.css' %}">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/ico" href="{% static 'images/favicon.ico' %}">
+
+  <!-- Page Title -->
+  <title>{% block title %}{{ site_name }}{% endblock %}</title>
+
+  <!-- Alpine and HTMX CDN scripts -->
+  <script src="https://unpkg.com/htmx.org@2.0.4/dist/htmx.min.js" defer></script>
+  <script src="https://unpkg.com/alpinejs@3.14.8/dist/cdn.min.js" defer></script>
+
+  <!-- Dynamic Color Theme from Site Settings -->
+  <style>
+    :root {
+      --color-primary: {{ primary_color }};
+      --color-secondary: {{ secondary_color }};
+      --color-accent: {{ accent_color }};
+      --color-link: {{ link_color }};
+      --color-link-hover: {{ link_hover_color }};
+
+      --color-brand-primary: {{ primary_color }};
+      --color-primary-contrast: #ffffff;
+      --color-secondary-contrast: #111827;
+      --color-accent-contrast: #ffffff;
+    }
+  </style>
+
+  {% block extra_meta %}{% endblock %}
+
+  <!-- Website JSON-LD Schema -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "{{ site_name }}",
+    "url": "{{ site_url }}",
+    "description": "{{ site_settings.default_meta_description|default:'Welcome to our online store' }}",
+    "publisher": {
+      "@type": "Organization",
+      "name": "{{ site_name }}"{% if site_settings.logo_image %},
+      "logo": {
+        "@type": "ImageObject",
+        "url": "{{ request.scheme }}://{{ request.get_host }}{{ site_settings.logo_image.url }}"
+      }{% endif %}
+    },
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": "{{ site_url }}/shop/search/?q={search_term_string}",
+      "query-input": "required name=search_term_string"
+    }
+  }
+  </script>
+
+</head>
+
+<body>
+
+  <main id="main-content" role="main">
+    {% block content %}{% endblock %}
+  </main>
+
+  <!-- ARIA Live Region for dynamic announcements -->
+  <div id="a11y-announcer" 
+       role="status" 
+       aria-live="polite" 
+       aria-atomic="true"
+       class="sr-only">
+  </div>
+
+</body>
+</html>

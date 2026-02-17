@@ -55,6 +55,14 @@ class Product(models.Model):
     ]
 
     # Basic Fields
+    layout_mode = models.CharField(
+        max_length=20,
+        choices=[
+            ("standard", "Standard Layout"),
+            ("landing", "Landing Layout (No Header/Footer)"),
+        ],
+        default="standard",
+    )
     public_id = models.CharField(max_length=130, blank=True, null=True, db_index=True)
     title = models.CharField(max_length=200)
     slug = models.SlugField(unique=True)
