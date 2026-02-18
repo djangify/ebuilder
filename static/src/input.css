@@ -213,21 +213,25 @@
   margin-bottom: 0.5rem;
 }
 
-.page-content h2 {
-  font-size: 1.875rem;
-  /* text-3xl */
-  font-weight: 600;
-  margin-top: 2rem;
+/* ======================================
+   PRODUCT / CMS HEADING SPACING FIX
+====================================== */
+
+.page-content h1,
+.page-content h2,
+.page-content h3,
+.page-content h4 {
   margin-bottom: 1rem;
 }
 
-.page-content h3 {
-  font-size: 1.5rem;
-  /* text-2xl */
-  font-weight: 600;
-  margin-top: 1.5rem;
-  margin-bottom: 0.75rem;
+.page-content h2 {
+  margin-top: 2rem;
 }
+
+.page-content h3 {
+  margin-top: 1.5rem;
+}
+
 
 /* .page-content strong {
   font-weight: 600;
