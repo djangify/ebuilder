@@ -107,8 +107,8 @@ class SiteSettings(models.Model):
     site_url = models.URLField(
         "Site URL",
         max_length=200,
-        default="https://example.com",
-        help_text="Your full site URL including https:// (e.g., https://mystore.com)",
+        blank=True,
+        help_text="Auto-detected from this site. Only change if using a custom domain.",
     )
     support_email = models.EmailField(
         "Support Email",
@@ -197,6 +197,14 @@ class SiteSettings(models.Model):
         # Enforce singleton
         if not self.pk and SiteSettings.objects.exists():
             raise ValueError("Only one SiteSettings instance is allowed.")
+
+        # Auto-set site_url if empty
+        if not self.site_url:
+            from django.contrib.sites.models import Site
+
+            current_site = Site.objects.get_current()
+            self.site_url = f"https://{current_site.domain}"
+
         super().save(*args, **kwargs)
 
     @property

@@ -235,66 +235,67 @@ SECURE_REFERRER_POLICY = "strict-origin-when-cross-origin"
 # ==================================================================
 
 TINYMCE_DEFAULT_CONFIG = {
-    # Core settings
+    # Core
     "height": 500,
     "menubar": "file edit view insert format tools table help",
     "branding": False,
     "promotion": False,
-    # FREE plugins only - no premium plugins = no console errors
+    # FREE plugins only (image plugin removed)
     "plugins": [
-        "advlist",  # Advanced list formatting
-        "autolink",  # Auto-convert URLs to links
-        "lists",  # Bullet and numbered lists
-        "link",  # Insert/edit links
-        "image",  # Insert/edit images
-        "charmap",  # Special characters
-        "preview",  # Preview content
-        "anchor",  # Named anchors
-        "searchreplace",  # Find and replace
-        "visualblocks",  # Show block elements
-        "code",  # Edit HTML source
-        "fullscreen",  # Fullscreen editing
-        "insertdatetime",  # Insert date/time
-        "media",  # Embed videos
-        "table",  # Tables
-        "wordcount",  # Word count
-        "help",  # Help dialog
+        "advlist",
+        "autolink",
+        "lists",
+        "link",
+        "charmap",
+        "preview",
+        "anchor",
+        "searchreplace",
+        "visualblocks",
+        "code",
+        "fullscreen",
+        "insertdatetime",
+        "media",
+        "table",
+        "wordcount",
+        "help",
     ],
-    # Toolbar configuration
+    # Toolbar (image removed)
     "toolbar": (
         "undo redo | blocks | bold italic underline strikethrough | "
         "alignleft aligncenter alignright alignjustify | "
-        "bullist numlist outdent indent | link image media table | "
+        "bullist numlist outdent indent | link media table | "
         "code fullscreen preview | removeformat help"
     ),
-    # Block formats (headings, paragraph, etc.)
-    "block_formats": "Paragraph=p; Heading 2=h2; Heading 3=h3; Heading 4=h4; Blockquote=blockquote; Code=pre",
-    # Image settings - allows upload and URL
-    "image_advtab": True,
-    "image_caption": True,
-    "automatic_uploads": True,
-    "file_picker_types": "image",
-    "images_upload_url": "/tinymce/upload/",  # We'll create this view
-    # Link settings
+    # Block formats
+    "block_formats": (
+        "Paragraph=p; "
+        "Heading 2=h2; "
+        "Heading 3=h3; "
+        "Heading 4=h4; "
+        "Blockquote=blockquote; "
+        "Code=pre"
+    ),
+    # Link behaviour
     "link_default_target": "_blank",
     "link_assume_external_targets": True,
-    # Content styling - uses your site's CSS
+    # Use site CSS
     "content_css": "/static/css/tinymce-content.css",
-    # Clean paste from Word
+    # Paste handling
     "paste_as_text": False,
-    # Security - what HTML is allowed
+    # Allow required HTML (style added for image alignment)
     "valid_elements": (
         "p,br,b,strong,i,em,u,s,strike,sub,sup,"
         "h1,h2,h3,h4,h5,h6,"
         "ul,ol,li,"
         "a[href|target|title],"
-        "img[src|alt|title|width|height|class],"
-        "table[border|cellspacing|cellpadding],thead,tbody,tr,th[colspan|rowspan],td[colspan|rowspan],"
+        "img[src|alt|title|width|height|class|style],"
+        "table[border|cellspacing|cellpadding],thead,tbody,tr,"
+        "th[colspan|rowspan],td[colspan|rowspan],"
         "blockquote,pre,code,"
-        "div[class],span[class],"
+        "div[class|style],span[class|style],"
         "hr"
     ),
-    # Relative URLs (important for portability)
+    # URL handling
     "relative_urls": False,
     "remove_script_host": True,
     "document_base_url": "/",
