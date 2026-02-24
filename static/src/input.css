@@ -74,13 +74,7 @@
     margin-bottom: 0.25rem;
   }
 
-  /* --------------------------------
-     Links
-  --------------------------------- */
 
-  a {
-    @apply text-[--color-link] hover:text-[--color-link-hover] transition-colors;
-  }
 }
 
 /* --------------------------------
@@ -109,7 +103,7 @@
   --color-secondary: #334155;
   /* slate-700 */
 
-  --color-secondary-contrast: #111827;
+  --color-secondary-contrast: #f8fafc;
 
   --color-accent: #475569;
 
