@@ -57,7 +57,7 @@
     {% if selected_category %}
     <div class="text-center mt-10">
       <a href="{% url 'blog:category' selected_category.slug %}" 
-         class="inline-flex items-center px-6 py-3 rounded-full border-2 border-[color:var(--color-accent)] text-[color:var(--color-accent)] hover:bg-[color:var(--color-accent)] hover:text-white transition">
+         class="inline-flex items-center px-6 py-3 rounded-full border-2 border-[color:var(--color-accent)] text-[color:var(--color-accent)] hover:bg-[color:var(--color-accent)] hover:text-[var(--color-primary-contrast)] transition">
         See all {{ selected_category.name }} articles
       </a>
     </div>

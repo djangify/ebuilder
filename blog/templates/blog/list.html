@@ -122,7 +122,7 @@
               class="px-4 py-2 border border-[color:var(--color-primary)]
                       text-[color:var(--color-primary)] font-semibold text-sm
                       rounded hover:bg-[color:var(--color-primary)]
-                      hover:text-white transition">
+                      hover:text-[var(--color-primary-contrast)] transition">
                 Read Full Article →
             </a>
         </div>
@@ -142,17 +142,17 @@
         {% if posts.has_other_pages %}
           <div class="flex justify-center items-center gap-2 mt-12 flex-wrap">
             {% if posts.has_previous %}
-              <a href="?page={{ posts.previous_page_number }}" class="px-4 py-2 border border-[color:var(--color-primary)] text-[color:var(--color-primary)] rounded hover:bg-[color:var(--color-primary)] hover:text-white transition">Previous</a>
+              <a href="?page={{ posts.previous_page_number }}" class="px-4 py-2 border border-[color:var(--color-primary)] text-[color:var(--color-primary)] rounded hover:bg-[color:var(--color-primary)] hover:text-[var(--color-primary-contrast)] transition">Previous</a>
             {% endif %}
             {% for num in posts.paginator.page_range %}
               {% if posts.number == num %}
-                <span class="px-4 py-2 bg-[color:var(--color-primary)] text-white border border-[color:var(--color-primary)] rounded">{{ num }}</span>
+                <span class="px-4 py-2 bg-[color:var(--color-primary)] text-[var(--color-primary-contrast)] border border-[color:var(--color-primary)] rounded">{{ num }}</span>
               {% else %}
-                <a href="?page={{ num }}" class="px-4 py-2 border border-[color:var(--color-primary)] text-[color:var(--color-primary)] rounded hover:bg-[color:var(--color-primary)] hover:text-white transition">{{ num }}</a>
+                <a href="?page={{ num }}" class="px-4 py-2 border border-[color:var(--color-primary)] text-[color:var(--color-primary)] rounded hover:bg-[color:var(--color-primary)] hover:text-[var(--color-primary-contrast)] transition">{{ num }}</a>
               {% endif %}
             {% endfor %}
             {% if posts.has_next %}
-              <a href="?page={{ posts.next_page_number }}" class="px-4 py-2 border border-[color:var(--color-primary)] text-[color:var(--color-primary)] rounded hover:bg-[color:var(--color-primary)] hover:text-white transition">Next</a>
+              <a href="?page={{ posts.next_page_number }}" class="px-4 py-2 border border-[color:var(--color-primary)] text-[color:var(--color-primary)] rounded hover:bg-[color:var(--color-primary)] hover:text-[var(--color-primary-contrast)] transition">Next</a>
             {% endif %}
           </div>
         {% endif %}

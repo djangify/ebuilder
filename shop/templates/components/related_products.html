@@ -11,7 +11,7 @@
           <img src="{{ item.get_image_url|default:'/static/images/placeholder.webp' }}"
               class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
           {% if item.is_on_sale %}
-          <span class="absolute top-2 right-2 bg-[color:var(--color-accent)] text-[color:var(--color-light)] text-xs font-bold px-2 py-1 rounded">SALE</span>
+          <span class="absolute top-2 right-2 bg-[color:var(--color-accent)] text-[color:var(--color-accent-contrast)] text-xs font-bold px-2 py-1 rounded">SALE</span>
           {% endif %}
         </div>
         <div class="p-4">

@@ -76,7 +76,7 @@
                     {% if item.purchased_download and item.purchased_download.file %}
                       <!-- Show only the specific purchased download -->
                       <a href="{% url 'shop:secure_download' order_item_id=item.id download_id=item.purchased_download.id %}"
-                         class="inline-flex items-center px-4 py-2 bg-[color:var(--color-primary)] text-white text-sm font-medium rounded hover:bg-[color:var(--color-accent)] transition">
+                         class="inline-flex items-center px-4 py-2 bg-[color:var(--color-primary)] text-[var(--color-primary-contrast)] text-sm font-medium rounded hover:bg-[color:var(--color-accent)] transition">
                         <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
                         </svg>
@@ -87,7 +87,7 @@
                       {% for download in item.get_downloads %}
                         {% if download.file %}
                         <a href="{% url 'shop:secure_download' order_item_id=item.id download_id=download.id %}"
-                           class="inline-flex items-center px-4 py-2 bg-[color:var(--color-primary)] text-white text-sm font-medium rounded hover:bg-[color:var(--color-accent)] transition">
+                           class="inline-flex items-center px-4 py-2 bg-[color:var(--color-primary)] text-[var(--color-primary-contrast)] text-sm font-medium rounded hover:bg-[color:var(--color-accent)] transition">
                           <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
                           </svg>
@@ -134,7 +134,7 @@
           Browse our shop to find products you'll love.
         </p>
         <a href="{% url 'shop:product_list' %}" 
-           class="inline-block px-6 py-3 bg-[color:var(--color-primary)] text-white font-semibold rounded-lg hover:bg-[color:var(--color-accent)] transition">
+           class="inline-block px-6 py-3 bg-[color:var(--color-primary)] text-[var(--color-primary-contrast)] font-semibold rounded-lg hover:bg-[color:var(--color-accent)] transition">
           Browse Shop
         </a>
       </div>

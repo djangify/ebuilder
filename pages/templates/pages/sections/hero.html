@@ -12,9 +12,15 @@
     {% if hero_banner %}
     <div class="mb-8 text-center">
       <a href="{{ hero_banner.action_link }}"
-         class="inline-flex items-center text-white px-4 py-2 rounded-md bg-[color:var(--color-primary)] hover:bg-amber-100 hover:text-[color:var(--color-accent)] transition">
+         class="inline-flex items-center 
+        bg-[color:var(--color-primary)] 
+        text-[var(--color-primary-contrast)] px-4 py-2 rounded-md 
+        hover:bg-[color:var(--color-secondary)] 
+        hover:text-[var(--color-secondary-contrast)] 
+        transition">
         {% if hero_banner.badge_text %}
-          <span class="px-2 py-1 mr-2 text-xs font-semibold rounded bg-blue-600 text-white">
+          <span class="px-2 py-1 mr-2 text-xs font-semibold rounded bg-[color:var(--color-primary)] 
+          text-[var(--color-primary-contrast)]">
             {{ hero_banner.badge_text }}
           </span>
         {% endif %}
@@ -48,7 +54,7 @@
         {% if hero.button_text and hero.button_link %}
           <div class="flex justify-center mt-8">
             <a href="{{ hero.button_link }}"
-              class="inline-block uppercase bg-[var(--color-primary)] text-[var(--color-light)] px-10 py-4 rounded-md text-lg font-semibold shadow-md hover:bg-[var(--color-secondary)] transition-transform transform hover:scale-[1.02]">
+              class="inline-block uppercase bg-[var(--color-primary)] text-[var(--color-primary-contrast)] px-10 py-4 rounded-md text-lg font-semibold shadow-md hover:bg-[var(--color-secondary)] transition-transform transform hover:scale-[1.02]">
               {{ hero.button_text }}
             </a>
           </div>
@@ -66,6 +72,8 @@
               id="hero-video-thumb"
               type="button"
               data-video-id="{{ video_id }}"
+              width="1280"
+              height="720"
               aria-label="Play video"
               class="absolute inset-0 h-full w-full group focus:outline-none"
             >
@@ -93,6 +101,8 @@
             src="{{ hero.image.url }}" 
             alt="{{ hero.title }}"
             fetchpriority="high"
+            width="1200"
+            height="800"
             decoding="async"
             class="w-full h-full rounded-lg shadow-xl object-cover"
             style="min-height: 400px; max-height: 600px;"

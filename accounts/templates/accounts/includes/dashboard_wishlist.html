@@ -30,7 +30,7 @@
 
       <div class="mt-auto flex justify-center">
         <a href="{% url 'shop:product_detail' product.slug %}"
-           class="px-4 py-2 text-sm font-semibold border border-[color:var(--color-accent)] text-[color:var(--color-accent)] rounded-md hover:bg-[color:var(--color-primary)] hover:text-white transition">
+           class="px-4 py-2 text-sm font-semibold border border-[color:var(--color-accent)] text-[color:var(--color-accent)] rounded-md hover:bg-[color:var(--color-primary)] hover:text-[var(--color-primary-contrast)] transition">
           View
         </a>
         
@@ -56,7 +56,7 @@
 <div class="text-center py-12">
   <p class="text-[color:var(--color-font-main)]">No products in your wish list yet.</p>
   <a href="{% url 'shop:product_list' %}" 
-     class="mt-4 inline-block px-6 py-3 rounded-lg bg-[color:var(--color-primary)] text-white font-semibold hover:bg-[color:var(--color-secondary)] hover:text-[color:var(--color-primary)] transition">
+     class="mt-4 inline-block px-6 py-3 rounded-lg bg-[color:var(--color-primary)] text-[var(--color-primary-contrast)] font-semibold hover:bg-[color:var(--color-secondary)] hover:text-[color:var(--color-primary)] transition">
     Visit the Shop
   </a>
 </div>

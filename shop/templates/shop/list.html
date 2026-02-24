@@ -58,7 +58,7 @@
 
         {% if shop_settings.hero_button_text and shop_settings.hero_button_link %}
         <a href="{{ shop_settings.hero_button_link }}" 
-           class="inline-flex items-center px-6 py-3 bg-[color:var(--color-accent)] text-white font-semibold rounded-md hover:bg-[color:var(--color-accent)]/90 transition-colors">
+           class="inline-flex items-center px-6 py-3 bg-[color:var(--color-accent)] text-[var(--color-accent-contrast)] font-semibold rounded-md hover:bg-[color:var(--color-accent)]/90 transition-colors">
           {{ shop_settings.hero_button_text }}
           <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
@@ -191,7 +191,7 @@
           
           {% if shop_settings.spotlight_button_text and shop_settings.spotlight_button_link %}
           <a href="{{ shop_settings.spotlight_button_link }}" 
-             class="inline-flex items-center px-6 py-3 bg-[color:var(--color-accent)] text-white font-semibold rounded-md hover:bg-[color:var(--color-accent)]/90 transition-colors">
+             class="inline-flex items-center px-6 py-3 bg-[color:var(--color-accent)] text-[var(--color-accent-contrast)] font-semibold rounded-md hover:bg-[color:var(--color-accent)]/90 transition-colors">
             {{ shop_settings.spotlight_button_text }}
             <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
@@ -246,14 +246,14 @@
         <div class="flex flex-wrap justify-center gap-3">
           <!-- All Products Tab -->
           <a href="{% url 'shop:product_list' %}" 
-             class="px-5 py-2.5 rounded-full font-medium transition-all duration-300 {% if not current_category %}bg-[color:var(--color-primary)] text-white shadow-lg{% else %}bg-white text-[color:var(--color-primary)] hover:bg-[color:var(--color-primary)] hover:text-white shadow-md{% endif %}">
+             class="px-5 py-2.5 rounded-full font-medium transition-all duration-300 {% if not current_category %}bg-[color:var(--color-primary)] text-[var(--color-primary-contrast)] shadow-lg{% else %}bg-white text-[color:var(--color-primary)] hover:bg-[color:var(--color-primary)] hover:text-[var(--color-primary-contrast)] shadow-md{% endif %}">
             All Products
           </a>
           
           <!-- Dynamic Category Tabs -->
           {% for category in categories %}
           <a href="?category={{ category.slug }}" 
-             class="px-5 py-2.5 rounded-full font-medium transition-all duration-300 {% if current_category and current_category.id == category.id %}bg-[color:var(--color-primary)] text-white shadow-lg{% else %}bg-white text-[color:var(--color-primary)] hover:bg-[color:var(--color-primary)] hover:text-white shadow-md{% endif %}">
+             class="px-5 py-2.5 rounded-full font-medium transition-all duration-300 {% if current_category and current_category.id == category.id %}bg-[color:var(--color-primary)] text-[var(--color-primary-contrast)] shadow-lg{% else %}bg-white text-[color:var(--color-primary)] hover:bg-[color:var(--color-primary)] hover:text-[var(--color-primary-contrast)] shadow-md{% endif %}">
             {{ category.name }}
           </a>
           {% endfor %}
@@ -323,7 +323,7 @@
         Check back soon for new additions!
         {% endif %}
       </p>
-      <a href="{% url 'shop:product_list' %}" class="inline-flex items-center gap-2 px-6 py-3 bg-[color:var(--color-primary)] text-white font-semibold rounded-lg hover:bg-[color:var(--color-accent)] transition-colors">
+      <a href="{% url 'shop:product_list' %}" class="inline-flex items-center gap-2 px-6 py-3 bg-[color:var(--color-primary)] text-[var(--color-primary-contrast)] font-semibold rounded-lg hover:bg-[color:var(--color-accent)] transition-colors">
         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
         </svg>

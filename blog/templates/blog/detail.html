@@ -93,7 +93,7 @@
         <h3 class="text-xl font-semibold mb-3 text-[color:var(--color-dark)]">Download PDF Here</h3>
         <p class="text-[color:var(--color-font-main)] mb-4">{{ post.resource_title|default:post.title }}</p>
         <a href="{{ post.resource.url }}" download="{{ post.resource_title|default:post.title }}"
-          class="inline-flex items-center gap-2 px-5 py-3 border border-[color:var(--color-secondary)] text-[color:var(--color-secondary)] rounded-lg hover:bg-[color:var(--color-secondary)] hover:text-white font-medium transition">
+          class="inline-flex items-center gap-2 px-5 py-3 border border-[color:var(--color-secondary)] text-[color:var(--color-secondary)] rounded-lg hover:bg-[color:var(--color-secondary)] hover:text-[var(--color-primary-contrast)] font-medium transition">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2"
               viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round"
               d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>

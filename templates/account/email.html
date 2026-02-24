@@ -53,7 +53,7 @@
                                         <span class="font-medium">{{ emailaddress.email }}</span>
                                         <div class="flex gap-2 mt-1">
                                             {% if emailaddress.primary %}
-                                                <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-[color:var(--color-primary)] text-white">
+                                                <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-[color:var(--color-primary)] text-[var(--color-primary-contrast)]">
                                                     Primary
                                                 </span>
                                             {% endif %}
@@ -168,7 +168,13 @@
                         <button 
                             type="submit" 
                             name="action_add"
-                            class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-[color:var(--color-light)] bg-[color:var(--color-primary)] hover:bg-[color:var(--color-accent)] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[color:var(--color-accent)]"
+                            class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md 
+                            bg-[color:var(--color-primary)] 
+                            text-[var(--color-primary-contrast)] 
+                            hover:bg-[color:var(--color-accent)] 
+                            hover:text-[var(--color-accent-contrast)] 
+                            focus:outline-none focus:ring-2 focus:ring-offset-2 
+                            focus:ring-[color:var(--color-accent)]"
                         >
                             Add Email
                         </button>
