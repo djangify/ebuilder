@@ -293,6 +293,16 @@ class SiteSettingsAdmin(admin.ModelAdmin):
                 "classes": ("collapse",),
             },
         ),
+        (
+            "Analytics",
+            {
+                "fields": (
+                    "google_analytics_id",
+                    "google_search_console_verification",
+                ),
+                "description": "Add your Google Analytics ID and Google Search Console verification code.",
+            },
+        ),
     )
 
     def formfield_for_dbfield(self, db_field, request, **kwargs):

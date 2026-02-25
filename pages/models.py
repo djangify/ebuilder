@@ -183,6 +183,21 @@ class SiteSettings(models.Model):
         blank=True,
         help_text="Optional Facebook App ID for social features",
     )
+    # === Analytics ===
+    google_analytics_id = models.CharField(
+        "Google Analytics GA4 ID",
+        max_length=30,
+        blank=True,
+        default="",
+        help_text="Enter your GA4 Measurement ID (e.g. G-XXXXXXXXXX)",
+    )
+    google_search_console_verification = models.CharField(
+        "Google Search Console Verification Code",
+        max_length=255,
+        blank=True,
+        default="",
+        help_text="Enter the content value from Google Search Console meta tag verification.",
+    )
 
     updated = models.DateTimeField(auto_now=True)
 
