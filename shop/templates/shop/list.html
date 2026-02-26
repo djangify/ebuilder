@@ -79,8 +79,6 @@
     
   </div>
 </header>
-
-
 <!-- ============================================
      DYNAMIC SECTIONS (ordered by admin settings)
      ============================================ -->
@@ -105,6 +103,52 @@
   </section>
   {% endif %}
 
+
+  {% if section.type == 'faq' %}
+  <!-- FAQ SECTION -->
+  {% for block in faq_blocks %}
+    {% if block.published and block.items.all %}
+    <section class="py-16">
+      <div class="max-w-4xl mx-auto px-6">
+        {% if block.title %}
+        <h2 class="text-3xl font-bold mb-8 text-[color:var(--color-dark)]">
+          {{ block.title }}
+        </h2>
+        {% endif %}
+
+        <div class="space-y-4">
+          {% for item in block.items.all %}
+            {% if item.published %}
+            <div x-data="{ open: false }" class="border-b border-[color:var(--color-accent)]">
+              <button 
+                @click="open = !open" 
+                class="w-full py-4 flex justify-between items-center text-left focus:outline-none">
+                <span class="font-semibold text-lg text-[color:var(--color-dark)]">
+                  {{ item.question }}
+                </span>
+                <span 
+                  class="text-2xl font-bold text-[color:var(--color-accent)] transition-transform duration-300"
+                  :class="{ 'rotate-45': open }">
+                  +
+                </span>
+              </button>
+              <div 
+                x-show="open" 
+                x-collapse
+                class="pb-4 text-[color:var(--color-font-main)] leading-relaxed">
+                {{ item.answer|linebreaks }}
+              </div>
+            </div>
+            {% endif %}
+          {% endfor %}
+        </div>
+      </div>
+    </section>
+    {% endif %}
+  {% endfor %}
+  {% endif %}
+
+
   {% if section.type == 'promo_blocks' %}
   <!-- PROMO BLOCKS SECTION -->
   {% for block in promo_blocks %}
@@ -113,8 +157,7 @@
       <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
 
         {% if block.col_1_title or block.col_1_body %}
-        <div class="bg-white text-center rounded-md p-8 shadow-md border border-[color:var(--color-secondary)]
-                    hover:border-[color:var(--color-accent)] transition-all duration-300 hover:shadow-xl">
+        <div class="bg-white text-center rounded-md p-8 shadow-md border border-[color:var(--color-secondary)] hover:border-[color:var(--color-accent)] transition-all duration-300 hover:shadow-xl">
           {% if block.col_1_image %}
           <div class="w-14 h-14 mx-auto bg-[color:var(--color-accent)]/10 rounded-md flex items-center justify-center mb-4 overflow-hidden">
             <img src="{{ block.col_1_image.url }}" alt="{{ block.col_1_title }}" class="w-8 h-8 object-contain">
@@ -130,8 +173,7 @@
         {% endif %}
 
         {% if block.col_2_title or block.col_2_body %}
-        <div class="bg-white text-center rounded-md p-8 shadow-md border border-[color:var(--color-secondary)]
-                    hover:border-[color:var(--color-accent)] transition-all duration-300 hover:shadow-xl">
+        <div class="bg-white text-center rounded-md p-8 shadow-md border border-[color:var(--color-secondary)] hover:border-[color:var(--color-accent)] transition-all duration-300 hover:shadow-xl">
           {% if block.col_2_image %}
           <div class="w-14 h-14 mx-auto bg-[color:var(--color-accent)]/10 rounded-md flex items-center justify-center mb-4 overflow-hidden">
             <img src="{{ block.col_2_image.url }}" alt="{{ block.col_2_title }}" class="w-8 h-8 object-contain">
@@ -147,8 +189,7 @@
         {% endif %}
 
         {% if block.col_3_title or block.col_3_body %}
-        <div class="bg-white text-center rounded-md p-8 shadow-md border border-[color:var(--color-secondary)]
-                    hover:border-[color:var(--color-accent)] transition-all duration-300 hover:shadow-xl">
+        <div class="bg-white text-center rounded-md p-8 shadow-md border border-[color:var(--color-secondary)] hover:border-[color:var(--color-accent)] transition-all duration-300 hover:shadow-xl">
           {% if block.col_3_image %}
           <div class="w-14 h-14 mx-auto bg-[color:var(--color-accent)]/10 rounded-md flex items-center justify-center mb-4 overflow-hidden">
             <img src="{{ block.col_3_image.url }}" alt="{{ block.col_3_title }}" class="w-8 h-8 object-contain">
@@ -169,41 +210,24 @@
   {% endfor %}
   {% endif %}
 
+
   {% if section.type == 'spotlight' %}
   <!-- SPOTLIGHT SECTION -->
   <section class="py-12 md:py-16 bg-[color:var(--color-light)]">
     <div class="max-w-6xl mx-auto px-6 md:px-10 lg:px-16">
       <div class="grid md:grid-cols-2 gap-12 items-center">
-        
-        <!-- Text Column -->
         <div class="{% if shop_settings.spotlight_image_position == 'left' %}md:order-2{% endif %}">
           {% if shop_settings.spotlight_title %}
           <h2 class="text-3xl md:text-4xl font-bold text-[color:var(--color-primary)] mb-6">
             {{ shop_settings.spotlight_title }}
           </h2>
           {% endif %}
-          
           {% if shop_settings.spotlight_body %}
           <div class="text-[color:var(--color-text-muted)] prose prose-lg mb-8">
             {{ shop_settings.spotlight_body|safe }}
           </div>
           {% endif %}
-          
-          {% if shop_settings.spotlight_button_text and shop_settings.spotlight_button_link %}
-          <a href="{{ shop_settings.spotlight_button_link }}" 
-             class="inline-flex items-center px-6 py-3 bg-[color:var(--color-primary)] 
-              text-[var(--color-primary-contrast)] 
-              font-semibold rounded-md 
-              hover:bg-[color:var(--color-primary)]/90  transition-colors">
-            {{ shop_settings.spotlight_button_text }}
-            <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
-            </svg>
-          </a>
-          {% endif %}
         </div>
-        
-        <!-- Image Column -->
         {% if shop_settings.spotlight_image %}
         <div class="{% if shop_settings.spotlight_image_position == 'left' %}md:order-1{% endif %}">
           <img src="{{ shop_settings.spotlight_image.url }}" 
@@ -211,133 +235,132 @@
                class="w-full h-auto rounded-md shadow-md max-w-sm">
         </div>
         {% endif %}
-        
       </div>
     </div>
   </section>
   {% endif %}
 
-{% endfor %}
 
+  {% if section.type == 'products' and shop_settings.show_products_on_homepage %}
+  <!--MAIN PRODUCT LISTING -->
+  {% if shop_settings.show_products_on_homepage %}
+  <div id="products" class="w-full bg-[color:var(--color-light)] py-12 md:py-16">
+    <div class="w-full max-w-6xl mx-auto px-6 md:px-10 lg:px-16">
 
-<!-- ============================================
-     MAIN PRODUCT LISTING (always last)
-     ============================================ -->
-{% if shop_settings.show_products_on_homepage %}
-<div id="products" class="w-full bg-[color:var(--color-light)] py-12 md:py-16">
-  <div class="w-full max-w-6xl mx-auto px-6 md:px-10 lg:px-16">
-
-    <!-- Category Filter Section -->
-    <div class="mb-12">
-      <!-- Mobile Filter Button -->
-      <button id="filterToggle" 
-              data-collapse-toggle="categories-grid"
-              class="lg:hidden w-full mb-4 px-5 py-3 bg-white text-[color:var(--color-primary)] rounded-xl shadow-md flex items-center justify-between font-semibold border border-[color:var(--color-accent)]/20">
-        <span class="flex items-center gap-2">
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"/>
+      <!-- Category Filter Section -->
+      <div class="mb-12">
+        <!-- Mobile Filter Button -->
+        <button id="filterToggle" 
+                data-collapse-toggle="categories-grid"
+                class="lg:hidden w-full mb-4 px-5 py-3 bg-white text-[color:var(--color-primary)] rounded-xl shadow-md flex items-center justify-between font-semibold border border-[color:var(--color-accent)]/20">
+          <span class="flex items-center gap-2">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"/>
+            </svg>
+            Filter by Category
+          </span>
+          <svg class="w-5 h-5 transition-transform" id="filterIcon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
           </svg>
-          Filter by Category
-        </span>
-        <svg class="w-5 h-5 transition-transform" id="filterIcon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
-        </svg>
-      </button>
+        </button>
 
-      <!-- Categories Grid -->
-      <div id="categories-grid" class="hidden lg:block">
-        <div class="flex flex-wrap justify-center gap-3">
-          <!-- All Products Tab -->
-          <a href="{% url 'shop:product_list' %}" 
-             class="px-5 py-2.5 rounded-full font-medium transition-all duration-300 {% if not current_category %}bg-[color:var(--color-primary)] text-[var(--color-primary-contrast)] shadow-lg{% else %}bg-white text-[color:var(--color-primary)] hover:bg-[color:var(--color-primary)] hover:text-[var(--color-primary-contrast)] shadow-md{% endif %}">
-            All Products
-          </a>
-          
-          <!-- Dynamic Category Tabs -->
-          {% for category in categories %}
-          <a href="?category={{ category.slug }}" 
-             class="px-5 py-2.5 rounded-full font-medium transition-all duration-300 {% if current_category and current_category.id == category.id %}bg-[color:var(--color-primary)] text-[var(--color-primary-contrast)] shadow-lg{% else %}bg-white text-[color:var(--color-primary)] hover:bg-[color:var(--color-primary)] hover:text-[var(--color-primary-contrast)] shadow-md{% endif %}">
-            {{ category.name }}
-          </a>
-          {% endfor %}
+        <!-- Categories Grid -->
+        <div id="categories-grid" class="hidden lg:block">
+          <div class="flex flex-wrap justify-center gap-3">
+            <!-- All Products Tab -->
+            <a href="{% url 'shop:product_list' %}" 
+              class="px-5 py-2.5 rounded-full font-medium transition-all duration-300 {% if not current_category %}bg-[color:var(--color-primary)] text-[var(--color-primary-contrast)] shadow-lg{% else %}bg-white text-[color:var(--color-primary)] hover:bg-[color:var(--color-primary)] hover:text-[var(--color-primary-contrast)] shadow-md{% endif %}">
+              All Products
+            </a>
+            
+            <!-- Dynamic Category Tabs -->
+            {% for category in categories %}
+            <a href="?category={{ category.slug }}" 
+              class="px-5 py-2.5 rounded-full font-medium transition-all duration-300 {% if current_category and current_category.id == category.id %}bg-[color:var(--color-primary)] text-[var(--color-primary-contrast)] shadow-lg{% else %}bg-white text-[color:var(--color-primary)] hover:bg-[color:var(--color-primary)] hover:text-[var(--color-primary-contrast)] shadow-md{% endif %}">
+              {{ category.name }}
+            </a>
+            {% endfor %}
+          </div>
         </div>
       </div>
-    </div>
 
-    <!-- Results Count -->
-    {% if products %}
-    <p class="text-[color:var(--color-font-main)]/70 text-center mb-8">
-      Showing {{ products|length }} product{% if products|length != 1 %}s{% endif %}
-      {% if current_category %}in <span class="font-semibold text-[color:var(--color-primary)]">{{ current_category.name }}</span>{% endif %}
-      {% if query %}matching "<span class="font-semibold text-[color:var(--color-primary)]">{{ query }}</span>"{% endif %}
-    </p>
-
-    <!-- Product Grid -->
-    <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-      {% for product in products %}
-        {% include "shop/includes/product_card.html" with product=product %}
-      {% endfor %}
-    </div>
-
-    <!-- Pagination -->
-    {% if products.has_other_pages %}
-    <nav class="mt-12 flex justify-center" aria-label="Product pagination">
-      <ul class="flex items-center gap-2">
-        {% if products.has_previous %}
-        <li>
-          <a href="?page={{ products.previous_page_number }}{% if query %}&q={{ query }}{% endif %}{% if current_category %}&category={{ current_category.slug }}{% endif %}" 
-             class="px-4 py-2 rounded-lg bg-white border border-gray-200 hover:bg-[color:var(--color-accent)]/10 transition-colors"
-             aria-label="Previous page">
-            &laquo; Prev
-          </a>
-        </li>
-        {% endif %}
-        
-        <li class="px-4 py-2 text-[color:var(--color-text-muted)]">
-          Page {{ products.number }} of {{ products.paginator.num_pages }}
-        </li>
-        
-        {% if products.has_next %}
-        <li>
-          <a href="?page={{ products.next_page_number }}{% if query %}&q={{ query }}{% endif %}{% if current_category %}&category={{ current_category.slug }}{% endif %}" 
-             class="px-4 py-2 rounded-lg bg-white border border-gray-200 hover:bg-[color:var(--color-accent)]/10 transition-colors"
-             aria-label="Next page">
-            Next &raquo;
-          </a>
-        </li>
-        {% endif %}
-      </ul>
-    </nav>
-    {% endif %}
-
-    {% else %}
-    <!-- Empty State -->
-    <div class="text-center py-16">
-      <svg class="w-16 h-16 mx-auto text-gray-300 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>
-      </svg>
-      <h2 class="text-xl font-semibold text-[color:var(--color-primary)] mb-2">No products found</h2>
-      <p class="text-[color:var(--color-text-muted)] mb-6">
-        {% if query %}
-        No products match your search. Try different keywords.
-        {% elif current_category %}
-        No products available in this category yet.
-        {% else %}
-        Check back soon for new additions!
-        {% endif %}
+      <!-- Results Count -->
+      {% if products %}
+      <p class="text-[color:var(--color-font-main)]/70 text-center mb-8">
+        Showing {{ products|length }} product{% if products|length != 1 %}s{% endif %}
+        {% if current_category %}in <span class="font-semibold text-[color:var(--color-primary)]">{{ current_category.name }}</span>{% endif %}
+        {% if query %}matching "<span class="font-semibold text-[color:var(--color-primary)]">{{ query }}</span>"{% endif %}
       </p>
-      <a href="{% url 'shop:product_list' %}" class="inline-flex items-center gap-2 px-6 py-3 bg-[color:var(--color-primary)] text-[var(--color-primary-contrast)] font-semibold rounded-lg hover:bg-[color:var(--color-primary)]/90 transition-colors">
-        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
-        </svg>
-        View All Products
-      </a>
-    </div>
-    {% endif %}
 
+      <!-- Product Grid -->
+      <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        {% for product in products %}
+          {% include "shop/includes/product_card.html" with product=product %}
+        {% endfor %}
+      </div>
+
+      <!-- Pagination -->
+      {% if products.has_other_pages %}
+      <nav class="mt-12 flex justify-center" aria-label="Product pagination">
+        <ul class="flex items-center gap-2">
+          {% if products.has_previous %}
+          <li>
+            <a href="?page={{ products.previous_page_number }}{% if query %}&q={{ query }}{% endif %}{% if current_category %}&category={{ current_category.slug }}{% endif %}" 
+              class="px-4 py-2 rounded-lg bg-white border border-gray-200 hover:bg-[color:var(--color-accent)]/10 transition-colors"
+              aria-label="Previous page">
+              &laquo; Prev
+            </a>
+          </li>
+          {% endif %}
+          
+          <li class="px-4 py-2 text-[color:var(--color-text-muted)]">
+            Page {{ products.number }} of {{ products.paginator.num_pages }}
+          </li>
+          
+          {% if products.has_next %}
+          <li>
+            <a href="?page={{ products.next_page_number }}{% if query %}&q={{ query }}{% endif %}{% if current_category %}&category={{ current_category.slug }}{% endif %}" 
+              class="px-4 py-2 rounded-lg bg-white border border-gray-200 hover:bg-[color:var(--color-accent)]/10 transition-colors"
+              aria-label="Next page">
+              Next &raquo;
+            </a>
+          </li>
+          {% endif %}
+        </ul>
+      </nav>
+      {% endif %}
+
+      {% else %}
+      <!-- Empty State -->
+      <div class="text-center py-16">
+        <svg class="w-16 h-16 mx-auto text-gray-300 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>
+        </svg>
+        <h2 class="text-xl font-semibold text-[color:var(--color-primary)] mb-2">No products found</h2>
+        <p class="text-[color:var(--color-text-muted)] mb-6">
+          {% if query %}
+          No products match your search. Try different keywords.
+          {% elif current_category %}
+          No products available in this category yet.
+          {% else %}
+          Check back soon for new additions!
+          {% endif %}
+        </p>
+        <a href="{% url 'shop:product_list' %}" class="inline-flex items-center gap-2 px-6 py-3 bg-[color:var(--color-primary)] text-[var(--color-primary-contrast)] font-semibold rounded-lg hover:bg-[color:var(--color-primary)]/90 transition-colors">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+          </svg>
+          View All Products
+        </a>
+      </div>
+      {% endif %}
+
+    </div>
   </div>
-</div>
-{% endif %}
+  {% endif %}
+  {% endif %}
+{% endfor %}
+
 
 <!-- ============================================
      TRUST SECTION
@@ -380,6 +403,5 @@
     </div>
   </div>
 </div>
-
 
 {% endblock %}

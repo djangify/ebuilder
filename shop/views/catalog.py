@@ -89,6 +89,13 @@ def product_list(request):
                 "order": shop_settings.intro_order,
             }
         )
+    if shop_settings.show_products_on_homepage:
+        sections.append(
+            {
+                "type": "products",
+                "order": shop_settings.products_order,
+            }
+        )
 
     if shop_settings.show_promo_blocks and promo_blocks:
         sections.append(
@@ -103,6 +110,16 @@ def product_list(request):
             {
                 "type": "spotlight",
                 "order": shop_settings.spotlight_order,
+            }
+        )
+    # Get FAQ blocks
+    faq_blocks = shop_settings.faq_blocks.filter(published=True)
+
+    if faq_blocks.exists():
+        sections.append(
+            {
+                "type": "faq",
+                "order": shop_settings.faq_order,
             }
         )
 
@@ -122,6 +139,7 @@ def product_list(request):
             "shop_settings": shop_settings,
             "promo_blocks": promo_blocks,
             "sections": sections,
+            "faq_blocks": faq_blocks,
             # No breadcrumbs for shop list page
         },
     )

@@ -578,6 +578,14 @@ class ShopSettings(models.Model):
         default=3,
         help_text="Display order for spotlight section.",
     )
+    faq_order = models.PositiveIntegerField(
+        default=4,
+        help_text="Display order for FAQ section.",
+    )
+    products_order = models.PositiveIntegerField(
+        default=99,
+        help_text="Display order for product grid section.",
+    )
 
     # === Promo Blocks Toggle ===
     show_promo_blocks = models.BooleanField(
@@ -707,3 +715,59 @@ class ShopPromoBlock(models.Model):
 
     def __str__(self):
         return f"Promo Block #{self.order}"
+
+
+# ============================================
+# SHOP FAQ
+# ============================================
+
+
+class ShopFAQBlock(models.Model):
+    """
+    FAQ section for the Shop homepage.
+    Mirrors FAQBlock in pages app but attaches to ShopSettings.
+    """
+
+    shop_settings = models.ForeignKey(
+        ShopSettings,
+        on_delete=models.CASCADE,
+        related_name="faq_blocks",
+    )
+
+    title = models.CharField(
+        max_length=200,
+        blank=True,
+        help_text="Optional section title like 'Frequently Asked Questions'",
+    )
+
+    order = models.PositiveIntegerField(default=0)
+    published = models.BooleanField(default=True)
+
+    class Meta:
+        ordering = ["order"]
+        verbose_name = "Shop FAQ Block"
+        verbose_name_plural = "SHOP FAQ BLOCKS"
+
+    def __str__(self):
+        return f"Shop FAQ - {self.title or 'Untitled'}"
+
+
+class ShopFAQItem(models.Model):
+    faq_block = models.ForeignKey(
+        ShopFAQBlock,
+        on_delete=models.CASCADE,
+        related_name="items",
+    )
+
+    question = models.CharField(max_length=500)
+    answer = models.TextField()
+    order = models.PositiveIntegerField(default=0)
+    published = models.BooleanField(default=True)
+
+    class Meta:
+        ordering = ["order"]
+        verbose_name = "Shop FAQ Item"
+        verbose_name_plural = "Shop FAQ Items"
+
+    def __str__(self):
+        return self.question[:50]
