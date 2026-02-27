@@ -62,7 +62,7 @@
           <img src="{{ related.image.url }}" alt="{{ related.title }}"
                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
           {% else %}
-          <div class="w-full h-full flex items-center justify-center text-[color:var(--color-accent)]/70">
+          <div class="w-full h-full flex items-center justify-center text-[color:var(--color-accent)]">
             No Image
           </div>
           {% endif %}
@@ -74,7 +74,7 @@
         </div>
       </a>
       {% empty %}
-      <div class="col-span-3 text-center py-8 text-[color:var(--color-font-main)]/60">
+      <div class="col-span-3 text-center py-8 text-[color:var(--color-font-main)]">
         No related posts found
       </div>
       {% endfor %}
@@ -90,7 +90,7 @@
       {% for related in related_posts|slice:"3:9" %}
       <li>
         <a href="{{ related.get_absolute_url }}"
-           class="text-[color:var(--color-secondary)] hover:text-[color:var(--color-accent)] underline transition">
+           class="text-[color:var(--color-primary)] hover:text-[color:var(--color-accent)] underline transition">
           {{ related.title }}
         </a>
       </li>

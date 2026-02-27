@@ -21,6 +21,7 @@ def robots_txt(request):
         "Disallow: /admin/",
         "Disallow: /accounts/",
         "Disallow: /media/private/",
+        "Disallow: /media/",
         "Disallow: /checkout/",
         "",
         "# AI & Answer Engine Bots",
