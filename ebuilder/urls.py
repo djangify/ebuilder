@@ -15,6 +15,7 @@ urlpatterns = [
     path("accounts/", include("accounts.urls")),
     path("blog/", include("blog.urls")),
     path("shop/", include("shop.urls")),
+    path("content/", include("content.urls")),
     path("tinymce/", include("tinymce.urls")),
     path("tinymce/upload/", tinymce_upload, name="tinymce_upload"),
     path(

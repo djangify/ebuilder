@@ -3,8 +3,6 @@ from django.shortcuts import render, get_object_or_404
 from .models import (
     Page,
     SiteSettings,
-    GalleryImage,
-    GalleryBlock,
 )
 from blog.models import Post
 from shop.models import Product
@@ -18,7 +16,7 @@ def _render_page(request, template_name):
     three_columns = list(
         page.content_container.three_column_blocks.filter(published=True)
     )
-    galleries = list(page.galleries.filter(published=True))
+    galleries = list(page.content_container.gallery_blocks.filter(published=True))
     faq_blocks = list(page.content_container.faq_blocks.filter(published=True))
 
     newsletter_blocks = list(
@@ -68,7 +66,7 @@ def home_view(request):
     three_columns = list(
         page.content_container.three_column_blocks.filter(published=True)
     )
-    galleries = list(page.galleries.filter(published=True))
+    galleries = list(page.content_container.gallery_blocks.filter(published=True))
     faq_blocks = list(page.content_container.faq_blocks.filter(published=True))
 
     newsletter_blocks = list(
@@ -129,7 +127,7 @@ def about_view(request):
     three_columns = list(
         page.content_container.three_column_blocks.filter(published=True)
     )
-    galleries = list(page.galleries.filter(published=True))
+    galleries = list(page.content_container.gallery_blocks.filter(published=True))
 
     newsletter_blocks = list(
         page.content_container.newsletter_blocks.filter(published=True)
@@ -163,16 +161,6 @@ def about_view(request):
     return render(request, "pages/about.html", context)
 
 
-def gallery_view(request):
-    galleries = GalleryBlock.objects.filter(published=True).order_by("order")
-
-    context = {
-        "galleries": galleries,
-    }
-
-    return render(request, "pages/gallery/gallery_home.html", context)
-
-
 def detail_view(request, slug):
     """Render a custom page by slug."""
     page = get_object_or_404(Page, slug=slug, published=True)
@@ -195,7 +183,7 @@ def detail_view(request, slug):
     three_columns = list(
         page.content_container.three_column_blocks.filter(published=True)
     )
-    galleries = list(page.galleries.filter(published=True))
+    galleries = list(page.content_container.gallery_blocks.filter(published=True))
     faq_blocks = page.content_container.faq_blocks.filter(published=True)
 
     newsletter_blocks = list(
@@ -231,9 +219,3 @@ def detail_view(request, slug):
         "hero_banner": hero_banner,
     }
     return render(request, "pages/custom.html", context)
-
-
-def gallery_image_modal(request, pk):
-    """HTMX endpoint for gallery image modal."""
-    image = get_object_or_404(GalleryImage, pk=pk)
-    return render(request, "pages/partials/gallery_modal.html", {"image": image})

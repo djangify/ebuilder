@@ -74,13 +74,6 @@ def product_list(request):
         )
     ).filter(product_count__gt=0)
 
-    # Get promo blocks if enabled
-    promo_blocks = None
-    if shop_settings.show_promo_blocks:
-        promo_blocks = shop_settings.content_container.three_column_blocks.filter(
-            published=True
-        )
-
     # ============================================
     # Unified Container-Based Blocks
     # ============================================
@@ -92,12 +85,6 @@ def product_list(request):
         shop_settings.content_container.sections.filter(published=True)
     )
 
-    # ThreeColumnBlocks (promo blocks)
-    if shop_settings.show_promo_blocks:
-        container_blocks += list(
-            shop_settings.content_container.three_column_blocks.filter(published=True)
-        )
-
     # FAQBlocks
     container_blocks += list(
         shop_settings.content_container.faq_blocks.filter(published=True)
@@ -108,9 +95,13 @@ def product_list(request):
         shop_settings.content_container.newsletter_blocks.filter(published=True)
     )
 
-    # SpotlightBlocks (NEW unified source)
+    # SpotlightBlocks
     container_blocks += list(
         shop_settings.content_container.spotlight_blocks.filter(published=True)
+    )
+    # GalleryBlocks
+    container_blocks += list(
+        shop_settings.content_container.gallery_blocks.filter(published=True)
     )
 
     # Product placeholder block
@@ -156,7 +147,6 @@ def product_list(request):
             "shop_settings": shop_settings,
             "hero": hero,
             "hero_banner": hero_banner,
-            "promo_blocks": promo_blocks,
             "content_blocks": content_blocks,
             # No breadcrumbs for shop list page
         },

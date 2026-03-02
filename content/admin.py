@@ -10,6 +10,8 @@ from .models import (
     SectionBlock,
     NewsletterBlock,
     SpotlightBlock,
+    GalleryBlock,
+    GalleryImage,
 )
 
 
@@ -74,6 +76,19 @@ class SpotlightBlockInline(admin.StackedInline):
     ordering = ("order",)
 
 
+class GalleryImageInline(admin.StackedInline):
+    model = GalleryImage
+    extra = 1
+    ordering = ("order",)
+
+
+class GalleryBlockInline(admin.StackedInline):
+    model = GalleryBlock
+    extra = 0
+    ordering = ("order",)
+    show_change_link = True
+
+
 @admin.register(ContentContainer)
 class ContentContainerAdmin(admin.ModelAdmin):
     list_display = ("id", "name", "created", "updated")
@@ -84,6 +99,7 @@ class ContentContainerAdmin(admin.ModelAdmin):
         ThreeColumnBlockInline,
         NewsletterBlockInline,
         SpotlightBlockInline,
+        GalleryBlockInline,
     ]
 
 
@@ -110,3 +126,11 @@ class ThreeColumnBlockAdmin(admin.ModelAdmin):
     list_display = ("id", "container", "order", "published")
     list_filter = ("published",)
     ordering = ("container", "order")
+
+
+@admin.register(GalleryBlock)
+class GalleryBlockAdmin(admin.ModelAdmin):
+    list_display = ("title", "container", "order", "published")
+    ordering = ("container", "order")
+    list_filter = ("published",)
+    inlines = [GalleryImageInline]

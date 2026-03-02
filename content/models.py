@@ -1,5 +1,9 @@
 from django.db import models
 from PIL import Image as PILImage
+from pages.widgets import RichTextWidget
+import os
+from io import BytesIO
+from django.core.files.base import ContentFile
 
 
 class ContentContainer(models.Model):
@@ -415,3 +419,128 @@ class SpotlightBlock(models.Model):
 
     def __str__(self):
         return self.title or f"Spotlight #{self.pk}"
+
+
+class GalleryBlock(models.Model):
+    container = models.ForeignKey(
+        "ContentContainer",
+        on_delete=models.CASCADE,
+        related_name="gallery_blocks",
+    )
+
+    title = models.CharField(max_length=200, blank=True)
+    order = models.PositiveIntegerField(default=0)
+    published = models.BooleanField(default=True)
+
+    class Meta:
+        ordering = ["order"]
+        verbose_name = "Gallery Block"
+        verbose_name_plural = "Gallery Blocks"
+
+    def __str__(self):
+        return self.title or f"GalleryBlock #{self.pk}"
+
+
+class GalleryImage(models.Model):
+    gallery = models.ForeignKey(
+        GalleryBlock,
+        on_delete=models.CASCADE,
+        related_name="images",
+    )
+
+    image = models.ImageField(upload_to="gallery/")
+    thumbnail = models.ImageField(
+        upload_to="gallery/thumbnails/",
+        blank=True,
+        null=True,
+        editable=False,
+    )
+
+    title = models.CharField(max_length=200, blank=True)
+    caption = models.TextField(blank=True)
+    published = models.BooleanField(default=True)
+    order = models.PositiveIntegerField(default=0)
+
+    THUMBNAIL_SIZE = (300, 300)
+
+    class Meta:
+        ordering = ["order"]
+
+    def __str__(self):
+        return self.title or f"Gallery Image {self.pk}"
+
+    @property
+    def alt_text(self):
+        return self.title or ""
+
+    def save(self, *args, **kwargs):
+        generate_thumbnail = False
+
+        if self.pk:
+            try:
+                old_instance = GalleryImage.objects.get(pk=self.pk)
+                if old_instance.image != self.image:
+                    generate_thumbnail = True
+                    if old_instance.thumbnail:
+                        old_instance.thumbnail.delete(save=False)
+            except GalleryImage.DoesNotExist:
+                generate_thumbnail = True
+        else:
+            generate_thumbnail = True
+
+        super().save(*args, **kwargs)
+
+        if generate_thumbnail and self.image:
+            self._generate_thumbnail()
+
+    def _generate_thumbnail(self):
+        try:
+            img = PILImage.open(self.image)
+
+            if img.mode in ("RGBA", "P"):
+                img = img.convert("RGB")
+
+            img.thumbnail(self.THUMBNAIL_SIZE, PILImage.Resampling.LANCZOS)
+
+            thumb_io = BytesIO()
+            img.save(thumb_io, format="JPEG", quality=85)
+            thumb_io.seek(0)
+
+            base_name = os.path.splitext(os.path.basename(self.image.name))[0]
+            thumb_filename = f"{base_name}_thumb.jpg"
+
+            self.thumbnail.save(
+                thumb_filename,
+                ContentFile(thumb_io.read()),
+                save=False,
+            )
+
+            self.__class__.objects.filter(pk=self.pk).update(
+                thumbnail=self.thumbnail.name
+            )
+
+        except Exception as e:
+            import logging
+
+            logger = logging.getLogger(__name__)
+            logger.error(
+                f"Failed to generate thumbnail for GalleryImage {self.pk}: {e}"
+            )
+
+    def delete(self, *args, **kwargs):
+        image_file = self.image
+        thumbnail_file = self.thumbnail
+
+        super().delete(*args, **kwargs)
+
+        if image_file:
+            image_file.delete(save=False)
+        if thumbnail_file:
+            thumbnail_file.delete(save=False)
+
+    def get_thumbnail_url(self):
+        if self.thumbnail:
+            return self.thumbnail.url
+        if self.image:
+            return self.image.url
+        return None

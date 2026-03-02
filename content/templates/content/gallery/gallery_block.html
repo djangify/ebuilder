@@ -1,0 +1,38 @@
+{% load static %}
+
+{% if block.images.exists %}
+<section class="py-16 bg-[var(--color-light)]">
+  <div class="container mx-auto px-6">
+
+    {% if block.title %}
+      <h2 class="text-3xl font-bold text-center mb-10 text-[var(--color-primary)]">
+        {{ block.title }}
+      </h2>
+    {% endif %}
+
+    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+      {% for image in block.images.all %}
+        {% if image.published %}
+          <div class="relative group cursor-pointer">
+
+            <img
+              src="{{ image.get_thumbnail_url }}"
+              alt="{{ image.alt_text }}"
+              class="w-full h-64 object-cover rounded-lg shadow-md transition-transform duration-300 group-hover:scale-105"
+              hx-get="{% url 'content:gallery_image_modal' image.pk %}"
+              hx-target="#gallery-modal-container"
+              hx-trigger="click"
+            >
+
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+
+  </div>
+</section>
+
+<!-- Modal container (once per page is fine) -->
+<div id="gallery-modal-container"></div>
+
+{% endif %}

@@ -2,95 +2,11 @@
 
 from django.contrib import admin
 from django.contrib.sites.models import Site
-from django.utils.html import format_html
 from .models import (
     Page,
     SiteSettings,
-    GalleryImage,
-    GalleryBlock,
     DashboardSettings,
 )
-from pages.widgets import RichTextWidget
-
-
-# === Inlines ===
-class GalleryBlockInline(admin.StackedInline):
-    model = GalleryBlock
-    extra = 0
-    can_delete = True
-    ordering = ("order",)
-    fields = ("title", "order", "published")
-
-
-class GalleryImageInline(admin.StackedInline):
-    model = GalleryImage
-    extra = 1
-    ordering = ("order",)
-    fields = ("image", "display_thumbnail", "title", "caption", "published", "order")
-    readonly_fields = ("display_thumbnail",)
-
-    def display_thumbnail(self, obj):
-        """Display thumbnail preview in admin."""
-        if obj.thumbnail:
-            return format_html(
-                '<img src="{}" style="max-height: 60px; max-width: 100px; object-fit: cover; border-radius: 4px;" />',
-                obj.thumbnail.url,
-            )
-        elif obj.image:
-            return format_html(
-                '<img src="{}" style="max-height: 60px; max-width: 100px; object-fit: cover; border-radius: 4px;" />',
-                obj.image.url,
-            )
-        return "No image"
-
-    display_thumbnail.short_description = "Preview"
-
-
-@admin.register(GalleryImage)
-class GalleryImageAdmin(admin.ModelAdmin):
-    list_display = ("title", "gallery", "display_thumbnail", "published", "order")
-    list_filter = ("published", "gallery")
-    list_editable = ("published", "order")
-    search_fields = ("title", "caption")
-    ordering = ("gallery", "order")
-    readonly_fields = ("display_thumbnail", "thumbnail")
-
-    fieldsets = (
-        (
-            None,
-            {
-                "fields": ("gallery", "image", "display_thumbnail"),
-            },
-        ),
-        (
-            "Details",
-            {
-                "fields": ("title", "caption"),
-            },
-        ),
-        (
-            "Settings",
-            {
-                "fields": ("published", "order"),
-            },
-        ),
-    )
-
-    def display_thumbnail(self, obj):
-        """Display thumbnail preview in admin."""
-        if obj.thumbnail:
-            return format_html(
-                '<img src="{}" style="max-height: 150px; max-width: 200px; object-fit: cover; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);" />',
-                obj.thumbnail.url,
-            )
-        elif obj.image:
-            return format_html(
-                '<img src="{}" style="max-height: 150px; max-width: 200px; object-fit: cover; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);" />',
-                obj.image.url,
-            )
-        return "No image uploaded"
-
-    display_thumbnail.short_description = "Thumbnail Preview"
 
 
 @admin.register(SiteSettings)
@@ -216,9 +132,7 @@ class PageAdmin(admin.ModelAdmin):
     list_display = ("title", "template", "published", "menu_order")
     list_filter = ("template", "published")
     prepopulated_fields = {"slug": ("title",)}
-    inlines = [
-        GalleryBlockInline,
-    ]
+    inlines = []
 
     fieldsets = (
         (
@@ -243,26 +157,6 @@ class PageAdmin(admin.ModelAdmin):
 
     class Media:
         css = {"all": ("admin/css/admin_fixes.css",)}
-
-
-@admin.register(GalleryBlock)
-class GalleryBlockAdmin(admin.ModelAdmin):
-    list_display = ("title", "page", "order", "published")
-    list_filter = ("page", "published")
-    ordering = ("page", "order")
-    readonly_fields = ("page",)
-    inlines = [GalleryImageInline]
-
-    def has_add_permission(self, request):
-        # Gallery blocks should be added via Page admin inline
-        return False
-
-    def change_view(self, request, object_id, form_url="", extra_context=None):
-        extra_context = extra_context or {}
-        extra_context["show_save_and_add_another"] = False
-        return super().change_view(
-            request, object_id, form_url, extra_context=extra_context
-        )
 
 
 @admin.register(DashboardSettings)

@@ -460,21 +460,6 @@ class ShopSettings(models.Model):
         related_name="shop_settings",
     )
 
-    # === Intro Section ===
-    show_intro_section = models.BooleanField(
-        default=False,
-        help_text="Display an intro text block below the hero.",
-    )
-    intro_title = models.CharField(
-        max_length=200,
-        blank=True,
-    )
-    intro_body = models.TextField(
-        blank=True,
-        null=True,
-        help_text="Rich text introduction to your shop.",
-    )
-
     # === Display Options ===
     products_per_page = models.PositiveIntegerField(
         default=12,
@@ -503,28 +488,10 @@ class ShopSettings(models.Model):
         help_text="Only used when display mode is 'Specific Category'.",
     )
     # === Section Ordering ===
-    intro_order = models.PositiveIntegerField(
-        default=1,
-        help_text="Display order for intro section (lower numbers appear first).",
-    )
-    promo_blocks_order = models.PositiveIntegerField(
-        default=2,
-        help_text="Display order for promo blocks section.",
-    )
 
-    faq_order = models.PositiveIntegerField(
-        default=4,
-        help_text="Display order for FAQ section.",
-    )
     products_order = models.PositiveIntegerField(
         default=99,
         help_text="Display order for product grid section.",
-    )
-
-    # === Promo Blocks Toggle ===
-    show_promo_blocks = models.BooleanField(
-        default=False,
-        help_text="Display promotional column blocks on the shop homepage.",
     )
 
     # === Stripe Configuration ===
