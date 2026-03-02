@@ -454,6 +454,11 @@ class ShopSettings(models.Model):
     Only applies when SiteSettings.homepage_mode = 'SHOP'
     """
 
+    content_container = models.OneToOneField(
+        "content.ContentContainer",
+        on_delete=models.CASCADE,
+        related_name="shop_settings",
+    )
     # === Hero Section ===
     hero_title = models.CharField(
         max_length=200,
