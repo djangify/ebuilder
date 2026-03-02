@@ -125,6 +125,18 @@ def product_list(request):
             }
         )
 
+    newsletter_blocks = shop_settings.content_container.newsletter_blocks.filter(
+        published=True
+    )
+
+    if newsletter_blocks.exists():
+        sections.append(
+            {
+                "type": "newsletter",
+                "order": shop_settings.faq_order + 1,
+            }
+        )
+
     # Sort sections by order
     sections = sorted(sections, key=lambda x: x["order"])
 
@@ -142,6 +154,7 @@ def product_list(request):
             "promo_blocks": promo_blocks,
             "sections": sections,
             "faq_blocks": faq_blocks,
+            "newsletter_blocks": newsletter_blocks,
             # No breadcrumbs for shop list page
         },
     )

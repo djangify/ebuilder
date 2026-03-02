@@ -140,3 +140,27 @@ class SectionBlock(models.Model):
 
     def __str__(self):
         return f"SectionBlock #{self.pk}"
+
+
+class NewsletterBlock(models.Model):
+    container = models.ForeignKey(
+        "ContentContainer",
+        on_delete=models.CASCADE,
+        related_name="newsletter_blocks",
+    )
+
+    title = models.CharField(max_length=200, blank=True)
+    intro_text = models.TextField(blank=True)
+
+    embed_html = models.TextField(
+        help_text="Paste your email provider embed HTML here."
+    )
+
+    order = models.PositiveIntegerField(default=0)
+    published = models.BooleanField(default=True)
+
+    class Meta:
+        ordering = ["order"]
+
+    def __str__(self):
+        return self.title or f"NewsletterBlock #{self.pk}"

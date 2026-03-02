@@ -148,6 +148,34 @@
   {% endfor %}
   {% endif %}
 
+  {% if section.type == 'newsletter' %}
+    <!-- NEWSLETTER SECTION -->
+    {% for block in newsletter_blocks %}
+      {% if block.published %}
+      <section class="py-16 bg-white">
+        <div class="max-w-4xl mx-auto px-6 text-center">
+          
+          {% if block.title %}
+          <h2 class="text-3xl font-bold mb-4 text-[color:var(--color-primary)]">
+            {{ block.title }}
+          </h2>
+          {% endif %}
+
+          {% if block.intro_text %}
+          <div class="text-[color:var(--color-text-muted)] mb-6">
+            {{ block.intro_text|safe }}
+          </div>
+          {% endif %}
+
+          <div>
+            {{ block.embed_html|safe }}
+          </div>
+
+        </div>
+      </section>
+      {% endif %}
+    {% endfor %}
+  {% endif %}
 
   {% if section.type == 'promo_blocks' %}
   <!-- PROMO BLOCKS SECTION -->

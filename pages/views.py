@@ -24,11 +24,14 @@ def _render_page(request, template_name):
     galleries = list(page.galleries.filter(published=True))
     faq_blocks = list(page.content_container.faq_blocks.filter(published=True))
 
-    content_blocks = sorted(
-        sections + three_columns + galleries + faq_blocks,
-        key=lambda x: x.order,
+    newsletter_blocks = list(
+        page.content_container.newsletter_blocks.filter(published=True)
     )
 
+    content_blocks = sorted(
+        sections + three_columns + galleries + faq_blocks + newsletter_blocks,
+        key=lambda x: x.order,
+    )
     return render(
         request,
         f"pages/{template_name}.html",
@@ -71,8 +74,12 @@ def home_view(request):
     galleries = list(page.galleries.filter(published=True))
     faq_blocks = list(page.content_container.faq_blocks.filter(published=True))
 
+    newsletter_blocks = list(
+        page.content_container.newsletter_blocks.filter(published=True)
+    )
+
     content_blocks = sorted(
-        sections + three_columns + galleries + faq_blocks,
+        sections + three_columns + galleries + faq_blocks + newsletter_blocks,
         key=lambda block: block.order,
     )
 
@@ -114,8 +121,12 @@ def about_view(request):
     )
     galleries = list(page.galleries.filter(published=True))
 
+    newsletter_blocks = list(
+        page.content_container.newsletter_blocks.filter(published=True)
+    )
+
     content_blocks = sorted(
-        sections + three_columns + galleries,
+        sections + three_columns + galleries + newsletter_blocks,
         key=lambda block: block.order,
     )
 
@@ -163,8 +174,16 @@ def detail_view(request, slug):
     galleries = list(page.galleries.filter(published=True))
     faq_blocks = page.content_container.faq_blocks.filter(published=True)
 
+    newsletter_blocks = list(
+        page.content_container.newsletter_blocks.filter(published=True)
+    )
+
     content_blocks = sorted(
-        list(sections) + list(three_columns) + list(galleries) + list(faq_blocks),
+        list(sections)
+        + list(three_columns)
+        + list(galleries)
+        + list(faq_blocks)
+        + list(newsletter_blocks),
         key=lambda x: x.order,
     )
 

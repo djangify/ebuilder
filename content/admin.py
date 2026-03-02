@@ -1,7 +1,14 @@
 from django.contrib import admin
 from django import forms
 from pages.widgets import RichTextWidget
-from .models import ContentContainer, FAQBlock, FAQItem, ThreeColumnBlock, SectionBlock
+from .models import (
+    ContentContainer,
+    FAQBlock,
+    FAQItem,
+    ThreeColumnBlock,
+    SectionBlock,
+    NewsletterBlock,
+)
 
 
 class SectionBlockForm(forms.ModelForm):
@@ -47,11 +54,21 @@ class SectionBlockInline(admin.StackedInline):
     )
 
 
+class NewsletterBlockInline(admin.StackedInline):
+    model = NewsletterBlock
+    extra = 0
+    ordering = ("order",)
+
+
 @admin.register(ContentContainer)
 class ContentContainerAdmin(admin.ModelAdmin):
     list_display = ("id", "name", "created", "updated")
     readonly_fields = ("created", "updated")
-    inlines = [SectionBlockInline, ThreeColumnBlockInline]
+    inlines = [
+        SectionBlockInline,
+        ThreeColumnBlockInline,
+        NewsletterBlockInline,
+    ]
 
 
 class FAQItemInline(admin.TabularInline):
