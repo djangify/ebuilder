@@ -8,40 +8,12 @@ from .models import (
     SiteSettings,
     GalleryImage,
     GalleryBlock,
-    HeroBanner,
-    Hero,
     DashboardSettings,
 )
 from pages.widgets import RichTextWidget
 
-# === Form Customizations ===
-
 
 # === Inlines ===
-class HeroInline(admin.StackedInline):
-    model = Hero
-    extra = 0
-    can_delete = True
-    fieldsets = (
-        (
-            "Hero Section",
-            {
-                "fields": (
-                    "title",
-                    "subtitle",
-                    "body",
-                    "image",
-                    "video_url",
-                    "button_text",
-                    "button_link",
-                    "order",
-                    "is_active",
-                )
-            },
-        ),
-    )
-
-
 class GalleryBlockInline(admin.StackedInline):
     model = GalleryBlock
     extra = 0
@@ -245,7 +217,6 @@ class PageAdmin(admin.ModelAdmin):
     list_filter = ("template", "published")
     prepopulated_fields = {"slug": ("title",)}
     inlines = [
-        HeroInline,
         GalleryBlockInline,
     ]
 
@@ -292,61 +263,6 @@ class GalleryBlockAdmin(admin.ModelAdmin):
         return super().change_view(
             request, object_id, form_url, extra_context=extra_context
         )
-
-
-@admin.register(Hero)
-class HeroAdmin(admin.ModelAdmin):
-    """Admin for hero sections."""
-
-    list_display = ("title", "page", "is_active", "order")
-    list_filter = ("is_active", "page")
-    list_editable = ("is_active", "order")
-    ordering = ("page", "order")
-
-    fieldsets = (
-        (
-            None,
-            {
-                "fields": ("page", "title", "subtitle", "body", "is_active", "order"),
-            },
-        ),
-        (
-            "Media",
-            {
-                "fields": ("video_url", "image"),
-                "description": "Video takes priority if both are provided. Leave both empty for text-only hero.",
-            },
-        ),
-        (
-            "Call to Action",
-            {
-                "fields": ("button_text", "button_link"),
-            },
-        ),
-    )
-
-
-@admin.register(HeroBanner)
-class HeroBannerAdmin(admin.ModelAdmin):
-    """Admin for the hero announcement pill/badge."""
-
-    list_display = ("text", "badge_text", "is_active")
-    list_editable = ("is_active",)
-
-    fieldsets = (
-        (
-            None,
-            {
-                "fields": ("text", "badge_text", "is_active"),
-            },
-        ),
-        (
-            "Link",
-            {
-                "fields": ("action_text", "action_link"),
-            },
-        ),
-    )
 
 
 @admin.register(DashboardSettings)

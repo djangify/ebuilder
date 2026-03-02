@@ -127,6 +127,22 @@ def product_list(request):
         container_blocks,
         key=lambda x: x["order"] if isinstance(x, dict) else x.order,
     )
+    # ============================================
+    # Hero (Unified Container System)
+    # ============================================
+
+    hero = None
+    hero_banner = None
+
+    if shop_settings.content_container:
+        hero = (
+            shop_settings.content_container.hero_blocks.filter(published=True)
+            .order_by("order")
+            .first()
+        )
+
+        if hero and hero.banner_published:
+            hero_banner = hero
 
     return render(
         request,
@@ -137,8 +153,9 @@ def product_list(request):
             "current_category": current_category,
             "query": query,
             "STRIPE_PUBLIC_KEY": ConfigManager.get("stripe_public_key"),
-            # Shop Settings context
             "shop_settings": shop_settings,
+            "hero": hero,
+            "hero_banner": hero_banner,
             "promo_blocks": promo_blocks,
             "content_blocks": content_blocks,
             # No breadcrumbs for shop list page

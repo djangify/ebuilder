@@ -459,38 +459,6 @@ class ShopSettings(models.Model):
         on_delete=models.CASCADE,
         related_name="shop_settings",
     )
-    # === Hero Section ===
-    hero_title = models.CharField(
-        max_length=200,
-        default="Welcome to Our Shop",
-        help_text="Main heading in the hero section.",
-    )
-    hero_subtitle = models.CharField(
-        max_length=300,
-        blank=True,
-        help_text="Smaller text above or below the title.",
-    )
-    hero_body = models.TextField(
-        blank=True,
-        null=True,
-        help_text="Optional descriptive text for the hero.",
-    )
-    hero_image = models.ImageField(
-        upload_to="shop/hero/",
-        blank=True,
-        null=True,
-        help_text="Side image for the hero section.",
-    )
-    hero_button_text = models.CharField(
-        max_length=100,
-        blank=True,
-        help_text="e.g. 'Browse Products', 'Shop Now'",
-    )
-    hero_button_link = models.CharField(
-        max_length=200,
-        blank=True,
-        help_text="URL or anchor link for the button (e.g. #products or /shop/category/sale/)",
-    )
 
     # === Intro Section ===
     show_intro_section = models.BooleanField(

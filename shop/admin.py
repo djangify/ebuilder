@@ -455,20 +455,6 @@ class ShopSettingsAdmin(admin.ModelAdmin):
             },
         ),
         (
-            "Hero Section",
-            {
-                "fields": (
-                    "hero_title",
-                    "hero_subtitle",
-                    "hero_body",
-                    "hero_image",
-                    "hero_button_text",
-                    "hero_button_link",
-                ),
-                "description": "The main banner area at the top of your shop homepage.",
-            },
-        ),
-        (
             "Intro Section",
             {
                 "fields": (
@@ -489,7 +475,7 @@ class ShopSettingsAdmin(admin.ModelAdmin):
                     "promo_blocks_order",
                     "faq_order",
                 ),
-                "description": "Control the display order of sections. Lower numbers appear first. Hero is always at the top, products always at the bottom.",
+                "description": "Control the display order of sections. Lower numbers appear first.",
             },
         ),
         (

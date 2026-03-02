@@ -1,12 +1,9 @@
 # pages/views.py
-
 from django.shortcuts import render, get_object_or_404
 from .models import (
     Page,
     SiteSettings,
-    HeroBanner,
     GalleryImage,
-    Hero,
     GalleryBlock,
 )
 from blog.models import Post
@@ -99,11 +96,24 @@ def home_view(request):
             featured=True,
         ).order_by("order", "-created")[:4]
 
+    hero = None
+    hero_banner = None
+
+    if page.content_container:
+        hero = (
+            page.content_container.hero_blocks.filter(published=True)
+            .order_by("order")
+            .first()
+        )
+
+        if hero and hero.banner_published:
+            hero_banner = hero
+
     context = {
         "page": page,
         "content_blocks": content_blocks,
-        "hero": Hero.objects.filter(is_active=True).first(),
-        "hero_banner": HeroBanner.objects.filter(is_active=True).first(),
+        "hero": hero,
+        "hero_banner": hero_banner,
         "blog_posts": blog_posts,
         "featured_products": featured_products,
     }
@@ -130,10 +140,24 @@ def about_view(request):
         key=lambda block: block.order,
     )
 
+    hero = None
+    hero_banner = None
+
+    if page.content_container:
+        hero = (
+            page.content_container.hero_blocks.filter(published=True)
+            .order_by("order")
+            .first()
+        )
+
+        if hero and hero.banner_published:
+            hero_banner = hero
+
     context = {
         "page": page,
         "content_blocks": content_blocks,
-        "hero": page.heroes.filter(is_active=True).first(),
+        "hero": hero,
+        "hero_banner": hero_banner,
     }
 
     return render(request, "pages/about.html", context)
@@ -187,12 +211,25 @@ def detail_view(request, slug):
         key=lambda x: x.order,
     )
 
+    hero = None
+    hero_banner = None
+
+    if page.content_container:
+        hero = (
+            page.content_container.hero_blocks.filter(published=True)
+            .order_by("order")
+            .first()
+        )
+
+        if hero and hero.banner_published:
+            hero_banner = hero
+
     context = {
         "page": page,
         "content_blocks": content_blocks,
-        "hero": page.heroes.filter(is_active=True).first(),
+        "hero": hero,
+        "hero_banner": hero_banner,
     }
-
     return render(request, "pages/custom.html", context)
 
 

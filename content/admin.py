@@ -3,6 +3,7 @@ from django import forms
 from pages.widgets import RichTextWidget
 from .models import (
     ContentContainer,
+    HeroBlock,
     FAQBlock,
     FAQItem,
     ThreeColumnBlock,
@@ -19,6 +20,12 @@ class SectionBlockForm(forms.ModelForm):
         widgets = {
             "body": RichTextWidget(),
         }
+
+
+class HeroBlockInline(admin.StackedInline):
+    model = HeroBlock
+    extra = 0
+    ordering = ("order",)
 
 
 class ThreeColumnBlockInline(admin.StackedInline):
@@ -72,6 +79,7 @@ class ContentContainerAdmin(admin.ModelAdmin):
     list_display = ("id", "name", "created", "updated")
     readonly_fields = ("created", "updated")
     inlines = [
+        HeroBlockInline,
         SectionBlockInline,
         ThreeColumnBlockInline,
         NewsletterBlockInline,
