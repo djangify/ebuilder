@@ -1,6 +1,16 @@
 from django.contrib import admin
-from .models import ContentContainer
-from .models import FAQBlock, FAQItem, ThreeColumnBlock
+from django import forms
+from pages.widgets import RichTextWidget
+from .models import ContentContainer, FAQBlock, FAQItem, ThreeColumnBlock, SectionBlock
+
+
+class SectionBlockForm(forms.ModelForm):
+    class Meta:
+        model = SectionBlock
+        fields = "__all__"
+        widgets = {
+            "body": RichTextWidget(),
+        }
 
 
 class ThreeColumnBlockInline(admin.StackedInline):
@@ -9,11 +19,39 @@ class ThreeColumnBlockInline(admin.StackedInline):
     ordering = ("order",)
 
 
+class SectionBlockInline(admin.StackedInline):
+    model = SectionBlock
+    form = SectionBlockForm
+    extra = 1
+    can_delete = True
+    ordering = ("order",)
+
+    fieldsets = (
+        (
+            "Page Section",
+            {
+                "fields": (
+                    "section_type",
+                    "title",
+                    "subtitle",
+                    "body",
+                    "image",
+                    "image_position",
+                    "button_text",
+                    "button_link",
+                    "order",
+                    "published",
+                ),
+            },
+        ),
+    )
+
+
 @admin.register(ContentContainer)
 class ContentContainerAdmin(admin.ModelAdmin):
     list_display = ("id", "name", "created", "updated")
     readonly_fields = ("created", "updated")
-    inlines = [ThreeColumnBlockInline]
+    inlines = [SectionBlockInline, ThreeColumnBlockInline]
 
 
 class FAQItemInline(admin.TabularInline):

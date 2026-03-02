@@ -1,12 +1,10 @@
 # pages/admin.py
 
 from django.contrib import admin
-from django import forms
 from django.contrib.sites.models import Site
 from django.utils.html import format_html
 from .models import (
     Page,
-    PageSection,
     SiteSettings,
     GalleryImage,
     GalleryBlock,
@@ -17,15 +15,6 @@ from .models import (
 from pages.widgets import RichTextWidget
 
 # === Form Customizations ===
-
-
-class PageSectionForm(forms.ModelForm):
-    class Meta:
-        model = PageSection
-        fields = "__all__"
-        widgets = {
-            "body": RichTextWidget(),
-        }
 
 
 # === Inlines ===
@@ -48,35 +37,6 @@ class HeroInline(admin.StackedInline):
                     "order",
                     "is_active",
                 )
-            },
-        ),
-    )
-
-
-class PageSectionInline(admin.StackedInline):
-    model = PageSection
-    form = PageSectionForm
-    extra = 1
-    can_delete = True
-    readonly_fields = ("admin_note",)
-
-    fieldsets = (
-        (
-            "Page Section",
-            {
-                "fields": (
-                    "section_type",
-                    "title",
-                    "subtitle",
-                    "body",
-                    "admin_note",
-                    "image",
-                    "image_position",
-                    "button_text",
-                    "button_link",
-                    "order",
-                    "published",
-                ),
             },
         ),
     )
@@ -286,7 +246,6 @@ class PageAdmin(admin.ModelAdmin):
     prepopulated_fields = {"slug": ("title",)}
     inlines = [
         HeroInline,
-        PageSectionInline,
         GalleryBlockInline,
     ]
 

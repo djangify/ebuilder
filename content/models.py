@@ -85,3 +85,58 @@ class ThreeColumnBlock(models.Model):
 
     def __str__(self):
         return f"ThreeColumnBlock #{self.pk}"
+
+
+class SectionBlock(models.Model):
+    container = models.ForeignKey(
+        "ContentContainer",
+        on_delete=models.CASCADE,
+        related_name="sections",
+    )
+
+    SECTION_TYPES = [
+        ("text", "Text Block"),
+        ("two_column", "Two Column"),
+        ("features", "Features Grid"),
+        ("cta", "Call to Action"),
+    ]
+
+    section_type = models.CharField(max_length=50, choices=SECTION_TYPES)
+
+    title = models.CharField(max_length=200, blank=True)
+    subtitle = models.CharField(max_length=300, blank=True)
+
+    body = models.TextField(blank=True, null=True)
+
+    image = models.ImageField(
+        upload_to="sections/",
+        blank=True,
+        null=True,
+    )
+
+    IMAGE_POSITION_CHOICES = [
+        ("left", "Image Left, Text Right"),
+        ("right", "Image Right, Text Left"),
+    ]
+
+    image_position = models.CharField(
+        max_length=10,
+        choices=IMAGE_POSITION_CHOICES,
+        default="left",
+    )
+
+    button_text = models.CharField(max_length=100, blank=True)
+    button_link = models.URLField(blank=True)
+
+    # Two-column fields
+    col_1_body = models.TextField(blank=True, null=True)
+    col_2_body = models.TextField(blank=True, null=True)
+
+    order = models.PositiveIntegerField(default=0)
+    published = models.BooleanField(default=True)
+
+    class Meta:
+        ordering = ["order"]
+
+    def __str__(self):
+        return f"SectionBlock #{self.pk}"

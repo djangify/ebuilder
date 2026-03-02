@@ -1,13 +1,12 @@
 from django import template
-from pages.models import PageSection
-from content.models import ThreeColumnBlock, FAQBlock
+from content.models import ThreeColumnBlock, FAQBlock, SectionBlock
 
 register = template.Library()
 
 
 @register.filter
 def is_pagesection(obj):
-    return isinstance(obj, PageSection)
+    return isinstance(obj, SectionBlock)
 
 
 @register.filter

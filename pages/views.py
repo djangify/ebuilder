@@ -17,7 +17,7 @@ def _render_page(request, template_name):
     """Helper to render a page by template name with all content blocks."""
     page = get_object_or_404(Page, template=template_name, published=True)
 
-    sections = list(page.sections.filter(published=True))
+    sections = list(page.content_container.sections.filter(published=True))
     three_columns = list(
         page.content_container.three_column_blocks.filter(published=True)
     )
@@ -64,7 +64,7 @@ def home_view(request):
         return render(request, "pages/welcome.html", {"settings": settings_obj})
 
     # Collect all content blocks
-    sections = list(page.sections.filter(published=True))
+    sections = list(page.content_container.sections.filter(published=True))
     three_columns = list(
         page.content_container.three_column_blocks.filter(published=True)
     )
@@ -108,7 +108,7 @@ def about_view(request):
     """Render the about page."""
     page = get_object_or_404(Page, template="about", published=True)
 
-    sections = list(page.sections.filter(published=True))
+    sections = list(page.content_container.sections.filter(published=True))
     three_columns = list(
         page.content_container.three_column_blocks.filter(published=True)
     )
@@ -156,7 +156,7 @@ def detail_view(request, slug):
 
         return redirect("pages:gallery")
 
-    sections = list(page.sections.filter(published=True))
+    sections = list(page.content_container.sections.filter(published=True))
     three_columns = list(
         page.content_container.three_column_blocks.filter(published=True)
     )
