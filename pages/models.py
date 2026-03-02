@@ -252,6 +252,11 @@ class Page(models.Model):
     show_title = models.BooleanField(
         default=True, help_text="Uncheck to hide this title from the page."
     )
+    content_container = models.OneToOneField(
+        "content.ContentContainer",
+        on_delete=models.CASCADE,
+        related_name="page",
+    )
 
     # SEO
     meta_title = models.CharField(max_length=60, blank=True)
