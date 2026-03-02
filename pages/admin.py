@@ -14,8 +14,6 @@ from .models import (
     HeroBanner,
     Hero,
     DashboardSettings,
-    FAQBlock,
-    FAQItem,
 )
 from pages.widgets import RichTextWidget
 
@@ -200,21 +198,6 @@ class GalleryImageAdmin(admin.ModelAdmin):
     display_thumbnail.short_description = "Thumbnail Preview"
 
 
-class FAQItemInline(admin.TabularInline):
-    model = FAQItem
-    extra = 1
-    fields = ("question", "answer", "order", "published")
-    ordering = ("order",)
-
-
-class FAQBlockInline(admin.StackedInline):
-    model = FAQBlock
-    extra = 0
-    can_delete = True
-    ordering = ("order",)
-    fields = ("title", "order", "published")
-
-
 @admin.register(SiteSettings)
 class SiteSettingsAdmin(admin.ModelAdmin):
     """Admin interface for site-wide settings."""
@@ -343,7 +326,6 @@ class PageAdmin(admin.ModelAdmin):
         PageSectionInline,
         ThreeColumnInline,
         GalleryBlockInline,
-        FAQBlockInline,
     ]
 
     fieldsets = (
@@ -381,26 +363,6 @@ class GalleryBlockAdmin(admin.ModelAdmin):
 
     def has_add_permission(self, request):
         # Gallery blocks should be added via Page admin inline
-        return False
-
-    def change_view(self, request, object_id, form_url="", extra_context=None):
-        extra_context = extra_context or {}
-        extra_context["show_save_and_add_another"] = False
-        return super().change_view(
-            request, object_id, form_url, extra_context=extra_context
-        )
-
-
-@admin.register(FAQBlock)
-class FAQBlockAdmin(admin.ModelAdmin):
-    list_display = ("title", "page", "order", "published")
-    list_filter = ("published", "page")
-    ordering = ("page", "order")
-    readonly_fields = ("page",)
-    inlines = [FAQItemInline]
-
-    def has_add_permission(self, request):
-        # FAQ blocks should be added via Page admin inline
         return False
 
     def change_view(self, request, object_id, form_url="", extra_context=None):

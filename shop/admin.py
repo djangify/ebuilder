@@ -18,8 +18,6 @@ from .models import (
     Purchase,
     ShopPromoBlock,
     ShopSettings,
-    ShopFAQBlock,
-    ShopFAQItem,
 )
 from django import forms
 
@@ -494,25 +492,10 @@ class ProductReviewAdmin(admin.ModelAdmin):
         super().save_model(request, obj, form, change)
 
 
-class ShopFAQItemInline(admin.TabularInline):
-    model = ShopFAQItem
-    extra = 1
-    fields = ("question", "answer", "order", "published")
-    ordering = ("order",)
-
-
-class ShopFAQBlockInline(admin.StackedInline):
-    model = ShopFAQBlock
-    extra = 0
-    fields = ("title", "order", "published")
-    ordering = ("order",)
-    show_change_link = True
-
-
 @admin.register(ShopSettings)
 class ShopSettingsAdmin(admin.ModelAdmin):
     form = ShopSettingsForm
-    inlines = [ShopPromoBlockInline, ShopFAQBlockInline]
+    inlines = [ShopPromoBlockInline]
 
     fieldsets = (
         (
@@ -675,11 +658,3 @@ class ShopSettingsAdmin(admin.ModelAdmin):
             pass
 
         return super().change_view(request, object_id, form_url, extra_context)
-
-
-@admin.register(ShopFAQBlock)
-class ShopFAQBlockAdmin(admin.ModelAdmin):
-    list_display = ("title", "shop_settings", "order", "published")
-    list_filter = ("published",)
-    inlines = [ShopFAQItemInline]
-    ordering = ("order",)

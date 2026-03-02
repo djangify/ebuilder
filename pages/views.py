@@ -5,7 +5,6 @@ from .models import (
     Page,
     SiteSettings,
     HeroBanner,
-    FAQBlock,
     GalleryImage,
     Hero,
     GalleryBlock,
@@ -21,7 +20,7 @@ def _render_page(request, template_name):
     sections = list(page.sections.filter(published=True))
     three_columns = list(page.three_columns.filter(published=True))
     galleries = list(page.galleries.filter(published=True))
-    faq_blocks = list(page.faqs.filter(published=True))
+    faq_blocks = list(page.content_container.faq_blocks.filter(published=True))
 
     content_blocks = sorted(
         sections + three_columns + galleries + faq_blocks,
@@ -66,7 +65,7 @@ def home_view(request):
     sections = list(page.sections.filter(published=True))
     three_columns = list(page.three_columns.filter(published=True))
     galleries = list(page.galleries.filter(published=True))
-    faq_blocks = list(page.faqs.filter(published=True))
+    faq_blocks = list(page.content_container.faq_blocks.filter(published=True))
 
     content_blocks = sorted(
         sections + three_columns + galleries + faq_blocks,
@@ -154,7 +153,7 @@ def detail_view(request, slug):
     sections = list(page.sections.filter(published=True))
     three_columns = list(page.three_columns.filter(published=True))
     galleries = list(page.galleries.filter(published=True))
-    faq_blocks = page.faqs.filter(published=True)
+    faq_blocks = page.content_container.faq_blocks.filter(published=True)
 
     content_blocks = sorted(
         list(sections) + list(three_columns) + list(galleries) + list(faq_blocks),

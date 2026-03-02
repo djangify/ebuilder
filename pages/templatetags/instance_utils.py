@@ -1,5 +1,5 @@
 from django import template
-from pages.models import PageSection, ThreeColumnBlock, FAQBlock
+from pages.models import PageSection, ThreeColumnBlock
 
 register = template.Library()
 
@@ -16,4 +16,4 @@ def is_threecolumn(obj):
 
 @register.filter
 def is_faqblock(obj):
-    return isinstance(obj, FAQBlock)
+    return isinstance(obj)

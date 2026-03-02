@@ -113,7 +113,7 @@ def product_list(request):
             }
         )
     # Get FAQ blocks
-    faq_blocks = shop_settings.faq_blocks.filter(published=True)
+    faq_blocks = shop_settings.content_container.faq_blocks.filter(published=True)
 
     if faq_blocks.exists():
         sections.append(
