@@ -29,6 +29,6 @@ RUN mkdir -p /app/media /app/db /app/logs /app/staticfiles
 RUN useradd -m appuser && chown -R appuser:appuser /app
 USER appuser
 
-EXPOSE 8000
+EXPOSE 8950
 
 ENTRYPOINT ["/entrypoint.sh"]

@@ -1,7 +1,7 @@
 services:
   web:
     build: .
-    container_name: ebuilder_web
+    container_name: ecommercebuilder_web
     restart: unless-stopped
     env_file:
       - .env
@@ -11,7 +11,7 @@ services:
       - ./data/logs:/app/logs
       - ./staticfiles:/app/staticfiles
     ports:
-      - "127.0.0.1:8000:8000"
+      - "127.0.0.1:8950:8000"
     healthcheck:
       test: [ "CMD", "curl", "-f", "http://localhost:8000/health/" ]
       interval: 30s
