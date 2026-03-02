@@ -16,7 +16,6 @@ from .models import (
     OrderItem,
     ProductReview,
     Purchase,
-    ShopPromoBlock,
     ShopSettings,
 )
 from django import forms
@@ -53,17 +52,6 @@ class ProductAdminForm(forms.ModelForm):
         widgets = {
             "description": RichTextWidget(),
             "long_description": RichTextWidget(),
-        }
-
-
-class ShopPromoBlockForm(forms.ModelForm):
-    class Meta:
-        model = ShopPromoBlock
-        fields = "__all__"
-        widgets = {
-            "col_1_body": RichTextWidget(),
-            "col_2_body": RichTextWidget(),
-            "col_3_body": RichTextWidget(),
         }
 
 
@@ -347,44 +335,6 @@ class ProductAdmin(admin.ModelAdmin):
         return url
 
 
-class ShopPromoBlockInline(admin.StackedInline):
-    model = ShopPromoBlock
-    form = ShopPromoBlockForm
-    extra = 0
-    can_delete = True
-    ordering = ("order",)
-
-    fieldsets = (
-        (
-            "Block Settings",
-            {
-                "fields": ("order", "published"),
-            },
-        ),
-        (
-            "Column 1",
-            {
-                "fields": ("col_1_title", "col_1_image", "col_1_body"),
-                "classes": ("collapse",),
-            },
-        ),
-        (
-            "Column 2",
-            {
-                "fields": ("col_2_title", "col_2_image", "col_2_body"),
-                "classes": ("collapse",),
-            },
-        ),
-        (
-            "Column 3",
-            {
-                "fields": ("col_3_title", "col_3_image", "col_3_body"),
-                "classes": ("collapse",),
-            },
-        ),
-    )
-
-
 class OrderItemInline(admin.TabularInline):
     model = OrderItem
     raw_id_fields = ["product"]
@@ -495,7 +445,7 @@ class ProductReviewAdmin(admin.ModelAdmin):
 @admin.register(ShopSettings)
 class ShopSettingsAdmin(admin.ModelAdmin):
     form = ShopSettingsForm
-    inlines = [ShopPromoBlockInline]
+    inlines = []
 
     fieldsets = (
         (

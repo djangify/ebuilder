@@ -56,3 +56,32 @@ class FAQItem(models.Model):
 
     def __str__(self):
         return self.question[:50]
+
+
+class ThreeColumnBlock(models.Model):
+    container = models.ForeignKey(
+        "ContentContainer",
+        on_delete=models.CASCADE,
+        related_name="three_column_blocks",
+    )
+
+    order = models.PositiveIntegerField(default=0)
+    published = models.BooleanField(default=True)
+
+    col_1_title = models.CharField(max_length=255, blank=True)
+    col_1_image = models.ImageField(upload_to="three_columns/", blank=True, null=True)
+    col_1_body = models.TextField(blank=True)
+
+    col_2_title = models.CharField(max_length=255, blank=True)
+    col_2_image = models.ImageField(upload_to="three_columns/", blank=True, null=True)
+    col_2_body = models.TextField(blank=True)
+
+    col_3_title = models.CharField(max_length=255, blank=True)
+    col_3_image = models.ImageField(upload_to="three_columns/", blank=True, null=True)
+    col_3_body = models.TextField(blank=True)
+
+    class Meta:
+        ordering = ["order"]
+
+    def __str__(self):
+        return f"ThreeColumnBlock #{self.pk}"

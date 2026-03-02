@@ -685,38 +685,3 @@ class ShopSettings(models.Model):
         if not self.pk and ShopSettings.objects.exists():
             raise ValueError("Only one ShopSettings instance is allowed.")
         super().save(*args, **kwargs)
-
-
-class ShopPromoBlock(models.Model):
-    """
-    Three-column promotional blocks for shop homepage.
-    Similar to ThreeColumnBlock in pages app.
-    """
-
-    shop_settings = models.ForeignKey(
-        ShopSettings,
-        on_delete=models.CASCADE,
-        related_name="promo_blocks",
-    )
-    order = models.PositiveIntegerField(default=0)
-    published = models.BooleanField(default=True)
-
-    col_1_title = models.CharField(max_length=150, blank=True)
-    col_1_image = models.ImageField(upload_to="shop/promo/", blank=True, null=True)
-    col_1_body = models.TextField(blank=True, null=True)
-
-    col_2_title = models.CharField(max_length=150, blank=True)
-    col_2_image = models.ImageField(upload_to="shop/promo/", blank=True, null=True)
-    col_2_body = models.TextField(blank=True, null=True)
-
-    col_3_title = models.CharField(max_length=150, blank=True)
-    col_3_image = models.ImageField(upload_to="shop/promo/", blank=True, null=True)
-    col_3_body = models.TextField(blank=True, null=True)
-
-    class Meta:
-        ordering = ["order"]
-        verbose_name = "Shop Promo Block"
-        verbose_name_plural = "SHOP PROMO BLOCKS"
-
-    def __str__(self):
-        return f"Promo Block #{self.order}"

@@ -77,7 +77,9 @@ def product_list(request):
     # Get promo blocks if enabled
     promo_blocks = None
     if shop_settings.show_promo_blocks:
-        promo_blocks = shop_settings.promo_blocks.filter(published=True)
+        promo_blocks = shop_settings.content_container.three_column_blocks.filter(
+            published=True
+        )
 
     # Build ordered sections list
     sections = []

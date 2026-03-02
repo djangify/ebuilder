@@ -18,7 +18,9 @@ def _render_page(request, template_name):
     page = get_object_or_404(Page, template=template_name, published=True)
 
     sections = list(page.sections.filter(published=True))
-    three_columns = list(page.three_columns.filter(published=True))
+    three_columns = list(
+        page.content_container.three_column_blocks.filter(published=True)
+    )
     galleries = list(page.galleries.filter(published=True))
     faq_blocks = list(page.content_container.faq_blocks.filter(published=True))
 
@@ -63,7 +65,9 @@ def home_view(request):
 
     # Collect all content blocks
     sections = list(page.sections.filter(published=True))
-    three_columns = list(page.three_columns.filter(published=True))
+    three_columns = list(
+        page.content_container.three_column_blocks.filter(published=True)
+    )
     galleries = list(page.galleries.filter(published=True))
     faq_blocks = list(page.content_container.faq_blocks.filter(published=True))
 
@@ -105,7 +109,9 @@ def about_view(request):
     page = get_object_or_404(Page, template="about", published=True)
 
     sections = list(page.sections.filter(published=True))
-    three_columns = list(page.three_columns.filter(published=True))
+    three_columns = list(
+        page.content_container.three_column_blocks.filter(published=True)
+    )
     galleries = list(page.galleries.filter(published=True))
 
     content_blocks = sorted(
@@ -151,7 +157,9 @@ def detail_view(request, slug):
         return redirect("pages:gallery")
 
     sections = list(page.sections.filter(published=True))
-    three_columns = list(page.three_columns.filter(published=True))
+    three_columns = list(
+        page.content_container.three_column_blocks.filter(published=True)
+    )
     galleries = list(page.galleries.filter(published=True))
     faq_blocks = page.content_container.faq_blocks.filter(published=True)
 

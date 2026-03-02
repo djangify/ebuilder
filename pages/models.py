@@ -347,34 +347,6 @@ class PageSection(models.Model):
         return f"{self.page.title} - {self.get_section_type_display()}"
 
 
-class ThreeColumnBlock(models.Model):
-    page = models.ForeignKey(
-        Page, on_delete=models.CASCADE, related_name="three_columns"
-    )
-    order = models.PositiveIntegerField(default=0)
-    published = models.BooleanField(default=True)
-
-    col_1_title = models.CharField(max_length=150, blank=True)
-    col_1_image = models.ImageField(upload_to="pages/columns/", blank=True, null=True)
-    col_1_body = models.TextField(blank=True, null=True)
-
-    col_2_title = models.CharField(max_length=150, blank=True)
-    col_2_image = models.ImageField(upload_to="pages/columns/", blank=True, null=True)
-    col_2_body = models.TextField(blank=True, null=True)
-
-    col_3_title = models.CharField(max_length=150, blank=True)
-    col_3_image = models.ImageField(upload_to="pages/columns/", blank=True, null=True)
-    col_3_body = models.TextField(blank=True, null=True)
-
-    class Meta:
-        ordering = ["order"]
-        verbose_name = "Three Column Block"
-        verbose_name_plural = "THREE COLUMN BLOCKS"
-
-    def __str__(self):
-        return f"{self.page.title} - 3-Column Block"
-
-
 class GalleryBlock(models.Model):
     page = models.ForeignKey(
         Page,

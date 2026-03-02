@@ -7,7 +7,6 @@ from django.utils.html import format_html
 from .models import (
     Page,
     PageSection,
-    ThreeColumnBlock,
     SiteSettings,
     GalleryImage,
     GalleryBlock,
@@ -26,17 +25,6 @@ class PageSectionForm(forms.ModelForm):
         fields = "__all__"
         widgets = {
             "body": RichTextWidget(),
-        }
-
-
-class ThreeColumnBlockForm(forms.ModelForm):
-    class Meta:
-        model = ThreeColumnBlock
-        fields = "__all__"
-        widgets = {
-            "col_1_body": RichTextWidget(),
-            "col_2_body": RichTextWidget(),
-            "col_3_body": RichTextWidget(),
         }
 
 
@@ -88,31 +76,6 @@ class PageSectionInline(admin.StackedInline):
                     "button_link",
                     "order",
                     "published",
-                ),
-            },
-        ),
-    )
-
-
-class ThreeColumnInline(admin.StackedInline):
-    model = ThreeColumnBlock
-    form = ThreeColumnBlockForm
-    extra = 0
-    can_delete = True
-
-    fieldsets = (
-        (
-            "3-Column Block",
-            {
-                "fields": (
-                    "published",
-                    "order",
-                    ("col_1_title", "col_1_image"),
-                    "col_1_body",
-                    ("col_2_title", "col_2_image"),
-                    "col_2_body",
-                    ("col_3_title", "col_3_image"),
-                    "col_3_body",
                 ),
             },
         ),
@@ -324,7 +287,6 @@ class PageAdmin(admin.ModelAdmin):
     inlines = [
         HeroInline,
         PageSectionInline,
-        ThreeColumnInline,
         GalleryBlockInline,
     ]
 
