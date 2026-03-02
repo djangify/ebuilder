@@ -164,3 +164,34 @@ class NewsletterBlock(models.Model):
 
     def __str__(self):
         return self.title or f"NewsletterBlock #{self.pk}"
+
+
+class SpotlightBlock(models.Model):
+    container = models.ForeignKey(
+        "ContentContainer",
+        on_delete=models.CASCADE,
+        related_name="spotlight_blocks",
+    )
+
+    title = models.CharField(max_length=255, blank=True)
+    body = models.TextField(blank=True)
+
+    image = models.ImageField(upload_to="spotlight/", blank=True, null=True)
+
+    image_position = models.CharField(
+        max_length=10,
+        choices=[("left", "Left"), ("right", "Right")],
+        default="right",
+    )
+
+    button_text = models.CharField(max_length=255, blank=True)
+    button_link = models.URLField(blank=True)
+
+    order = models.PositiveIntegerField(default=0)
+    published = models.BooleanField(default=True)
+
+    class Meta:
+        ordering = ["order"]
+
+    def __str__(self):
+        return self.title or f"Spotlight #{self.pk}"

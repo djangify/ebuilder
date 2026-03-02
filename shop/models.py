@@ -507,42 +507,6 @@ class ShopSettings(models.Model):
         help_text="Rich text introduction to your shop.",
     )
 
-    # === Product Spotlight (Two Column: Text + Image) ===
-    show_spotlight = models.BooleanField(
-        default=False,
-        help_text="Display a featured product or promotion section.",
-    )
-    spotlight_title = models.CharField(
-        max_length=200,
-        blank=True,
-    )
-    spotlight_body = models.TextField(
-        blank=True,
-        null=True,
-    )
-    spotlight_image = models.ImageField(
-        upload_to="shop/spotlight/",
-        blank=True,
-        null=True,
-    )
-    spotlight_button_text = models.CharField(
-        max_length=100,
-        blank=True,
-    )
-    spotlight_button_link = models.CharField(
-        max_length=200,
-        blank=True,
-    )
-    IMAGE_POSITION_CHOICES = [
-        ("left", "Image Left, Text Right"),
-        ("right", "Image Right, Text Left"),
-    ]
-    spotlight_image_position = models.CharField(
-        max_length=10,
-        choices=IMAGE_POSITION_CHOICES,
-        default="right",
-    )
-
     # === Display Options ===
     products_per_page = models.PositiveIntegerField(
         default=12,
@@ -579,10 +543,7 @@ class ShopSettings(models.Model):
         default=2,
         help_text="Display order for promo blocks section.",
     )
-    spotlight_order = models.PositiveIntegerField(
-        default=3,
-        help_text="Display order for spotlight section.",
-    )
+
     faq_order = models.PositiveIntegerField(
         default=4,
         help_text="Display order for FAQ section.",

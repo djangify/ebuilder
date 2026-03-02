@@ -81,64 +81,52 @@ def product_list(request):
             published=True
         )
 
-    # Build ordered sections list
-    sections = []
+    # ============================================
+    # Unified Container-Based Blocks
+    # ============================================
 
-    if shop_settings.show_intro_section:
-        sections.append(
-            {
-                "type": "intro",
-                "order": shop_settings.intro_order,
-            }
+    container_blocks = []
+
+    # SectionBlocks
+    container_blocks += list(
+        shop_settings.content_container.sections.filter(published=True)
+    )
+
+    # ThreeColumnBlocks (promo blocks)
+    if shop_settings.show_promo_blocks:
+        container_blocks += list(
+            shop_settings.content_container.three_column_blocks.filter(published=True)
         )
+
+    # FAQBlocks
+    container_blocks += list(
+        shop_settings.content_container.faq_blocks.filter(published=True)
+    )
+
+    # NewsletterBlocks
+    container_blocks += list(
+        shop_settings.content_container.newsletter_blocks.filter(published=True)
+    )
+
+    # SpotlightBlocks (NEW unified source)
+    container_blocks += list(
+        shop_settings.content_container.spotlight_blocks.filter(published=True)
+    )
+
+    # Product placeholder block
     if shop_settings.show_products_on_homepage:
-        sections.append(
+        container_blocks.append(
             {
                 "type": "products",
                 "order": shop_settings.products_order,
             }
         )
 
-    if shop_settings.show_promo_blocks and promo_blocks:
-        sections.append(
-            {
-                "type": "promo_blocks",
-                "order": shop_settings.promo_blocks_order,
-            }
-        )
-
-    if shop_settings.show_spotlight:
-        sections.append(
-            {
-                "type": "spotlight",
-                "order": shop_settings.spotlight_order,
-            }
-        )
-    # Get FAQ blocks
-    faq_blocks = shop_settings.content_container.faq_blocks.filter(published=True)
-
-    if faq_blocks.exists():
-        sections.append(
-            {
-                "type": "faq",
-                "order": shop_settings.faq_order,
-            }
-        )
-
-    newsletter_blocks = shop_settings.content_container.newsletter_blocks.filter(
-        published=True
+    # Sort everything by order
+    content_blocks = sorted(
+        container_blocks,
+        key=lambda x: x["order"] if isinstance(x, dict) else x.order,
     )
-
-    if newsletter_blocks.exists():
-        sections.append(
-            {
-                "type": "newsletter",
-                "order": shop_settings.faq_order + 1,
-            }
-        )
-
-    # Sort sections by order
-    sections = sorted(sections, key=lambda x: x["order"])
 
     return render(
         request,
@@ -152,9 +140,7 @@ def product_list(request):
             # Shop Settings context
             "shop_settings": shop_settings,
             "promo_blocks": promo_blocks,
-            "sections": sections,
-            "faq_blocks": faq_blocks,
-            "newsletter_blocks": newsletter_blocks,
+            "content_blocks": content_blocks,
             # No breadcrumbs for shop list page
         },
     )

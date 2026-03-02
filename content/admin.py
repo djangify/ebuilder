@@ -8,6 +8,7 @@ from .models import (
     ThreeColumnBlock,
     SectionBlock,
     NewsletterBlock,
+    SpotlightBlock,
 )
 
 
@@ -60,6 +61,12 @@ class NewsletterBlockInline(admin.StackedInline):
     ordering = ("order",)
 
 
+class SpotlightBlockInline(admin.StackedInline):
+    model = SpotlightBlock
+    extra = 0
+    ordering = ("order",)
+
+
 @admin.register(ContentContainer)
 class ContentContainerAdmin(admin.ModelAdmin):
     list_display = ("id", "name", "created", "updated")
@@ -68,6 +75,7 @@ class ContentContainerAdmin(admin.ModelAdmin):
         SectionBlockInline,
         ThreeColumnBlockInline,
         NewsletterBlockInline,
+        SpotlightBlockInline,
     ]
 
 

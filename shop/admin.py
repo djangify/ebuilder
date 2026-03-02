@@ -97,7 +97,6 @@ class ShopSettingsForm(forms.ModelForm):
         widgets = {
             "hero_body": RichTextWidget(),
             "intro_body": RichTextWidget(),
-            "spotlight_body": RichTextWidget(),
         }
 
     def __init__(self, *args, **kwargs):
@@ -482,29 +481,12 @@ class ShopSettingsAdmin(admin.ModelAdmin):
             },
         ),
         (
-            "Product Spotlight",
-            {
-                "fields": (
-                    "show_spotlight",
-                    "spotlight_title",
-                    "spotlight_body",
-                    "spotlight_image",
-                    "spotlight_image_position",
-                    "spotlight_button_text",
-                    "spotlight_button_link",
-                ),
-                "description": "Two-column section to highlight a product or promotion.",
-                "classes": ("collapse",),
-            },
-        ),
-        (
             "Section Ordering",
             {
                 "fields": (
                     "intro_order",
                     "products_order",
                     "promo_blocks_order",
-                    "spotlight_order",
                     "faq_order",
                 ),
                 "description": "Control the display order of sections. Lower numbers appear first. Hero is always at the top, products always at the bottom.",

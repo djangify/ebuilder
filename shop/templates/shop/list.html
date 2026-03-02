@@ -82,9 +82,9 @@
 <!-- ============================================
      DYNAMIC SECTIONS (ordered by admin settings)
      ============================================ -->
-{% for section in sections %}
+{% for block in content_blocks %}
 
-  {% if section.type == 'intro' %}
+  {% if block.__class__.__name__ == "SectionBlock" and block.section_type == "text" %}
   <!-- INTRO SECTION -->
   <section class="py-12 md:py-16 bg-white">
     <div class="max-w-5xl mx-auto px-6 md:px-10 lg:px-16 text-center">
@@ -103,83 +103,70 @@
   </section>
   {% endif %}
 
-
-  {% if section.type == 'faq' %}
-  <!-- FAQ SECTION -->
-  {% for block in faq_blocks %}
-    {% if block.published and block.items.all %}
-    <section class="py-16">
-      <div class="max-w-4xl mx-auto px-6">
-        {% if block.title %}
-        <h2 class="text-3xl font-bold mb-8 text-[color:var(--color-dark)]">
-          {{ block.title }}
-        </h2>
-        {% endif %}
-
-        <div class="space-y-4">
-          {% for item in block.items.all %}
-            {% if item.published %}
-            <div x-data="{ open: false }" class="border-b border-[color:var(--color-accent)]">
-              <button 
-                @click="open = !open" 
-                class="w-full py-4 flex justify-between items-center text-left focus:outline-none">
-                <span class="font-semibold text-lg text-[color:var(--color-dark)]">
-                  {{ item.question }}
-                </span>
-                <span 
-                  class="text-2xl font-bold text-[color:var(--color-accent)] transition-transform duration-300"
-                  :class="{ 'rotate-45': open }">
-                  +
-                </span>
-              </button>
-              <div 
-                x-show="open" 
-                x-collapse
-                class="pb-4 text-[color:var(--color-font-main)] leading-relaxed">
-                {{ item.answer|linebreaks }}
-              </div>
-            </div>
-            {% endif %}
-          {% endfor %}
-        </div>
-      </div>
-    </section>
-    {% endif %}
-  {% endfor %}
-  {% endif %}
-
-  {% if section.type == 'newsletter' %}
-    <!-- NEWSLETTER SECTION -->
-    {% for block in newsletter_blocks %}
-      {% if block.published %}
-      <section class="py-16 bg-white">
-        <div class="max-w-4xl mx-auto px-6 text-center">
-          
-          {% if block.title %}
-          <h2 class="text-3xl font-bold mb-4 text-[color:var(--color-primary)]">
-            {{ block.title }}
-          </h2>
-          {% endif %}
-
-          {% if block.intro_text %}
-          <div class="text-[color:var(--color-text-muted)] mb-6">
-            {{ block.intro_text|safe }}
-          </div>
-          {% endif %}
-
-          <div>
-            {{ block.embed_html|safe }}
-          </div>
-
-        </div>
-      </section>
+  {% if block.__class__.__name__ == "FAQBlock" and block.published %}
+  <section class="py-16">
+    <div class="max-w-4xl mx-auto px-6">
+      {% if block.title %}
+      <h2 class="text-3xl font-bold mb-8 text-[color:var(--color-dark)]">
+        {{ block.title }}
+      </h2>
       {% endif %}
-    {% endfor %}
+
+      <div class="space-y-4">
+        {% for item in block.items.all %}
+          {% if item.published %}
+          <div x-data="{ open: false }" class="border-b border-[color:var(--color-accent)]">
+            <button 
+              @click="open = !open" 
+              class="w-full py-4 flex justify-between items-center text-left focus:outline-none">
+              <span class="font-semibold text-lg text-[color:var(--color-dark)]">
+                {{ item.question }}
+              </span>
+              <span 
+                class="text-2xl font-bold text-[color:var(--color-accent)] transition-transform duration-300"
+                :class="{ 'rotate-45': open }">
+                +
+              </span>
+            </button>
+            <div 
+              x-show="open" 
+              x-collapse
+              class="pb-4 text-[color:var(--color-font-main)] leading-relaxed">
+              {{ item.answer|linebreaks }}
+            </div>
+          </div>
+          {% endif %}
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+  {% endif %}
+    {% if block.__class__.__name__ == "NewsletterBlock" and block.published %}
+  <section class="py-16 bg-white">
+    <div class="max-w-4xl mx-auto px-6 text-center">
+      
+      {% if block.title %}
+      <h2 class="text-3xl font-bold mb-4 text-[color:var(--color-primary)]">
+        {{ block.title }}
+      </h2>
+      {% endif %}
+
+      {% if block.intro_text %}
+      <div class="text-[color:var(--color-text-muted)] mb-6">
+        {{ block.intro_text|safe }}
+      </div>
+      {% endif %}
+
+      <div>
+        {{ block.embed_html|safe }}
+      </div>
+
+    </div>
+  </section>
   {% endif %}
 
-  {% if section.type == 'promo_blocks' %}
   <!-- PROMO BLOCKS SECTION -->
-  {% for block in promo_blocks %}
+  {% if block.__class__.__name__ == "ThreeColumnBlock" and block.published %}
   <section class="py-8 md:py-10 bg-white">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -238,35 +225,33 @@
   {% endfor %}
   {% endif %}
 
-
-  {% if section.type == 'spotlight' %}
-  <!-- SPOTLIGHT SECTION -->
-  <section class="py-12 md:py-16 bg-[color:var(--color-light)]">
-    <div class="max-w-6xl mx-auto px-6 md:px-10 lg:px-16">
-      <div class="grid md:grid-cols-2 gap-12 items-center">
-        <div class="{% if shop_settings.spotlight_image_position == 'left' %}md:order-2{% endif %}">
-          {% if shop_settings.spotlight_title %}
-          <h2 class="text-3xl md:text-4xl font-bold text-[color:var(--color-primary)] mb-6">
-            {{ shop_settings.spotlight_title }}
-          </h2>
-          {% endif %}
-          {% if shop_settings.spotlight_body %}
-          <div class="text-[color:var(--color-text-muted)] prose prose-lg mb-8">
-            {{ shop_settings.spotlight_body|safe }}
-          </div>
-          {% endif %}
-        </div>
-        {% if shop_settings.spotlight_image %}
-        <div class="{% if shop_settings.spotlight_image_position == 'left' %}md:order-1{% endif %}">
-          <img src="{{ shop_settings.spotlight_image.url }}" 
-               alt="{{ shop_settings.spotlight_title }}" 
-               class="w-full h-auto rounded-md shadow-md max-w-sm">
+  {% if block.__class__.__name__ == "SpotlightBlock" and block.published %}
+<section class="py-12 md:py-16 bg-[color:var(--color-light)]">
+  <div class="max-w-6xl mx-auto px-6 md:px-10 lg:px-16">
+    <div class="grid md:grid-cols-2 gap-12 items-center">
+      <div class="{% if block.image_position == 'left' %}md:order-2{% endif %}">
+        {% if block.title %}
+        <h2 class="text-3xl md:text-4xl font-bold text-[color:var(--color-primary)] mb-6">
+          {{ block.title }}
+        </h2>
+        {% endif %}
+        {% if block.body %}
+        <div class="text-[color:var(--color-text-muted)] prose prose-lg mb-8">
+          {{ block.body|safe }}
         </div>
         {% endif %}
       </div>
+      {% if block.image %}
+      <div class="{% if block.image_position == 'left' %}md:order-1{% endif %}">
+        <img src="{{ block.image.url }}" 
+             alt="{{ block.title }}" 
+             class="w-full h-auto rounded-md shadow-md max-w-sm">
+      </div>
+      {% endif %}
     </div>
-  </section>
-  {% endif %}
+  </div>
+</section>
+{% endif %}
 
 
   {% if section.type == 'products' and shop_settings.show_products_on_homepage %}
