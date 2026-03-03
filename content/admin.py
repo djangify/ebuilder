@@ -102,6 +102,9 @@ class ContentContainerAdmin(admin.ModelAdmin):
         GalleryBlockInline,
     ]
 
+    class Media:
+        css = {"all": ("admin/css/admin_fixes.css",)}
+
 
 class FAQItemInline(admin.TabularInline):
     model = FAQItem

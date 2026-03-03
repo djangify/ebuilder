@@ -455,37 +455,6 @@ class ShopSettingsAdmin(admin.ModelAdmin):
             },
         ),
         (
-            "Intro Section",
-            {
-                "fields": (
-                    "show_intro_section",
-                    "intro_title",
-                    "intro_body",
-                ),
-                "description": "Optional text block below the hero.",
-                "classes": ("collapse",),
-            },
-        ),
-        (
-            "Section Ordering",
-            {
-                "fields": (
-                    "intro_order",
-                    "products_order",
-                    "promo_blocks_order",
-                    "faq_order",
-                ),
-                "description": "Control the display order of sections. Lower numbers appear first.",
-            },
-        ),
-        (
-            "Promo Blocks",
-            {
-                "fields": ("show_promo_blocks",),
-                "description": "Toggle the three-column promo blocks. Add blocks using the inline below.",
-            },
-        ),
-        (
             "Display Options",
             {
                 "fields": (

@@ -3,7 +3,6 @@
 from django.contrib import admin
 from django.contrib.sites.models import Site
 from .models import (
-    Page,
     SiteSettings,
     DashboardSettings,
 )
@@ -125,38 +124,6 @@ class SiteSettingsAdmin(admin.ModelAdmin):
     def has_delete_permission(self, request, obj=None):
         """Prevent deletion of singleton."""
         return False
-
-
-@admin.register(Page)
-class PageAdmin(admin.ModelAdmin):
-    list_display = ("title", "template", "published", "menu_order")
-    list_filter = ("template", "published")
-    prepopulated_fields = {"slug": ("title",)}
-    inlines = []
-
-    fieldsets = (
-        (
-            None,
-            {
-                "fields": ("title", "slug", "template", "published", "show_title"),
-            },
-        ),
-        (
-            "NAVIGATION",
-            {
-                "fields": ("show_in_navigation", "show_in_footer", "menu_order"),
-            },
-        ),
-        (
-            "SEO",
-            {
-                "fields": ("meta_title", "meta_description"),
-            },
-        ),
-    )
-
-    class Media:
-        css = {"all": ("admin/css/admin_fixes.css",)}
 
 
 @admin.register(DashboardSettings)
