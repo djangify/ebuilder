@@ -170,14 +170,11 @@ def detail_view(request, slug):
         from django.shortcuts import redirect
 
         return redirect("pages:home")
+
     elif page.template == "about":
         from django.shortcuts import redirect
 
         return redirect("pages:about")
-    elif page.template == "gallery":
-        from django.shortcuts import redirect
-
-        return redirect("pages:gallery")
 
     sections = list(page.content_container.sections.filter(published=True))
     three_columns = list(

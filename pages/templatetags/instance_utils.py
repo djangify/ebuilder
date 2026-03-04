@@ -1,5 +1,5 @@
 from django import template
-from content.models import ThreeColumnBlock, FAQBlock, SectionBlock
+from content.models import ThreeColumnBlock, FAQBlock, SectionBlock, GalleryBlock
 
 register = template.Library()
 
@@ -17,3 +17,8 @@ def is_threecolumn(obj):
 @register.filter
 def is_faqblock(obj):
     return isinstance(obj, FAQBlock)
+
+
+@register.filter
+def is_galleryblock(obj):
+    return isinstance(obj, GalleryBlock)

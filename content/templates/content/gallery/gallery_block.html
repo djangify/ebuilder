@@ -2,37 +2,70 @@
 
 {% if block.images.exists %}
 <section class="py-16 bg-[var(--color-light)]">
-  <div class="container mx-auto px-6">
+
+  <div class="max-w-7xl mx-auto px-4">
 
     {% if block.title %}
-      <h2 class="text-3xl font-bold text-center mb-10 text-[var(--color-primary)]">
+      <h2 class="text-3xl font-semibold mb-10 text-center tracking-tight text-[var(--color-primary)]">
         {{ block.title }}
       </h2>
     {% endif %}
 
-    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-2 auto-rows-[280px]">
+
       {% for image in block.images.all %}
         {% if image.published %}
-          <div class="relative group cursor-pointer">
 
-            <img
-              src="{{ image.get_thumbnail_url }}"
-              alt="{{ image.alt_text }}"
-              class="w-full h-64 object-cover rounded-lg shadow-md transition-transform duration-300 group-hover:scale-105"
+          {% cycle 'one' 'two' 'three' 'four' 'five' 'six' as position silent %}
+
+          <figure class="relative group overflow-hidden shadow-sm bg-[var(--color-light)]
+            {% if position == 'one' %}
+              sm:col-span-1 lg:col-span-3
+            {% elif position == 'two' %}
+              sm:col-span-2 lg:col-span-6
+            {% elif position == 'three' %}
+              sm:col-span-1 lg:col-span-3
+            {% elif position == 'four' %}
+              sm:col-span-2 lg:col-span-6
+            {% elif position == 'five' %}
+              sm:col-span-1 lg:col-span-3
+            {% else %}
+              sm:col-span-1 lg:col-span-3
+            {% endif %}
+          ">
+
+            <a
               hx-get="{% url 'content:gallery_image_modal' image.pk %}"
-              hx-target="#gallery-modal-container"
-              hx-trigger="click"
+              hx-target="#gallery-modal"
+              hx-swap="innerHTML"
+              class="block w-full h-full cursor-zoom-in"
             >
 
-          </div>
+              <img
+                src="{{ image.image.url }}"
+                alt="{{ image.alt_text }}"
+                class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                loading="lazy"
+              >
+
+            </a>
+
+            {% if image.caption %}
+            <figcaption class="pointer-events-none absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/60 to-transparent">
+              <span class="text-white text-lg font-medium">
+                {{ image.caption }}
+              </span>
+            </figcaption>
+            {% endif %}
+
+          </figure>
+
         {% endif %}
       {% endfor %}
+
     </div>
 
   </div>
 </section>
-
-<!-- Modal container (once per page is fine) -->
-<div id="gallery-modal-container"></div>
 
 {% endif %}

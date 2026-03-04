@@ -296,9 +296,8 @@ class Page(models.Model):
             return reverse("pages:home")
         elif self.template == "about":
             return reverse("pages:about")
-        elif self.template == "gallery":
-            return reverse("pages:gallery")
-        return reverse("pages:detail", kwargs={"slug": self.slug})
+        else:
+            return reverse("pages:detail", kwargs={"slug": self.slug})
 
 
 class DashboardSettings(models.Model):

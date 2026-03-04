@@ -1,33 +1,37 @@
-<div
-    class="w-full h-full flex items-center justify-center animate-fade-in relative"
-    tabindex="0"
-    onclick="closeGalleryModal(event)"
->
+<div class="absolute inset-0 flex items-center justify-center">
 
-    <img
-        src="{{ image.image.url }}"
-        alt="{{ image.alt_text }}"
-        class="max-w-4xl max-h-[90vh] rounded-xl shadow-2xl border border-white/20 z-10"
-    >
+  <!-- background click layer -->
+  <div class="absolute inset-0"></div>
 
-    {% if prev_image %}
-    <button
-        hx-get="{% url 'content:gallery_image_modal' prev_image.pk %}"
-        hx-target="#gallery-modal"
-        hx-swap="innerHTML"
-        class="absolute left-6 text-white text-4xl opacity-70 hover:opacity-100 transition"
-        aria-label="Previous image"
-    >‹</button>
-    {% endif %}
+  <!-- PREVIOUS -->
+  {% if prev_image %}
+  <button
+    hx-get="{% url 'content:gallery_image_modal' prev_image.pk %}"
+    hx-target="#gallery-modal"
+    hx-swap="innerHTML"
+    class="absolute left-6 top-1/2 -translate-y-1/2 z-20 text-white text-6xl font-light hover:opacity-70 transition"
+    aria-label="Previous image">
+    ‹
+  </button>
+  {% endif %}
 
-    {% if next_image %}
-    <button
-        hx-get="{% url 'content:gallery_image_modal' next_image.pk %}"
-        hx-target="#gallery-modal"
-        hx-swap="innerHTML"
-        class="absolute right-6 text-white text-4xl opacity-70 hover:opacity-100 transition"
-        aria-label="Next image"
-    >›</button>
-    {% endif %}
+  <!-- IMAGE -->
+  <img
+    src="{{ image.image.url }}"
+    alt="{{ image.alt_text }}"
+    class="relative max-w-6xl max-h-[90vh] rounded-xl shadow-2xl border border-white/20 z-10"
+  >
+
+  <!-- NEXT -->
+  {% if next_image %}
+  <button
+    hx-get="{% url 'content:gallery_image_modal' next_image.pk %}"
+    hx-target="#gallery-modal"
+    hx-swap="innerHTML"
+    class="absolute right-6 top-1/2 -translate-y-1/2 z-20 text-white text-6xl font-light hover:opacity-70 transition"
+    aria-label="Next image">
+    ›
+  </button>
+  {% endif %}
 
 </div>
