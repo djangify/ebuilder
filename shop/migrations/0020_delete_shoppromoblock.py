@@ -4,13 +4,13 @@ from django.db import migrations
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('shop', '0019_remove_shopfaqitem_faq_block_delete_shopfaqblock_and_more'),
+        ("shop", "0019_remove_shopfaqitem_faq_block_delete_shopfaqblock_and_more"),
+        ("content", "0005_migrate_shop_promo_blocks"),
     ]
 
     operations = [
         migrations.DeleteModel(
-            name='ShopPromoBlock',
+            name="ShopPromoBlock",
         ),
     ]

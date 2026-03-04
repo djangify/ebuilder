@@ -4,42 +4,42 @@ from django.db import migrations
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('shop', '0020_delete_shoppromoblock'),
+        ("shop", "0020_delete_shoppromoblock"),
+        ("content", "0010_migrate_shop_spotlight"),
     ]
 
     operations = [
         migrations.RemoveField(
-            model_name='shopsettings',
-            name='show_spotlight',
+            model_name="shopsettings",
+            name="show_spotlight",
         ),
         migrations.RemoveField(
-            model_name='shopsettings',
-            name='spotlight_body',
+            model_name="shopsettings",
+            name="spotlight_body",
         ),
         migrations.RemoveField(
-            model_name='shopsettings',
-            name='spotlight_button_link',
+            model_name="shopsettings",
+            name="spotlight_button_link",
         ),
         migrations.RemoveField(
-            model_name='shopsettings',
-            name='spotlight_button_text',
+            model_name="shopsettings",
+            name="spotlight_button_text",
         ),
         migrations.RemoveField(
-            model_name='shopsettings',
-            name='spotlight_image',
+            model_name="shopsettings",
+            name="spotlight_image",
         ),
         migrations.RemoveField(
-            model_name='shopsettings',
-            name='spotlight_image_position',
+            model_name="shopsettings",
+            name="spotlight_image_position",
         ),
         migrations.RemoveField(
-            model_name='shopsettings',
-            name='spotlight_order',
+            model_name="shopsettings",
+            name="spotlight_order",
         ),
         migrations.RemoveField(
-            model_name='shopsettings',
-            name='spotlight_title',
+            model_name="shopsettings",
+            name="spotlight_title",
         ),
     ]

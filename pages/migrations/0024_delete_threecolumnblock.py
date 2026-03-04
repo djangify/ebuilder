@@ -4,13 +4,13 @@ from django.db import migrations
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('pages', '0023_remove_faqitem_faq_block_delete_faqblock_and_more'),
+        ("pages", "0023_remove_faqitem_faq_block_delete_faqblock_and_more"),
+        ("content", "0004_migrate_page_three_columns"),
     ]
 
     operations = [
         migrations.DeleteModel(
-            name='ThreeColumnBlock',
+            name="ThreeColumnBlock",
         ),
     ]

@@ -35,7 +35,7 @@ def migrate_page_sections(apps, schema_editor):
 class Migration(migrations.Migration):
     dependencies = [
         ("content", "0006_sectionblock"),
-        ("pages", "0024_delete_threecolumnblock"),
+        ("pages", "0023_remove_faqitem_faq_block_delete_faqblock_and_more"),
     ]
 
     operations = [
