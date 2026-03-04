@@ -5,6 +5,7 @@ from django.contrib.sites.models import Site
 from .models import (
     SiteSettings,
     DashboardSettings,
+    Page,
 )
 
 
@@ -195,3 +196,35 @@ class DashboardSettingsAdmin(admin.ModelAdmin):
 
 # Unregister the Sites admin
 admin.site.unregister(Site)
+
+
+@admin.register(Page)
+class PageAdmin(admin.ModelAdmin):
+    list_display = ("title", "template", "published", "menu_order")
+    list_filter = ("template", "published")
+    prepopulated_fields = {"slug": ("title",)}
+    inlines = []
+
+    fieldsets = (
+        (
+            None,
+            {
+                "fields": ("title", "slug", "template", "published", "show_title"),
+            },
+        ),
+        (
+            "NAVIGATION",
+            {
+                "fields": ("show_in_navigation", "show_in_footer", "menu_order"),
+            },
+        ),
+        (
+            "SEO",
+            {
+                "fields": ("meta_title", "meta_description"),
+            },
+        ),
+    )
+
+    class Media:
+        css = {"all": ("admin/css/admin_fixes.css",)}

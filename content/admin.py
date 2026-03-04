@@ -29,6 +29,45 @@ class HeroBlockInline(admin.StackedInline):
     extra = 0
     ordering = ("order",)
 
+    fieldsets = (
+        (
+            "Main Hero Content",
+            {
+                "fields": (
+                    "title",
+                    "subtitle",
+                    "body",
+                    "image",
+                    "video_url",
+                    "button_text",
+                    "button_link",
+                )
+            },
+        ),
+        (
+            "Banner (Optional Top Strip)",
+            {
+                "fields": (
+                    "banner_published",
+                    "banner_badge_text",
+                    "banner_text",
+                    "banner_action_text",
+                    "banner_action_link",
+                ),
+                "description": "Top announcement strip shown above the hero title. Layout: Badge (left) → Message (centre) → Link (right).",
+            },
+        ),
+        (
+            "Display Settings",
+            {
+                "fields": (
+                    "published",
+                    "order",
+                )
+            },
+        ),
+    )
+
 
 class ThreeColumnBlockInline(admin.StackedInline):
     model = ThreeColumnBlock
@@ -45,17 +84,38 @@ class SectionBlockInline(admin.StackedInline):
 
     fieldsets = (
         (
-            "Page Section",
+            "Content",
             {
                 "fields": (
                     "section_type",
                     "title",
                     "subtitle",
                     "body",
+                ),
+            },
+        ),
+        (
+            "Media",
+            {
+                "fields": (
                     "image",
                     "image_position",
+                ),
+            },
+        ),
+        (
+            "Call To Action",
+            {
+                "fields": (
                     "button_text",
                     "button_link",
+                ),
+            },
+        ),
+        (
+            "Display Settings",
+            {
+                "fields": (
                     "order",
                     "published",
                 ),
@@ -69,11 +129,78 @@ class NewsletterBlockInline(admin.StackedInline):
     extra = 0
     ordering = ("order",)
 
+    fieldsets = (
+        (
+            "Content",
+            {
+                "fields": (
+                    "title",
+                    "intro_text",
+                ),
+            },
+        ),
+        (
+            "Embed Code",
+            {
+                "fields": ("embed_html",),
+                "description": "Paste your email provider's embed form HTML.",
+            },
+        ),
+        (
+            "Display Settings",
+            {
+                "fields": (
+                    "order",
+                    "published",
+                ),
+            },
+        ),
+    )
+
 
 class SpotlightBlockInline(admin.StackedInline):
     model = SpotlightBlock
     extra = 0
     ordering = ("order",)
+
+    fieldsets = (
+        (
+            "Content",
+            {
+                "fields": (
+                    "title",
+                    "body",
+                ),
+            },
+        ),
+        (
+            "Media",
+            {
+                "fields": (
+                    "image",
+                    "image_position",
+                ),
+            },
+        ),
+        (
+            "Call To Action",
+            {
+                "fields": (
+                    "button_text",
+                    "button_link",
+                ),
+            },
+        ),
+        (
+            "Display Settings",
+            {
+                "fields": (
+                    "order",
+                    "published",
+                ),
+            },
+        ),
+    )
 
 
 class GalleryImageInline(admin.StackedInline):
@@ -124,11 +251,52 @@ class FAQItemAdmin(admin.ModelAdmin):
     list_filter = ("published",)
 
 
-@admin.register(ThreeColumnBlock)
-class ThreeColumnBlockAdmin(admin.ModelAdmin):
-    list_display = ("id", "container", "order", "published")
-    list_filter = ("published",)
-    ordering = ("container", "order")
+class ThreeColumnBlockInline(admin.StackedInline):
+    model = ThreeColumnBlock
+    extra = 0
+    ordering = ("order",)
+
+    fieldsets = (
+        (
+            "Column 1",
+            {
+                "fields": (
+                    "col_1_title",
+                    "col_1_image",
+                    "col_1_body",
+                ),
+            },
+        ),
+        (
+            "Column 2",
+            {
+                "fields": (
+                    "col_2_title",
+                    "col_2_image",
+                    "col_2_body",
+                ),
+            },
+        ),
+        (
+            "Column 3",
+            {
+                "fields": (
+                    "col_3_title",
+                    "col_3_image",
+                    "col_3_body",
+                ),
+            },
+        ),
+        (
+            "Display Settings",
+            {
+                "fields": (
+                    "order",
+                    "published",
+                ),
+            },
+        ),
+    )
 
 
 @admin.register(GalleryBlock)

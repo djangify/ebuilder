@@ -12,98 +12,200 @@
 
 <!-- Open Graph -->
 {% include "includes/seo/og_meta.html" with 
-    og_title=shop_settings.hero_title|default:"Shop"
-    og_description=shop_settings.intro_body|default:"Browse our collection of digital products and resources"|truncatewords:30
+  og_title=hero.title|default:"Shop"
+  og_description=hero.body|default:"Browse our collection of digital products and resources"|truncatewords:30
 %}
 
 <!-- ItemList Schema -->
 {% include "includes/seo/schema_itemlist.html" with 
-    items=products 
-    list_name="Shop Products" 
+  items=products 
+  list_name="Shop Products" 
 %}
 {% endblock %}
 
 {% block content %}
 
 <!-- ============================================
-     HERO SECTION (always first)
+     HERO SECTION (container-driven)
      ============================================ -->
+{% if hero %}
 <header class="relative overflow-hidden bg-gradient-to-br from-[color:var(--color-light)] via-white to-[color:var(--color-light)]">
-  
-  {# Background pattern #}
-  
-  
-   <div class="absolute inset-0 opacity-[0.02]" style="background-image: url('data:image/svg+xml,%3Csvg width=&quot;40&quot; height=&quot;40&quot; viewBox=&quot;0 0 40 40&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot;%3E%3Cpath d=&quot;M20 20.5V18H0v-2h20v-2.5a2.5 2.5 0 015 0V16h15v2H25v2.5a2.5 2.5 0 01-5 0z&quot; fill=&quot;%23000&quot; fill-opacity=&quot;1&quot; fill-rule=&quot;evenodd&quot;/%3E%3C/svg%3E');"></div> 
-  
+
   <div class="relative w-full max-w-6xl mx-auto px-6 md:px-10 lg:px-16 py-16 md:py-24">
-    
-    <div class="{% if shop_settings.hero_image %}grid md:grid-cols-2 gap-12 items-center{% endif %}">
-      <!-- Text Content -->
-      <div class="{% if not shop_settings.hero_image %}max-w-4xl{% endif %}">
-        {% if shop_settings.hero_subtitle %}
+
+    <!-- Hero Banner -->
+    {% if hero_banner and hero_banner.banner_published %}
+    <div class="mb-8 text-center">
+      <a href="{{ hero_banner.banner_action_link }}"
+         class="inline-flex items-center 
+                bg-[color:var(--color-primary)] 
+                text-[var(--color-primary-contrast)] px-4 py-2 rounded-md 
+                hover:bg-[color:var(--color-secondary)] 
+                hover:text-[var(--color-secondary-contrast)] 
+                transition">
+
+        {% if hero_banner.banner_badge_text %}
+        <span class="px-2 py-1 mr-2 text-xs font-semibold rounded 
+                     bg-[color:var(--color-accent)] 
+                     text-[var(--color-primary-contrast)]">
+          {{ hero_banner.banner_badge_text }}
+        </span>
+        {% endif %}
+
+        {% if hero_banner.banner_text %}
+        <span class="font-medium">
+          {{ hero_banner.banner_text }}
+        </span>
+        {% endif %}
+
+        {% if hero_banner.banner_action_text %}
+        <span class="ml-2 text-sm underline">
+          {{ hero_banner.banner_action_text }} →
+        </span>
+        {% endif %}
+      </a>
+    </div>
+    {% endif %}
+
+    <div class="grid grid-cols-1 {% if hero.video_url or hero.image %}md:grid-cols-2 gap-12 items-center{% endif %}">
+      
+      <!-- LEFT: TEXT -->
+      <div>
+        {% if hero.subtitle %}
         <p class="uppercase text-sm tracking-widest text-[color:var(--color-accent)] mb-3 font-medium">
-          {{ shop_settings.hero_subtitle }}
+          {{ hero.subtitle }}
         </p>
         {% endif %}
-        
+
         <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold text-[color:var(--color-primary)] mb-6 leading-tight">
-          {{ shop_settings.hero_title|default:"The Shop" }}
+          {{ hero.title }}
         </h1>
-        
-        {% if shop_settings.hero_body %}
-        <div class="text-lg text-[color:var(--color-text-muted)] mb-8 {% if not shop_settings.hero_image %}max-w-4xl{% endif %}">
-          {{ shop_settings.hero_body|safe }}
+
+        {% if hero.body %}
+        <div class="text-lg text-[color:var(--color-text-muted)] mb-8">
+          {{ hero.body|safe }}
         </div>
         {% endif %}
 
-        {% if shop_settings.hero_button_text and shop_settings.hero_button_link %}
-        <a href="{{ shop_settings.hero_button_link }}" 
-           class="inline-flex items-center px-6 py-3 bg-[color:var(--color-primary)] text-[var(--color-primary-contrast)] font-semibold rounded-md hover:bg-[color:var(--color-primary)]/90 transition-colors">
-          {{ shop_settings.hero_button_text }}
-          <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
-          </svg>
+        {% if hero.button_text and hero.button_link %}
+        <a href="{{ hero.button_link }}"
+           class="inline-flex items-center px-6 py-3 
+                  bg-[color:var(--color-primary)] 
+                  text-[var(--color-primary-contrast)] 
+                  font-semibold rounded-md 
+                  hover:bg-[color:var(--color-secondary)] 
+                  transition-colors">
+          {{ hero.button_text }}
         </a>
         {% endif %}
       </div>
 
-      <!-- Hero Image (right side) -->
-      {% if shop_settings.hero_image %}
-      <div>
-        <img src="{{ shop_settings.hero_image.url }}" 
-             alt="{{ shop_settings.hero_title }}" 
-             class="w-full h-auto rounded-lg shadow-xl">
+      <!-- RIGHT: MEDIA -->
+      {% if hero.video_url or hero.image %}
+      <div class="relative w-full">
+
+        {% if hero.video_url %}
+        {% with video_id=hero.get_youtube_video_id %}
+        <div class="relative aspect-video w-full overflow-hidden rounded-lg shadow-xl">
+          <button
+            id="hero-video-thumb"
+            type="button"
+            data-video-id="{{ video_id }}"
+            class="absolute inset-0 h-full w-full group focus:outline-none"
+            aria-label="Play video"
+          >
+            <img
+              src="https://img.youtube.com/vi/{{ video_id }}/maxresdefault.jpg"
+              alt="Play video"
+              class="absolute inset-0 h-full w-full object-cover"
+              loading="lazy"
+            />
+            <span class="absolute inset-0 flex items-center justify-center bg-black/30 transition group-hover:bg-black/40">
+              <span class="flex h-16 w-16 items-center justify-center rounded-full bg-red-600 text-white shadow-lg transition group-hover:scale-110">
+                <svg class="h-8 w-8 ml-1" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M8 5v14l11-7z"></path>
+                </svg>
+              </span>
+            </span>
+          </button>
+          <div id="hero-video-player" class="absolute inset-0 hidden"></div>
+        </div>
+        {% endwith %}
+
+        {% elif hero.image %}
+        <img 
+          src="{{ hero.image.url }}" 
+          alt="{{ hero.title }}"
+          fetchpriority="high"
+          width="1200"
+          height="800"
+          decoding="async"
+          class="w-full h-auto rounded-lg shadow-xl object-cover"
+          style="min-height: 400px; max-height: 600px;"
+        >
+        {% endif %}
+
       </div>
       {% endif %}
+
     </div>
-    
   </div>
+
+  {% if hero.video_url %}
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const thumb = document.getElementById("hero-video-thumb");
+      const player = document.getElementById("hero-video-player");
+      if (!thumb || !player) return;
+
+      thumb.addEventListener("click", () => {
+        const videoId = thumb.dataset.videoId;
+        const embedUrl = `https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1&rel=0&modestbranding=1`;
+
+        thumb.classList.add("hidden");
+        player.classList.remove("hidden");
+
+        player.innerHTML = `
+          <iframe
+            class="w-full h-full"
+            src="${embedUrl}"
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen>
+          </iframe>
+        `;
+      });
+    });
+  </script>
+  {% endif %}
+
 </header>
+{% endif %}
+
 <!-- ============================================
-     DYNAMIC SECTIONS (ordered by admin settings)
+     DYNAMIC SECTIONS (ordered by container)
      ============================================ -->
 {% for block in content_blocks %}
 
-  {% if block.__class__.__name__ == "SectionBlock" and block.section_type == "text" %}
-  <!-- INTRO SECTION -->
+  {% if block.block_type == "SectionBlock" and block.section_type == "text" %}
   <section class="py-12 md:py-16 bg-white">
     <div class="max-w-5xl mx-auto px-6 md:px-10 lg:px-16 text-center">
-      {% if shop_settings.intro_title %}
+      {% if block.title %}
       <h2 class="text-3xl md:text-4xl font-bold text-[color:var(--color-primary)] mb-6">
-        {{ shop_settings.intro_title }}
+        {{ block.title }}
       </h2>
       {% endif %}
-      
-      {% if shop_settings.intro_body %}
+
+      {% if block.body %}
       <div class="text-lg text-[color:var(--color-text-muted)] prose prose-lg mx-auto">
-        {{ shop_settings.intro_body|safe }}
+        {{ block.body|safe }}
       </div>
       {% endif %}
     </div>
   </section>
   {% endif %}
 
-  {% if block.__class__.__name__ == "FAQBlock" and block.published %}
+  {% if block.block_type == "FAQBlock" and block.published %}
   <section class="py-16">
     <div class="max-w-4xl mx-auto px-6">
       {% if block.title %}
@@ -141,10 +243,10 @@
     </div>
   </section>
   {% endif %}
-    {% if block.__class__.__name__ == "NewsletterBlock" and block.published %}
+
+  {% if block.block_type == "NewsletterBlock" and block.published %}
   <section class="py-16 bg-white">
     <div class="max-w-4xl mx-auto px-6 text-center">
-      
       {% if block.title %}
       <h2 class="text-3xl font-bold mb-4 text-[color:var(--color-primary)]">
         {{ block.title }}
@@ -160,13 +262,11 @@
       <div>
         {{ block.embed_html|safe }}
       </div>
-
     </div>
   </section>
   {% endif %}
 
-  <!-- PROMO BLOCKS SECTION -->
-  {% if block.__class__.__name__ == "ThreeColumnBlock" and block.published %}
+  {% if block.block_type == "ThreeColumnBlock" and block.published %}
   <section class="py-8 md:py-10 bg-white">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -222,41 +322,38 @@
       </div>
     </div>
   </section>
-  {% endfor %}
   {% endif %}
 
-  {% if block.__class__.__name__ == "SpotlightBlock" and block.published %}
-<section class="py-12 md:py-16 bg-[color:var(--color-light)]">
-  <div class="max-w-6xl mx-auto px-6 md:px-10 lg:px-16">
-    <div class="grid md:grid-cols-2 gap-12 items-center">
-      <div class="{% if block.image_position == 'left' %}md:order-2{% endif %}">
-        {% if block.title %}
-        <h2 class="text-3xl md:text-4xl font-bold text-[color:var(--color-primary)] mb-6">
-          {{ block.title }}
-        </h2>
-        {% endif %}
-        {% if block.body %}
-        <div class="text-[color:var(--color-text-muted)] prose prose-lg mb-8">
-          {{ block.body|safe }}
+  {% if block.block_type == "SpotlightBlock" and block.published %}
+  <section class="py-12 md:py-16 bg-[color:var(--color-light)]">
+    <div class="max-w-6xl mx-auto px-6 md:px-10 lg:px-16">
+      <div class="grid md:grid-cols-2 gap-12 items-center">
+        <div class="{% if block.image_position == 'left' %}md:order-2{% endif %}">
+          {% if block.title %}
+          <h2 class="text-3xl md:text-4xl font-bold text-[color:var(--color-primary)] mb-6">
+            {{ block.title }}
+          </h2>
+          {% endif %}
+          {% if block.body %}
+          <div class="text-[color:var(--color-text-muted)] prose prose-lg mb-8">
+            {{ block.body|safe }}
+          </div>
+          {% endif %}
+        </div>
+
+        {% if block.image %}
+        <div class="{% if block.image_position == 'left' %}md:order-1{% endif %}">
+          <img src="{{ block.image.url }}" 
+               alt="{{ block.title }}" 
+               class="w-full h-auto rounded-md shadow-md max-w-sm">
         </div>
         {% endif %}
       </div>
-      {% if block.image %}
-      <div class="{% if block.image_position == 'left' %}md:order-1{% endif %}">
-        <img src="{{ block.image.url }}" 
-             alt="{{ block.title }}" 
-             class="w-full h-auto rounded-md shadow-md max-w-sm">
-      </div>
-      {% endif %}
     </div>
-  </div>
-</section>
-{% endif %}
+  </section>
+  {% endif %}
 
-
-  {% if section.type == 'products' and shop_settings.show_products_on_homepage %}
-  <!--MAIN PRODUCT LISTING -->
-  {% if shop_settings.show_products_on_homepage %}
+  {% if block.block_type == "products" %}
   <div id="products" class="w-full bg-[color:var(--color-light)] py-12 md:py-16">
     <div class="w-full max-w-6xl mx-auto px-6 md:px-10 lg:px-16">
 
@@ -371,12 +468,11 @@
     </div>
   </div>
   {% endif %}
-  {% endif %}
+
 {% endfor %}
 
-
 <!-- ============================================
-     TRUST SECTION
+     TRUST SECTION (unchanged)
      ============================================ -->
 <div class="w-full bg-white py-12">
   <div class="w-full max-w-4xl mx-auto px-6 md:px-10 lg:px-16">

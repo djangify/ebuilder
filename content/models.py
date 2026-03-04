@@ -65,24 +65,31 @@ class HeroBlock(models.Model):
         help_text="Enable banner above hero title.",
     )
 
-    banner_text = models.CharField(
-        max_length=200,
-        blank=True,
-    )
-
-    banner_action_text = models.CharField(
-        max_length=100,
-        blank=True,
-    )
-
-    banner_action_link = models.CharField(
-        max_length=200,
-        blank=True,
-    )
-
+    # LEFT SIDE — Badge
     banner_badge_text = models.CharField(
         max_length=50,
         blank=True,
+        help_text="Small label shown on the left of the banner (e.g. 'New', 'Update', 'Featured').",
+    )
+
+    # MIDDLE — Main banner message
+    banner_text = models.CharField(
+        max_length=200,
+        blank=True,
+        help_text="Main banner message displayed in the centre of the banner.",
+    )
+
+    # RIGHT — Link label
+    banner_action_text = models.CharField(
+        max_length=100,
+        blank=True,
+        help_text="Clickable link text displayed on the right (e.g. 'Read More').",
+    )
+
+    # RIGHT — Link URL
+    banner_action_link = models.URLField(
+        blank=True,
+        help_text="URL the banner link should go to. Required if link text is provided.",
     )
 
     # ==============================

@@ -281,6 +281,16 @@ class Page(models.Model):
     def __str__(self):
         return self.title
 
+    def save(self, *args, **kwargs):
+        from content.models import ContentContainer
+
+        # If no container yet, create one
+        if not self.content_container_id:
+            container = ContentContainer.objects.create(name=f"{self.title} Container")
+            self.content_container = container
+
+        super().save(*args, **kwargs)
+
     def get_absolute_url(self):
         if self.template == "home":
             return reverse("pages:home")

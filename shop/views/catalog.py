@@ -118,6 +118,12 @@ def product_list(request):
         container_blocks,
         key=lambda x: x["order"] if isinstance(x, dict) else x.order,
     )
+    # Add safe block_type attribute for templates
+    for block in content_blocks:
+        if isinstance(block, dict):
+            block["block_type"] = block.get("type")
+        else:
+            block.block_type = block.__class__.__name__
     # ============================================
     # Hero (Unified Container System)
     # ============================================
