@@ -105,16 +105,6 @@ class HeroBlock(models.Model):
         return self.title or f"HeroBlock #{self.pk}"
 
     # ==============================
-    # Save Override (Compression)
-    # ==============================
-
-    def save(self, *args, **kwargs):
-        super().save(*args, **kwargs)
-
-        if self.image:
-            self._compress_image()
-
-    # ==============================
     # Video Helpers
     # ==============================
 
@@ -141,52 +131,6 @@ class HeroBlock(models.Model):
                 f"{video_id}?rel=0&modestbranding=1"
             )
         return None
-
-    # ==============================
-    # Image Compression
-    # ==============================
-
-    def _compress_image(self):
-        try:
-            img = PILImage.open(self.image.path)
-
-            import os
-
-            if os.path.getsize(self.image.path) < 50 * 1024:
-                return
-
-            if img.mode in ("RGBA", "P"):
-                background = PILImage.new("RGB", img.size, (255, 255, 255))
-                if img.mode == "P":
-                    img = img.convert("RGBA")
-                background.paste(
-                    img, mask=img.split()[-1] if img.mode == "RGBA" else None
-                )
-                img = background
-            elif img.mode != "RGB":
-                img = img.convert("RGB")
-
-            max_width = 1920
-            if img.width > max_width:
-                ratio = max_width / img.width
-                new_height = int(img.height * ratio)
-                img = img.resize((max_width, new_height), PILImage.Resampling.LANCZOS)
-
-            webp_path = os.path.splitext(self.image.path)[0] + ".webp"
-            img.save(webp_path, "WEBP", quality=75, method=6)
-
-            old_path = self.image.path
-            if old_path != webp_path and os.path.exists(old_path):
-                os.remove(old_path)
-
-            new_name = os.path.splitext(self.image.name)[0] + ".webp"
-            self.__class__.objects.filter(pk=self.pk).update(image=new_name)
-
-        except Exception as e:
-            import logging
-
-            logger = logging.getLogger(__name__)
-            logger.warning(f"Could not compress Hero image {self.pk}: {e}")
 
 
 # ============================================
@@ -248,15 +192,15 @@ class ThreeColumnBlock(models.Model):
     published = models.BooleanField(default=True)
 
     col_1_title = models.CharField(max_length=255, blank=True)
-    col_1_image = models.ImageField(upload_to="three_columns/", blank=True, null=True)
+    col_1_image = models.ImageField(upload_to="pages/columns/", blank=True, null=True)
     col_1_body = models.TextField(blank=True)
 
     col_2_title = models.CharField(max_length=255, blank=True)
-    col_2_image = models.ImageField(upload_to="three_columns/", blank=True, null=True)
+    col_2_image = models.ImageField(upload_to="pages/columns/", blank=True, null=True)
     col_2_body = models.TextField(blank=True)
 
     col_3_title = models.CharField(max_length=255, blank=True)
-    col_3_image = models.ImageField(upload_to="three_columns/", blank=True, null=True)
+    col_3_image = models.ImageField(upload_to="pages/columns/", blank=True, null=True)
     col_3_body = models.TextField(blank=True)
 
     class Meta:
@@ -288,7 +232,7 @@ class SectionBlock(models.Model):
     body = models.TextField(blank=True, null=True)
 
     image = models.ImageField(
-        upload_to="sections/",
+        upload_to="pages/sections/",
         blank=True,
         null=True,
     )
@@ -355,7 +299,7 @@ class SpotlightBlock(models.Model):
     title = models.CharField(max_length=255, blank=True)
     body = models.TextField(blank=True)
 
-    image = models.ImageField(upload_to="spotlight/", blank=True, null=True)
+    image = models.ImageField(upload_to="shop/spotlight/", blank=True, null=True)
 
     image_position = models.CharField(
         max_length=10,
@@ -403,9 +347,9 @@ class GalleryImage(models.Model):
         related_name="images",
     )
 
-    image = models.ImageField(upload_to="gallery/")
+    image = models.ImageField(upload_to="pages/gallery/")
     thumbnail = models.ImageField(
-        upload_to="gallery/thumbnails/",
+        upload_to="pages/gallery/thumbnails/",
         blank=True,
         null=True,
         editable=False,
