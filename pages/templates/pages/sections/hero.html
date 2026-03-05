@@ -8,26 +8,37 @@
 >
   <div class="container mx-auto px-6 py-16 lg:py-24">
     
-    <!-- Hero Banner (above everything) -->
-    {% if hero_banner %}
+   <!-- Hero Banner (above everything) -->
+    {% if hero_banner and hero_banner.banner_published %}
     <div class="mb-8 text-center">
-      <a href="{{ hero_banner.action_link }}"
-         class="inline-flex items-center 
+      <a href="{{ hero_banner.banner_action_link }}"
+        class="inline-flex items-center 
         bg-[color:var(--color-primary)] 
         text-[var(--color-primary-contrast)] px-4 py-2 rounded-md 
         hover:bg-[color:var(--color-secondary)] 
         hover:text-[var(--color-secondary-contrast)] 
         transition">
-        {% if hero_banner.badge_text %}
-          <span class="px-2 py-1 mr-2 text-xs font-semibold rounded bg-[color:var(--color-primary)] 
-          text-[var(--color-primary-contrast)]">
-            {{ hero_banner.badge_text }}
+
+        {% if hero_banner.banner_badge_text %}
+          <span class="px-2 py-1 mr-2 text-xs font-semibold rounded 
+                      bg-[color:var(--color-accent)] 
+                      text-[var(--color-primary-contrast)]">
+            {{ hero_banner.banner_badge_text }}
           </span>
         {% endif %}
-        <span class="font-medium">{{ hero_banner.text }}</span>
-        {% if hero_banner.action_text %}
-          <span class="ml-2 text-sm underline">{{ hero_banner.action_text }} →</span>
+
+        {% if hero_banner.banner_text %}
+          <span class="font-medium">
+            {{ hero_banner.banner_text }}
+          </span>
         {% endif %}
+
+        {% if hero_banner.banner_action_text %}
+          <span class="ml-2 text-sm underline">
+            {{ hero_banner.banner_action_text }} →
+          </span>
+        {% endif %}
+
       </a>
     </div>
     {% endif %}

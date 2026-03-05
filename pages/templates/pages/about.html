@@ -38,8 +38,8 @@
         {% include "pages/sections/content_blocks.html" with block=block %}
     {% elif block|is_faqblock %}
         {% include "pages/sections/faq_block.html" with block=block %}
-    {% elif block.images %}
-        {% include "pages/sections/gallery_section.html" with block=block %}
+    {% elif block|is_galleryblock %}
+        {% include "content/gallery/gallery_block.html" with block=block %}
 
     {% endif %}
 {% endfor %}

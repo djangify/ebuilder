@@ -74,57 +74,72 @@ def product_list(request):
         )
     ).filter(product_count__gt=0)
 
-    # Get promo blocks if enabled
-    promo_blocks = None
-    if shop_settings.show_promo_blocks:
-        promo_blocks = shop_settings.promo_blocks.filter(published=True)
+    # ============================================
+    # Unified Container-Based Blocks
+    # ============================================
 
-    # Build ordered sections list
-    sections = []
+    container_blocks = []
 
-    if shop_settings.show_intro_section:
-        sections.append(
-            {
-                "type": "intro",
-                "order": shop_settings.intro_order,
-            }
-        )
+    # SectionBlocks
+    container_blocks += list(
+        shop_settings.content_container.sections.filter(published=True)
+    )
+
+    # FAQBlocks
+    container_blocks += list(
+        shop_settings.content_container.faq_blocks.filter(published=True)
+    )
+
+    # NewsletterBlocks
+    container_blocks += list(
+        shop_settings.content_container.newsletter_blocks.filter(published=True)
+    )
+
+    # SpotlightBlocks
+    container_blocks += list(
+        shop_settings.content_container.spotlight_blocks.filter(published=True)
+    )
+    # GalleryBlocks
+    container_blocks += list(
+        shop_settings.content_container.gallery_blocks.filter(published=True)
+    )
+
+    # Product placeholder block
     if shop_settings.show_products_on_homepage:
-        sections.append(
+        container_blocks.append(
             {
                 "type": "products",
                 "order": shop_settings.products_order,
             }
         )
 
-    if shop_settings.show_promo_blocks and promo_blocks:
-        sections.append(
-            {
-                "type": "promo_blocks",
-                "order": shop_settings.promo_blocks_order,
-            }
+    # Sort everything by order
+    content_blocks = sorted(
+        container_blocks,
+        key=lambda x: x["order"] if isinstance(x, dict) else x.order,
+    )
+    # Add safe block_type attribute for templates
+    for block in content_blocks:
+        if isinstance(block, dict):
+            block["block_type"] = block.get("type")
+        else:
+            block.block_type = block.__class__.__name__
+    # ============================================
+    # Hero (Unified Container System)
+    # ============================================
+
+    hero = None
+    hero_banner = None
+
+    if shop_settings.content_container:
+        hero = (
+            shop_settings.content_container.hero_blocks.filter(published=True)
+            .order_by("order")
+            .first()
         )
 
-    if shop_settings.show_spotlight:
-        sections.append(
-            {
-                "type": "spotlight",
-                "order": shop_settings.spotlight_order,
-            }
-        )
-    # Get FAQ blocks
-    faq_blocks = shop_settings.faq_blocks.filter(published=True)
-
-    if faq_blocks.exists():
-        sections.append(
-            {
-                "type": "faq",
-                "order": shop_settings.faq_order,
-            }
-        )
-
-    # Sort sections by order
-    sections = sorted(sections, key=lambda x: x["order"])
+        if hero and hero.banner_published:
+            hero_banner = hero
 
     return render(
         request,
@@ -135,11 +150,10 @@ def product_list(request):
             "current_category": current_category,
             "query": query,
             "STRIPE_PUBLIC_KEY": ConfigManager.get("stripe_public_key"),
-            # Shop Settings context
             "shop_settings": shop_settings,
-            "promo_blocks": promo_blocks,
-            "sections": sections,
-            "faq_blocks": faq_blocks,
+            "hero": hero,
+            "hero_banner": hero_banner,
+            "content_blocks": content_blocks,
             # No breadcrumbs for shop list page
         },
     )

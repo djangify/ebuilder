@@ -16,10 +16,7 @@ from .models import (
     OrderItem,
     ProductReview,
     Purchase,
-    ShopPromoBlock,
     ShopSettings,
-    ShopFAQBlock,
-    ShopFAQItem,
 )
 from django import forms
 
@@ -55,17 +52,6 @@ class ProductAdminForm(forms.ModelForm):
         widgets = {
             "description": RichTextWidget(),
             "long_description": RichTextWidget(),
-        }
-
-
-class ShopPromoBlockForm(forms.ModelForm):
-    class Meta:
-        model = ShopPromoBlock
-        fields = "__all__"
-        widgets = {
-            "col_1_body": RichTextWidget(),
-            "col_2_body": RichTextWidget(),
-            "col_3_body": RichTextWidget(),
         }
 
 
@@ -111,7 +97,6 @@ class ShopSettingsForm(forms.ModelForm):
         widgets = {
             "hero_body": RichTextWidget(),
             "intro_body": RichTextWidget(),
-            "spotlight_body": RichTextWidget(),
         }
 
     def __init__(self, *args, **kwargs):
@@ -349,44 +334,6 @@ class ProductAdmin(admin.ModelAdmin):
         return url
 
 
-class ShopPromoBlockInline(admin.StackedInline):
-    model = ShopPromoBlock
-    form = ShopPromoBlockForm
-    extra = 0
-    can_delete = True
-    ordering = ("order",)
-
-    fieldsets = (
-        (
-            "Block Settings",
-            {
-                "fields": ("order", "published"),
-            },
-        ),
-        (
-            "Column 1",
-            {
-                "fields": ("col_1_title", "col_1_image", "col_1_body"),
-                "classes": ("collapse",),
-            },
-        ),
-        (
-            "Column 2",
-            {
-                "fields": ("col_2_title", "col_2_image", "col_2_body"),
-                "classes": ("collapse",),
-            },
-        ),
-        (
-            "Column 3",
-            {
-                "fields": ("col_3_title", "col_3_image", "col_3_body"),
-                "classes": ("collapse",),
-            },
-        ),
-    )
-
-
 class OrderItemInline(admin.TabularInline):
     model = OrderItem
     raw_id_fields = ["product"]
@@ -494,25 +441,10 @@ class ProductReviewAdmin(admin.ModelAdmin):
         super().save_model(request, obj, form, change)
 
 
-class ShopFAQItemInline(admin.TabularInline):
-    model = ShopFAQItem
-    extra = 1
-    fields = ("question", "answer", "order", "published")
-    ordering = ("order",)
-
-
-class ShopFAQBlockInline(admin.StackedInline):
-    model = ShopFAQBlock
-    extra = 0
-    fields = ("title", "order", "published")
-    ordering = ("order",)
-    show_change_link = True
-
-
 @admin.register(ShopSettings)
 class ShopSettingsAdmin(admin.ModelAdmin):
     form = ShopSettingsForm
-    inlines = [ShopPromoBlockInline, ShopFAQBlockInline]
+    inlines = []
 
     fieldsets = (
         (
@@ -520,68 +452,6 @@ class ShopSettingsAdmin(admin.ModelAdmin):
             {
                 "fields": ("is_demo_site",),
                 "description": "Enable demo mode for sites being built for sale. Disables payments until Stripe is configured.",
-            },
-        ),
-        (
-            "Hero Section",
-            {
-                "fields": (
-                    "hero_title",
-                    "hero_subtitle",
-                    "hero_body",
-                    "hero_image",
-                    "hero_button_text",
-                    "hero_button_link",
-                ),
-                "description": "The main banner area at the top of your shop homepage.",
-            },
-        ),
-        (
-            "Intro Section",
-            {
-                "fields": (
-                    "show_intro_section",
-                    "intro_title",
-                    "intro_body",
-                ),
-                "description": "Optional text block below the hero.",
-                "classes": ("collapse",),
-            },
-        ),
-        (
-            "Product Spotlight",
-            {
-                "fields": (
-                    "show_spotlight",
-                    "spotlight_title",
-                    "spotlight_body",
-                    "spotlight_image",
-                    "spotlight_image_position",
-                    "spotlight_button_text",
-                    "spotlight_button_link",
-                ),
-                "description": "Two-column section to highlight a product or promotion.",
-                "classes": ("collapse",),
-            },
-        ),
-        (
-            "Section Ordering",
-            {
-                "fields": (
-                    "intro_order",
-                    "products_order",
-                    "promo_blocks_order",
-                    "spotlight_order",
-                    "faq_order",
-                ),
-                "description": "Control the display order of sections. Lower numbers appear first. Hero is always at the top, products always at the bottom.",
-            },
-        ),
-        (
-            "Promo Blocks",
-            {
-                "fields": ("show_promo_blocks",),
-                "description": "Toggle the three-column promo blocks. Add blocks using the inline below.",
             },
         ),
         (
@@ -675,11 +545,3 @@ class ShopSettingsAdmin(admin.ModelAdmin):
             pass
 
         return super().change_view(request, object_id, form_url, extra_context)
-
-
-@admin.register(ShopFAQBlock)
-class ShopFAQBlockAdmin(admin.ModelAdmin):
-    list_display = ("title", "shop_settings", "order", "published")
-    list_filter = ("published",)
-    inlines = [ShopFAQItemInline]
-    ordering = ("order",)

@@ -454,88 +454,10 @@ class ShopSettings(models.Model):
     Only applies when SiteSettings.homepage_mode = 'SHOP'
     """
 
-    # === Hero Section ===
-    hero_title = models.CharField(
-        max_length=200,
-        default="Welcome to Our Shop",
-        help_text="Main heading in the hero section.",
-    )
-    hero_subtitle = models.CharField(
-        max_length=300,
-        blank=True,
-        help_text="Smaller text above or below the title.",
-    )
-    hero_body = models.TextField(
-        blank=True,
-        null=True,
-        help_text="Optional descriptive text for the hero.",
-    )
-    hero_image = models.ImageField(
-        upload_to="shop/hero/",
-        blank=True,
-        null=True,
-        help_text="Side image for the hero section.",
-    )
-    hero_button_text = models.CharField(
-        max_length=100,
-        blank=True,
-        help_text="e.g. 'Browse Products', 'Shop Now'",
-    )
-    hero_button_link = models.CharField(
-        max_length=200,
-        blank=True,
-        help_text="URL or anchor link for the button (e.g. #products or /shop/category/sale/)",
-    )
-
-    # === Intro Section ===
-    show_intro_section = models.BooleanField(
-        default=False,
-        help_text="Display an intro text block below the hero.",
-    )
-    intro_title = models.CharField(
-        max_length=200,
-        blank=True,
-    )
-    intro_body = models.TextField(
-        blank=True,
-        null=True,
-        help_text="Rich text introduction to your shop.",
-    )
-
-    # === Product Spotlight (Two Column: Text + Image) ===
-    show_spotlight = models.BooleanField(
-        default=False,
-        help_text="Display a featured product or promotion section.",
-    )
-    spotlight_title = models.CharField(
-        max_length=200,
-        blank=True,
-    )
-    spotlight_body = models.TextField(
-        blank=True,
-        null=True,
-    )
-    spotlight_image = models.ImageField(
-        upload_to="shop/spotlight/",
-        blank=True,
-        null=True,
-    )
-    spotlight_button_text = models.CharField(
-        max_length=100,
-        blank=True,
-    )
-    spotlight_button_link = models.CharField(
-        max_length=200,
-        blank=True,
-    )
-    IMAGE_POSITION_CHOICES = [
-        ("left", "Image Left, Text Right"),
-        ("right", "Image Right, Text Left"),
-    ]
-    spotlight_image_position = models.CharField(
-        max_length=10,
-        choices=IMAGE_POSITION_CHOICES,
-        default="right",
+    content_container = models.OneToOneField(
+        "content.ContentContainer",
+        on_delete=models.CASCADE,
+        related_name="shop_settings",
     )
 
     # === Display Options ===
@@ -566,31 +488,10 @@ class ShopSettings(models.Model):
         help_text="Only used when display mode is 'Specific Category'.",
     )
     # === Section Ordering ===
-    intro_order = models.PositiveIntegerField(
-        default=1,
-        help_text="Display order for intro section (lower numbers appear first).",
-    )
-    promo_blocks_order = models.PositiveIntegerField(
-        default=2,
-        help_text="Display order for promo blocks section.",
-    )
-    spotlight_order = models.PositiveIntegerField(
-        default=3,
-        help_text="Display order for spotlight section.",
-    )
-    faq_order = models.PositiveIntegerField(
-        default=4,
-        help_text="Display order for FAQ section.",
-    )
+
     products_order = models.PositiveIntegerField(
         default=99,
         help_text="Display order for product grid section.",
-    )
-
-    # === Promo Blocks Toggle ===
-    show_promo_blocks = models.BooleanField(
-        default=False,
-        help_text="Display promotional column blocks on the shop homepage.",
     )
 
     # === Stripe Configuration ===
@@ -680,94 +581,3 @@ class ShopSettings(models.Model):
         if not self.pk and ShopSettings.objects.exists():
             raise ValueError("Only one ShopSettings instance is allowed.")
         super().save(*args, **kwargs)
-
-
-class ShopPromoBlock(models.Model):
-    """
-    Three-column promotional blocks for shop homepage.
-    Similar to ThreeColumnBlock in pages app.
-    """
-
-    shop_settings = models.ForeignKey(
-        ShopSettings,
-        on_delete=models.CASCADE,
-        related_name="promo_blocks",
-    )
-    order = models.PositiveIntegerField(default=0)
-    published = models.BooleanField(default=True)
-
-    col_1_title = models.CharField(max_length=150, blank=True)
-    col_1_image = models.ImageField(upload_to="shop/promo/", blank=True, null=True)
-    col_1_body = models.TextField(blank=True, null=True)
-
-    col_2_title = models.CharField(max_length=150, blank=True)
-    col_2_image = models.ImageField(upload_to="shop/promo/", blank=True, null=True)
-    col_2_body = models.TextField(blank=True, null=True)
-
-    col_3_title = models.CharField(max_length=150, blank=True)
-    col_3_image = models.ImageField(upload_to="shop/promo/", blank=True, null=True)
-    col_3_body = models.TextField(blank=True, null=True)
-
-    class Meta:
-        ordering = ["order"]
-        verbose_name = "Shop Promo Block"
-        verbose_name_plural = "SHOP PROMO BLOCKS"
-
-    def __str__(self):
-        return f"Promo Block #{self.order}"
-
-
-# ============================================
-# SHOP FAQ
-# ============================================
-
-
-class ShopFAQBlock(models.Model):
-    """
-    FAQ section for the Shop homepage.
-    Mirrors FAQBlock in pages app but attaches to ShopSettings.
-    """
-
-    shop_settings = models.ForeignKey(
-        ShopSettings,
-        on_delete=models.CASCADE,
-        related_name="faq_blocks",
-    )
-
-    title = models.CharField(
-        max_length=200,
-        blank=True,
-        help_text="Optional section title like 'Frequently Asked Questions'",
-    )
-
-    order = models.PositiveIntegerField(default=0)
-    published = models.BooleanField(default=True)
-
-    class Meta:
-        ordering = ["order"]
-        verbose_name = "Shop FAQ Block"
-        verbose_name_plural = "SHOP FAQ BLOCKS"
-
-    def __str__(self):
-        return f"Shop FAQ - {self.title or 'Untitled'}"
-
-
-class ShopFAQItem(models.Model):
-    faq_block = models.ForeignKey(
-        ShopFAQBlock,
-        on_delete=models.CASCADE,
-        related_name="items",
-    )
-
-    question = models.CharField(max_length=500)
-    answer = models.TextField()
-    order = models.PositiveIntegerField(default=0)
-    published = models.BooleanField(default=True)
-
-    class Meta:
-        ordering = ["order"]
-        verbose_name = "Shop FAQ Item"
-        verbose_name_plural = "Shop FAQ Items"
-
-    def __str__(self):
-        return self.question[:50]
