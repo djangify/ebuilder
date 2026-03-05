@@ -12,5 +12,6 @@ urlpatterns = [
         views.gallery_image_modal,
         name="gallery_image_modal",
     ),
+    path("links/", views.linkhub_index, name="linkhub_index"),
     path("links/<slug:slug>/", linkhub_page, name="linkhub_page"),
 ]

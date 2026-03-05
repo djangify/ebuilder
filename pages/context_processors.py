@@ -55,8 +55,11 @@ def ebuilder_settings(request):
 
 def published_pages(request):
     """Make published pages available for navigation menus."""
-    pages = Page.objects.filter(published=True, show_in_navigation=True).order_by(
-        "menu_order", "title"
+    pages = (
+        Page.objects.filter(published=True, show_in_navigation=True)
+        .exclude(content_container__linkhub_blocks__isnull=False)
+        .distinct()
+        .order_by("menu_order", "title")
     )
 
     return {"published_pages": pages}

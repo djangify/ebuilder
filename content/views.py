@@ -27,17 +27,31 @@ def gallery_image_modal(request, pk):
 
 
 def linkhub_page(request, slug):
-    block = get_object_or_404(
+
+    linkhub = get_object_or_404(
         LinkHubBlock.objects.prefetch_related("links"), slug=slug, published=True
     )
 
-    links = block.links.all()
+    links = linkhub.links.all()
 
     return render(
         request,
         "content/hublinks.html",
         {
-            "block": block,
+            "linkhub": linkhub,
             "links": links,
+        },
+    )
+
+
+def linkhub_index(request):
+
+    hubs = LinkHubBlock.objects.all()
+
+    return render(
+        request,
+        "content/linkhub_index.html",
+        {
+            "hubs": hubs,
         },
     )

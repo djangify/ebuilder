@@ -463,6 +463,13 @@ class LinkHubBlock(models.Model):
         blank=True,
         help_text="Paste YouTube Watch URL. It will display at the top of the page.",
     )
+    logo_image = models.ImageField(
+        "Logo Image",
+        upload_to="linkhub/logo/",
+        blank=True,
+        null=True,
+        help_text="Optional logo displayed above the LinkHub title.",
+    )
 
     primary_link = models.PositiveIntegerField(
         default=0,

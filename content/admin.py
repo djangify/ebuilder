@@ -1,6 +1,7 @@
 from django.contrib import admin
 from django import forms
 from pages.widgets import RichTextWidget
+from django.utils.html import format_html
 from .models import (
     ContentContainer,
     HeroBlock,
@@ -321,16 +322,45 @@ class LinkHubBlockAdmin(admin.ModelAdmin):
     prepopulated_fields = {"slug": ("title",)}
     list_editable = ("order", "published")
     inlines = [LinkHubItemInline]
+    readonly_fields = ("public_linkhub_url",)
+
     fields = (
         "container",
         "title",
         "slug",
+        "public_linkhub_url",
+        "logo_image",
         "description",
         "video_url",
         "primary_link",
         "order",
         "published",
     )
+
+    def public_linkhub_url(self, obj):
+        if not obj.slug:
+            return "Save to generate the public URL."
+
+        url = f"/links/{obj.slug}/"
+
+        return format_html(
+            """
+            
+            <div style="padding:12px;border-radius:6px;max-width:600px;margin-top:6px;">
+                <strong>Public LinkHub Page</strong><br>
+                After clicking 'Save' your LinkHub page is available at:<br><br>
+                <a href="{0}" target="_blank">{0}</a><br><br>
+                <a href="{0}" target="_blank"
+                style="background:#facc15;padding:6px 10px;border-radius:4px;text-decoration:none;color:black;font-weight:bold;">
+                View LinkHub Page
+                </a>
+            </div>
+        
+            """,
+            url,
+        )
+
+    public_linkhub_url.short_description = "LinkHub Page URL"
 
 
 @admin.register(LinkHubItem)

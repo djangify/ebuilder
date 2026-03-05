@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<main class="min-h-screen px-4 py-8 bg-[var(--color-light)]">
+<div class="w-full max-w-xl mx-auto">
+
+<h1 class="text-2xl text-center font-semibold mb-6 text-[var(--color-primary)]">
+LinkHub Pages
+</h1>
+
+<div class="space-y-4">
+
+{% for hub in hubs %}
+
+<a
+href="/links/{{ hub.slug }}/"
+class="glass-card flex items-center gap-4 p-5 px-6 py-4 rounded-2xl border-2 transition no-underline group bg-white border-[var(--color-light-contrast)]"
+>
+
+<div class="flex-1 min-w-0">
+
+<h3 class="font-semibold text-md leading-relaxed mb-1">
+{{ hub.title }}
+</h3>
+
+{% if hub.description %}
+<p class="text-sm">
+{{ hub.description }}
+</p>
+{% endif %}
+
+</div>
+
+</a>
+
+{% empty %}
+
+<p class="text-center text-slate-500">
+No LinkHub pages available.
+</p>
+
+{% endfor %}
+
+</div>
+
+</div>
+</main>
+
+{% endblock %}

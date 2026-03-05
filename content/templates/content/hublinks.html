@@ -3,34 +3,33 @@
 
 {% block content %}
 
-<main class="min-h-screen flex items-center justify-center px-4 py-8 bg-[var(--color-light)]">
-<div class="w-full max-w-lg">
+<main class="min-h-screen px-4 py-8 bg-[var(--color-light)]">
+<div class="w-full max-w-lg mx-auto">
 
 <!-- Header Section -->
 <div class="text-center mb-10">
 
-{% comment %} <div class="relative inline-block mb-6"> {% endcomment %}
+<div class="relative inline-block mb-6"> 
 
-{% comment %} <div class="relative h-20 w-20 mx-auto overflow-hidden rounded-full ring-4 ring-white shadow-xl">
-<img src="{{ site_settings.logo_image.url }}" class="h-full w-full object-cover">
+  {% if linkhub.logo_image %}
+<div class="relative h-20 w-20 mx-auto overflow-hidden rounded-full ring-4 ring-white shadow-xl">
+  <img src="{{ linkhub.logo_image.url }}" class="h-full w-full object-cover">
 </div>
-</div> {% endcomment %}
+{% endif %}
+</div> 
 
-<h1 class="text-4xl lg:text-5xl text-center font-bold uppercase leading-tight mb-6 text-[var(--color-primary)]">
-{{ block.title }}
+<h1 class="text-2xl text-center font-semibold mb-6 text-[var(--color-primary)]">
+{{ linkhub.title }}
 </h1>
 
-{% if block.description %}
-<div class="prose prose-lg text-center mb-8">
-{{ block.description|safe }}
-</p>
+{% if linkhub.description %}
+<div class=" text-center text-sm mb-8">
+{{ linkhub.description }}
+</div>
 {% endif %}
 
-
-
-{{ block.get_youtube_video_id }}
-{% if block.video_url %}
-  {% with video_id=block.get_youtube_video_id %}
+{% if linkhub.video_url %}
+  {% with video_id=linkhub.get_youtube_video_id %}
   {% if video_id %}
   <div class="relative aspect-video w-full overflow-hidden rounded-lg shadow-xl mb-8">
 
@@ -75,7 +74,12 @@
 
 <a
 href="{{ link.url }}"
-class="glass-card flex items-center gap-4 p-5 rounded-2xl border-2 border-[var(--color-light-contrast)]  no-underline group"
+class="glass-card flex items-center gap-4 p-5 px-6 py-4 rounded-2xl border-2 transition no-underline group
+{% if forloop.counter == linkhub.primary_link %}
+bg-[var(--color-primary)] text-[var(--color-primary-contrast)] border-[var(--color-primary)]
+{% else %}
+bg-white border-[var(--color-light-contrast)] hover:bg-[var(--color-secondary)] hover:text-[var(--color-font-contrast)]
+{% endif %}"
 >
 
 <div class="flex-shrink-0">
@@ -93,12 +97,12 @@ height="64">
 
 <div class="flex-1 min-w-0">
 
-<h3 class="font-semibold text-slate-900 text-lg leading-tight mb-1">
+<h3 class="font-semibold text-md leading-relaxed mb-1">
 {{ link.title }}
 </h3>
 
 {% if link.description %}
-<p class="text-slate-600 text-sm">
+<p class="text-sm">
 {{ link.description }}
 </p>
 {% endif %}

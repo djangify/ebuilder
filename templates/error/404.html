@@ -5,16 +5,15 @@
 
 {% block content %}
 <section class="min-h-[70vh] flex flex-col justify-center items-center bg-[color:var(--color-light)] text-[color:var(--color-font-main)] px-6 py-16 text-center">
-  <h1 class="text-7xl font-bold text-[color:var(--color-primary)] mb-4">404</h1>
-  <h2 class="text-2xl font-semibold mb-4">Page Not Found</h2>
-  <p class="text-lg mb-10">This site has been completely redesigned and the page you’re looking for doesn’t exist or may have been moved. </p>
-  <p>Some options for you:</p>
+  <h1 class="text-7xl font-bold text-[color:var(--color-primary)] mb-4">Unavailable Page</h1>
+  {% comment %} <h2 class="text-2xl font-semibold mb-4">Page Not Found</h2> {% endcomment %}
+  <p class="text-lg mb-4">The page you’re looking for doesn’t exist or may have been moved. Here are some options for you:</p>
 
   <div class="flex flex-col sm:flex-row gap-4 justify-center mb-12">
-    <a href="/" class="inline-flex items-center mt-12 gap-2 px-6 py-3 border border-[color:var(--color-accent)] text-[color:var(--color-accent)] rounded-md font-medium text-sm hover:bg-[color:var(--color-accent)] hover:text-[color:var(--color-secondary)] transition-colors">
+    <a href="/" class="inline-flex items-center mt-8 gap-2 px-6 py-3 border border-[color:var(--color-accent)] text-[color:var(--color-accent)] rounded-md font-medium text-sm hover:bg-[color:var(--color-accent)] hover:text-[color:var(--color-secondary)] transition-colors">
       Vist Home Page
     </a>
-    <a href="/shop/" class="inline-flex items-center mt-12 gap-2 px-6 py-3 border border-[color:var(--color-accent)] text-[color:var(--color-accent)] rounded-md font-medium text-sm hover:bg-[color:var(--color-accent)] hover:text-[color:var(--color-secondary)] transition-colors">
+    <a href="/shop/" class="inline-flex items-center mt-8 gap-2 px-6 py-3 border border-[color:var(--color-accent)] text-[color:var(--color-accent)] rounded-md font-medium text-sm hover:bg-[color:var(--color-accent)] hover:text-[color:var(--color-secondary)] transition-colors">
       Visit Shop Page
     </a>
   </div>
@@ -25,7 +24,7 @@
       {% if selected_category %}
         Popular {{ selected_category.name }} Articles
       {% else %}
-        You might be interested in these articles
+        Or you might be interested in reading one of our latest articles.
       {% endif %}
     </h2>
 
