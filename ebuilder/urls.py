@@ -27,6 +27,7 @@ urlpatterns = [
     path("robots.txt", project_views.robots_txt, name="robots_txt"),
     path("", include("hosting.urls")),
     path("", include("infopages.urls")),
+    path("", include("content.urls")),
     path("", include("pages.urls")),  # Pages app catch-all must be last
 ]
 

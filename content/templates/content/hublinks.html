@@ -1,0 +1,171 @@
+{% extends "base_landing.html" %}
+{% load static %}
+
+{% block content %}
+
+<main class="min-h-screen flex items-center justify-center px-4 py-8 bg-[var(--color-light)]">
+<div class="w-full max-w-lg">
+
+<!-- Header Section -->
+<div class="text-center mb-10">
+
+{% comment %} <div class="relative inline-block mb-6"> {% endcomment %}
+
+{% comment %} <div class="relative h-20 w-20 mx-auto overflow-hidden rounded-full ring-4 ring-white shadow-xl">
+<img src="{{ site_settings.logo_image.url }}" class="h-full w-full object-cover">
+</div>
+</div> {% endcomment %}
+
+<h1 class="text-4xl lg:text-5xl text-center font-bold uppercase leading-tight mb-6 text-[var(--color-primary)]">
+{{ block.title }}
+</h1>
+
+{% if block.description %}
+<div class="prose prose-lg text-center mb-8">
+{{ block.description|safe }}
+</p>
+{% endif %}
+
+
+
+{{ block.get_youtube_video_id }}
+{% if block.video_url %}
+  {% with video_id=block.get_youtube_video_id %}
+  {% if video_id %}
+  <div class="relative aspect-video w-full overflow-hidden rounded-lg shadow-xl mb-8">
+
+    <button
+      id="hub-video-thumb"
+      type="button"
+      data-video-id="{{ video_id }}"
+      aria-label="Play video"
+      class="absolute inset-0 h-full w-full group focus:outline-none"
+    >
+
+      <img
+        src="https://img.youtube.com/vi/{{ video_id }}/maxresdefault.jpg"
+        alt="Play video"
+        class="absolute inset-0 h-full w-full object-cover"
+        loading="lazy"
+      >
+
+      <span class="absolute inset-0 flex items-center justify-center bg-black/30 transition group-hover:bg-black/40">
+        <span class="flex h-16 w-16 items-center justify-center rounded-full bg-red-600 text-white shadow-lg transition group-hover:scale-110">
+          <svg class="h-8 w-8 ml-1" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M8 5v14l11-7z"></path>
+          </svg>
+        </span>
+      </span>
+
+    </button>
+
+    <div id="hub-video-player" class="absolute inset-0 hidden"></div>
+
+  </div>
+  {% endif %}
+  {% endwith %}
+{% endif %}
+
+</div>
+<!-- Links Section -->
+<div class="space-y-4">
+
+
+{% for link in links|slice:":4" %}
+
+<a
+href="{{ link.url }}"
+class="glass-card flex items-center gap-4 p-5 rounded-2xl border-2 border-[var(--color-light-contrast)]  no-underline group"
+>
+
+<div class="flex-shrink-0">
+
+{% if link.image %}
+<img
+src="{{ link.image.url }}"
+class="h-20 w-20 rounded-xl object-cover shadow-lg group-hover:scale-105 transition-transform"
+loading="lazy"
+width="64"
+height="64">
+{% endif %}
+
+</div>
+
+<div class="flex-1 min-w-0">
+
+<h3 class="font-semibold text-slate-900 text-lg leading-tight mb-1">
+{{ link.title }}
+</h3>
+
+{% if link.description %}
+<p class="text-slate-600 text-sm">
+{{ link.description }}
+</p>
+{% endif %}
+
+</div>
+
+{% if forloop.counter == block.primary_link %}
+<span class="ig-chip px-3 py-1 text-xs font-medium text-[#227c81] rounded-full">
+Featured
+</span>
+{% endif %}
+
+</a>
+
+{% empty %}
+
+<p class="text-center text-slate-500">
+Links coming soon.
+</p>
+
+{% endfor %}
+
+</div>
+
+<div class="mt-16"></div>
+
+
+
+</div>
+</main>
+{% include "includes/footer.html" %}
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+  const button = document.getElementById("hub-video-thumb");
+  const player = document.getElementById("hub-video-player");
+
+  if (!button || !player) return;
+
+  button.addEventListener("click", function () {
+
+    const videoId = this.dataset.videoId;
+
+    const iframe = document.createElement("iframe");
+
+    iframe.setAttribute(
+      "src",
+      "https://www.youtube-nocookie.com/embed/" + videoId + "?autoplay=1&rel=0"
+    );
+
+    iframe.setAttribute("title", "YouTube video player");
+    iframe.setAttribute("frameborder", "0");
+    iframe.setAttribute(
+      "allow",
+      "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+    );
+    iframe.setAttribute("allowfullscreen", "");
+
+    iframe.className = "w-full h-full";
+
+    player.appendChild(iframe);
+
+    button.classList.add("hidden");
+    player.classList.remove("hidden");
+
+  });
+
+});
+</script>
+{% endblock %}

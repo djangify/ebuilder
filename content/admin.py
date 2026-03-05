@@ -12,6 +12,8 @@ from .models import (
     SpotlightBlock,
     GalleryBlock,
     GalleryImage,
+    LinkHubBlock,
+    LinkHubItem,
 )
 
 
@@ -305,3 +307,33 @@ class GalleryBlockAdmin(admin.ModelAdmin):
     ordering = ("container", "order")
     list_filter = ("published",)
     inlines = [GalleryImageInline]
+
+
+class LinkHubItemInline(admin.TabularInline):
+    model = LinkHubItem
+    extra = 1
+    max_num = 4
+
+
+@admin.register(LinkHubBlock)
+class LinkHubBlockAdmin(admin.ModelAdmin):
+    list_display = ("title", "container", "slug", "order", "published")
+    prepopulated_fields = {"slug": ("title",)}
+    list_editable = ("order", "published")
+    inlines = [LinkHubItemInline]
+    fields = (
+        "container",
+        "title",
+        "slug",
+        "description",
+        "video_url",
+        "primary_link",
+        "order",
+        "published",
+    )
+
+
+@admin.register(LinkHubItem)
+class LinkHubItemAdmin(admin.ModelAdmin):
+    list_display = ("title", "block", "order")
+    list_editable = ("order",)

@@ -2,7 +2,9 @@ from django.db import models
 from PIL import Image as PILImage
 import os
 from io import BytesIO
+from django.core.exceptions import ValidationError
 from django.core.files.base import ContentFile
+from django.utils.text import slugify
 
 
 class ContentContainer(models.Model):
@@ -443,3 +445,100 @@ class GalleryImage(models.Model):
         if self.image:
             return self.image.url
         return None
+
+
+class LinkHubBlock(models.Model):
+    container = models.ForeignKey(
+        "content.ContentContainer",
+        on_delete=models.CASCADE,
+        related_name="linkhub_blocks",
+    )
+
+    title = models.CharField(max_length=200)
+    slug = models.SlugField(blank=True)
+
+    description = models.TextField(blank=True)
+
+    video_url = models.URLField(
+        blank=True,
+        help_text="Paste YouTube Watch URL. It will display at the top of the page.",
+    )
+
+    primary_link = models.PositiveIntegerField(
+        default=0,
+        help_text="Enter the number of the link to highlight with the primary background (1 = first link, 2 = second link, etc).",
+    )
+
+    order = models.PositiveIntegerField(default=0)
+    published = models.BooleanField(default=True)
+
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ["order"]
+        constraints = [
+            models.UniqueConstraint(
+                fields=["container", "slug"], name="unique_slug_per_container"
+            )
+        ]
+
+    def __str__(self):
+        return self.title
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.title)
+        super().save(*args, **kwargs)
+
+    def get_youtube_video_id(self):
+        if not self.video_url:
+            return None
+
+        url = self.video_url.strip()
+
+        if "youtube.com/watch?v=" in url:
+            return url.split("v=")[1].split("&")[0]
+        elif "youtu.be/" in url:
+            return url.split("/")[-1].split("?")[0]
+        elif "youtube.com/embed/" in url:
+            return url.split("/embed/")[1].split("?")[0]
+
+        return None
+
+    def get_youtube_embed_url(self):
+        video_id = self.get_youtube_video_id()
+        if video_id:
+            return f"https://www.youtube.com/embed/{video_id}"
+        return None
+
+
+class LinkHubItem(models.Model):
+    block = models.ForeignKey(
+        "content.LinkHubBlock",
+        on_delete=models.CASCADE,
+        related_name="links",
+    )
+
+    title = models.CharField(max_length=150)
+    url = models.URLField()
+    description = models.TextField(blank=True)
+
+    image = models.ImageField(
+        upload_to="linkhub/items/",
+        blank=True,
+        null=True,
+    )
+
+    order = models.PositiveIntegerField(default=0)
+
+    class Meta:
+        ordering = ["order"]
+
+    def __str__(self):
+        return f"{self.block.title} → {self.title}"
+
+    def clean(self):
+        # Enforce maximum of 4 links per block
+        if self.block_id and self.block.links.exclude(pk=self.pk).count() >= 4:
+            raise ValidationError("A Link Hub block can contain a maximum of 4 links.")
