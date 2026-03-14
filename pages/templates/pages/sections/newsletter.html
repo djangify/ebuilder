@@ -1,0 +1,17 @@
+<section class="max-w-3xl mx-auto py-16 px-6 text-center">
+
+    {% if block.title %}
+        <h2 class="text-3xl font-bold mb-4">{{ block.title }}</h2>
+    {% endif %}
+
+    {% if block.intro_text %}
+        <p class="mb-6 text-[color:var(--color-font-main)]/80">
+            {{ block.intro_text }}
+        </p>
+    {% endif %}
+
+    <div>
+        {{ block.embed_html|safe }}
+    </div>
+
+</section>

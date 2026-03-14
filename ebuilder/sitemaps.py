@@ -19,7 +19,6 @@ class StaticSitemap(Sitemap):
         return [
             "pages:home",
             "pages:about",
-            "pages:gallery",
             "shop:product_list",
             "shop:category_hub",
             "blog:list",

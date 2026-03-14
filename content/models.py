@@ -162,6 +162,9 @@ class FAQBlock(models.Model):
     def __str__(self):
         return self.title or f"FAQ Block #{self.pk}"
 
+    def get_template(self):
+        return "pages/sections/faq_block.html"
+
 
 class FAQItem(models.Model):
     faq_block = models.ForeignKey(
@@ -210,6 +213,9 @@ class ThreeColumnBlock(models.Model):
 
     def __str__(self):
         return f"ThreeColumnBlock #{self.pk}"
+
+    def get_template(self):
+        return "pages/sections/content_blocks.html"
 
 
 class SectionBlock(models.Model):
@@ -266,6 +272,9 @@ class SectionBlock(models.Model):
     def __str__(self):
         return f"SectionBlock #{self.pk}"
 
+    def get_template(self):
+        return f"pages/sections/{self.section_type}.html"
+
 
 class NewsletterBlock(models.Model):
     container = models.ForeignKey(
@@ -278,7 +287,7 @@ class NewsletterBlock(models.Model):
     intro_text = models.TextField(blank=True)
 
     embed_html = models.TextField(
-        help_text="Paste your email provider embed HTML here."
+        blank=True, help_text="Paste your newsletter provider embed code here."
     )
 
     order = models.PositiveIntegerField(default=0)
@@ -289,6 +298,9 @@ class NewsletterBlock(models.Model):
 
     def __str__(self):
         return self.title or f"NewsletterBlock #{self.pk}"
+
+    def get_template(self):
+        return "pages/sections/newsletter.html"
 
 
 class SpotlightBlock(models.Model):
@@ -321,6 +333,9 @@ class SpotlightBlock(models.Model):
     def __str__(self):
         return self.title or f"Spotlight #{self.pk}"
 
+    def get_template(self):
+        return "pages/sections/spotlight.html"
+
 
 class GalleryBlock(models.Model):
     container = models.ForeignKey(
@@ -340,6 +355,9 @@ class GalleryBlock(models.Model):
 
     def __str__(self):
         return self.title or f"GalleryBlock #{self.pk}"
+
+    def get_template(self):
+        return "content/gallery/gallery_block.html"
 
 
 class GalleryImage(models.Model):
