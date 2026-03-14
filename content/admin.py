@@ -19,12 +19,11 @@ from .models import (
 
 
 class SectionBlockForm(forms.ModelForm):
+    body = forms.CharField(required=False, widget=RichTextWidget())
+
     class Meta:
         model = SectionBlock
         fields = "__all__"
-        widgets = {
-            "body": RichTextWidget(),
-        }
 
 
 class HeroBlockInline(admin.StackedInline):

@@ -7,7 +7,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Environment setup
 env = environ.Env(
-    DEBUG=(bool, True),
+    DEBUG=(bool, False),
     ALLOWED_HOSTS=(list, []),
     CSRF_TRUSTED_ORIGINS=(list, []),
     CORS_ALLOWED_ORIGINS=(list, []),
@@ -113,16 +113,16 @@ WSGI_APPLICATION = "ebuilder.wsgi.application"
 
 
 # Database - SQLite default for Docker. Use in production
-# DATABASES = {"default": env.db(default="sqlite:////app/db/db.sqlite3")}
+DATABASES = {"default": env.db(default="sqlite:////app/db/db.sqlite3")}
 
 
 # Database - SQLite. Use in development
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "data" / "db" / "db.sqlite3",
-    }
-}
+# DATABASES = {
+#     "default": {
+#         "ENGINE": "django.db.backends.sqlite3",
+#         "NAME": BASE_DIR / "data" / "db" / "db.sqlite3",
+#     }
+# }
 
 # Custom User Model
 AUTH_USER_MODEL = "accounts.User"

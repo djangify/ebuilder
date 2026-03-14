@@ -183,7 +183,7 @@ class FAQItem(models.Model):
         verbose_name_plural = "FAQ Items"
 
     def __str__(self):
-        return self.question[:50]
+        return self.question
 
 
 class ThreeColumnBlock(models.Model):
@@ -212,7 +212,7 @@ class ThreeColumnBlock(models.Model):
         ordering = ["order"]
 
     def __str__(self):
-        return f"ThreeColumnBlock #{self.pk}"
+        return self.col_1_title or f"ThreeColumnBlock #{self.pk}"
 
     def get_template(self):
         return "pages/sections/content_blocks.html"
@@ -270,7 +270,7 @@ class SectionBlock(models.Model):
         ordering = ["order"]
 
     def __str__(self):
-        return f"SectionBlock #{self.pk}"
+        return self.title or f"SectionBlock #{self.pk}"
 
     def get_template(self):
         return f"pages/sections/{self.section_type}.html"
