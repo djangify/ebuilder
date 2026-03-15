@@ -27,4 +27,12 @@
     {% include block.get_template with block=block section=block %}
 {% endfor %}
 
+{% if featured_products %}
+    {% include "pages/sections/featured_products.html" %}
+{% endif %}
+
+{% if blog_posts %}
+    {% include "pages/sections/blog_posts.html" %}
+{% endif %}
+
 {% endblock %}

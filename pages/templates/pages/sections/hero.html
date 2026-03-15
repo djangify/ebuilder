@@ -6,7 +6,7 @@
   role="banner"
   aria-label="Hero Section"
 >
-  <div class="container mx-auto px-6 py-16 lg:py-24">
+  <div class="container mx-auto px-6 py-12 lg:py-20">
     
    <!-- Hero Banner (above everything) -->
     {% if hero_banner and hero_banner.banner_published %}
@@ -48,7 +48,7 @@
       
       <!-- LEFT: Text Content -->
       <div class="{% if not hero.video_url and not hero.image %}text-center mx-auto max-w-4xl{% endif %}">
-        <h1 class="text-4xl lg:text-5xl text-center font-bold uppercase leading-tight mb-6 text-[var(--color-primary)]">
+        <h1 class="text-4xl lg:text-5xl text-center font-bold  leading-tight mb-6 text-[var(--color-primary)]">
           {{ hero.title }}
         </h1>
 
