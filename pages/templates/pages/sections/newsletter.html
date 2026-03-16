@@ -5,9 +5,9 @@
     {% endif %}
 
     {% if block.intro_text %}
-        <p class="mb-6 text-[var(--color-primary-contrast)]">
-            {{ block.intro_text }}
-        </p>
+        <div class="mb-6 text-[var(--color-primary-contrast)]">
+            {{ block.intro_text|safe }}
+        </div>
     {% endif %}
 
     <div>
