@@ -126,8 +126,17 @@ class SectionBlockInline(admin.StackedInline):
     )
 
 
+class NewsletterBlockForm(forms.ModelForm):
+    intro_text = forms.CharField(required=False, widget=RichTextWidget())
+
+    class Meta:
+        model = NewsletterBlock
+        fields = "__all__"
+
+
 class NewsletterBlockInline(admin.StackedInline):
     model = NewsletterBlock
+    form = NewsletterBlockForm
     extra = 0
     ordering = ("order",)
 
