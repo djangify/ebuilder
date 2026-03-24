@@ -57,11 +57,13 @@
                   <p class="font-semibold text-[color:var(--color-font-main)]">
                     {{ item.get_cost|currency }}
                   </p>
-                  {% if item.downloads_remaining > 0 %}
-                  <a href="{% url 'shop:secure_download' item.id %}" 
-                     class="text-sm text-[color:var(--color-secondary)] hover:text-[color:var(--color-accent)] transition">
-                    Download ({{ item.downloads_remaining }} remaining)
-                  </a>
+                  {% if item.downloads_left > 0 %}
+                    {% for download in item.product.downloads.all %}
+                      <a href="{% url 'shop:secure_download' item.id download.id %}"
+                        class="block text-sm text-[color:var(--color-secondary)] hover:text-[color:var(--color-accent)] transition">
+                        Download {{ download.label }} ({{ item.downloads_left }} remaining)
+                      </a>
+                    {% endfor %}
                   {% endif %}
                 </div>
               </div>

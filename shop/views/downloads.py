@@ -1,14 +1,16 @@
 # shop/views/downloads.py
-from ..models import Order, OrderItem
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth.decorators import login_required
-from django.core.exceptions import PermissionDenied
+from django.contrib import messages
 from django.http import FileResponse, Http404
 from django.views.decorators.http import require_http_methods
+from django.utils import timezone
+from datetime import timedelta
 import os
 import mimetypes
-from wsgiref.util import FileWrapper
 import logging
+
+from ..models import OrderItem, Order, DownloadLog
 
 logger = logging.getLogger("shop")
 
@@ -17,49 +19,87 @@ logger = logging.getLogger("shop")
 @require_http_methods(["GET"])
 def secure_download(request, order_item_id, download_id):
     """
-    Secure download view that serves files for purchased products.
-    Only allows downloading the specific variant that was purchased.
+    Secure download handler (FINAL VERSION)
+
+    - Validates ownership
+    - Validates purchased variant
+    - Uses download_count (no downloads_remaining)
+    - Prevents duplicate increments
+    - Logs activity
+    - Returns file safely
     """
+
+    # Get order item
     order_item = get_object_or_404(OrderItem, id=order_item_id)
 
-    # Only the owner can download
+    # Ownership check
     if order_item.order.user != request.user:
-        raise PermissionDenied
+        messages.error(request, "You do not have permission to access this file.")
+        return redirect("shop:purchases")
 
-    # Get the specific download file
+    # Get requested download
     download = get_object_or_404(order_item.product.downloads, id=download_id)
 
-    # Verify user purchased this specific download variant
+    # Ensure correct variant was purchased
     if (
         order_item.purchased_download
         and order_item.purchased_download.id != download.id
     ):
-        raise PermissionDenied("You did not purchase this download variant.")
+        messages.error(request, "This file was not part of your purchase.")
+        return redirect("shop:purchases")
 
+    # Validate file exists
     file_field = download.file
     if not file_field:
-        raise Http404("No downloadable file found.")
+        logger.error(f"No file attached to download id={download.id}")
+        raise Http404("File not available.")
 
     file_path = file_field.path
     if not os.path.exists(file_path):
+        logger.error(f"Missing file on server: {file_path}")
         raise Http404("File missing on server.")
 
-    # Check download limit
-    if order_item.downloads_remaining <= 0:
-        raise PermissionDenied("Your download limit has been reached.")
+    # ===== DOWNLOAD LIMIT CHECK =====
+    if order_item.download_count >= order_item.product.download_limit:
+        logger.warning(
+            f"Download limit reached: order_item={order_item.id}, user={request.user.id}"
+        )
+        messages.error(request, "You have reached your download limit.")
+        return redirect("shop:purchases")
 
-    # Update download counts
-    order_item.downloads_remaining -= 1
+    # ===== DUPLICATE REQUEST PROTECTION =====
+    recent_download = DownloadLog.objects.filter(
+        order_item=order_item,
+        user=request.user,
+        downloaded_at__gte=timezone.now() - timedelta(seconds=2),
+    ).exists()
+
+    if recent_download:
+        logger.warning(
+            f"Duplicate download prevented: order_item={order_item.id}, user={request.user.id}"
+        )
+        return redirect("shop:purchases")
+
+    # ===== RECORD DOWNLOAD =====
     order_item.download_count += 1
     order_item.save()
 
-    # Serve the file
+    DownloadLog.objects.create(
+        order_item=order_item,
+        user=request.user,
+    )
+
+    logger.info(
+        f"Download successful: order_item={order_item.id}, user={request.user.id}"
+    )
+
+    # ===== SERVE FILE =====
     filename = os.path.basename(file_path)
     content_type, _ = mimetypes.guess_type(filename)
     content_type = content_type or "application/octet-stream"
 
     response = FileResponse(
-        FileWrapper(open(file_path, "rb")),
+        open(file_path, "rb"),
         as_attachment=True,
         content_type=content_type,
     )
