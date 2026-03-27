@@ -321,7 +321,7 @@ class GalleryBlockAdmin(admin.ModelAdmin):
 class LinkHubItemInline(admin.TabularInline):
     model = LinkHubItem
     extra = 1
-    max_num = 4
+    max_num = 7
 
 
 @admin.register(LinkHubBlock)

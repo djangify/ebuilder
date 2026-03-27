@@ -565,5 +565,5 @@ class LinkHubItem(models.Model):
 
     def clean(self):
         # Enforce maximum of 4 links per block
-        if self.block_id and self.block.links.exclude(pk=self.pk).count() >= 4:
-            raise ValidationError("A Link Hub block can contain a maximum of 4 links.")
+        if self.block_id and self.block.links.exclude(pk=self.pk).count() >= 7:
+            raise ValidationError("A Link Hub block can contain a maximum of 7 links.")
