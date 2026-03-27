@@ -5,7 +5,6 @@ from django.urls import reverse
 from blog.models import Post, Category as BlogCategory
 from shop.models import Product, Category as ShopCategory
 from pages.models import Page
-from content.models import LinkHubBlock
 from infopages.models import InfoPage
 
 
@@ -49,10 +48,13 @@ class LinkHubSitemap(Sitemap):
     priority = 0.7
 
     def items(self):
-        return LinkHubBlock.objects.filter(published=True)
+        return Page.objects.filter(
+            published=True,
+            content_container__linkhubblock__published=True,
+        ).distinct()
 
     def lastmod(self, obj):
-        return obj.updated if hasattr(obj, "updated") else None
+        return obj.updated
 
 
 class BlogSitemap(Sitemap):
