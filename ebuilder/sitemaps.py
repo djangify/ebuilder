@@ -43,20 +43,6 @@ class PagesSitemap(Sitemap):
         return obj.updated
 
 
-class LinkHubSitemap(Sitemap):
-    changefreq = "weekly"
-    priority = 0.7
-
-    def items(self):
-        return Page.objects.filter(
-            published=True,
-            content_container__linkhubblock__published=True,
-        ).distinct()
-
-    def lastmod(self, obj):
-        return obj.updated
-
-
 class BlogSitemap(Sitemap):
     """Published blog posts."""
 
@@ -123,5 +109,4 @@ sitemaps = {
     "products": ProductSitemap,
     "shop_categories": ShopCategorySitemap,
     "infopages": InfoPageSitemap,
-    "linkhubs": LinkHubSitemap,
 }

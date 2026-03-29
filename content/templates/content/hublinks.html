@@ -78,7 +78,12 @@ class="glass-card flex items-center gap-4 p-5 px-6 py-4 rounded-2xl border-2 tra
 {% if forloop.counter == linkhub.primary_link %}
 bg-[var(--color-primary)] text-[var(--color-primary-contrast)] border-[var(--color-primary)]
 {% else %}
-bg-white border-[var(--color-light-contrast)] hover:bg-[var(--color-secondary)] hover:text-[var(--color-font-contrast)]
+bg-white border-[var(--color-light-contrast)]
+transition-all duration-300 ease-out
+hover:bg-[var(--color-secondary)]
+hover:-translate-y-1
+hover:shadow-xl
+hover:scale-[1.01]
 {% endif %}"
 >
 
@@ -87,7 +92,7 @@ bg-white border-[var(--color-light-contrast)] hover:bg-[var(--color-secondary)] 
 {% if link.image %}
 <img
 src="{{ link.image.url }}"
-class="h-20 w-20 rounded-xl object-cover shadow-lg group-hover:scale-105 transition-transform"
+class="h-20 w-20 rounded-xl object-cover shadow-lg transition-transform duration-300 ease-out group-hover:scale-110"
 loading="lazy"
 width="64"
 height="64">
@@ -97,20 +102,20 @@ height="64">
 
 <div class="flex-1 min-w-0">
 
-<h3 class="font-semibold text-md leading-relaxed mb-1">
+<h3 class="font-semibold text-md leading-relaxed mb-1 transition-all duration-200 group-hover:tracking-wide text-inherit group-hover:text-[var(--color-secondary-contrast)]">
 {{ link.title }}
 </h3>
 
 {% if link.description %}
-<p class="text-sm">
+<p class="text-sm transition-all duration-200 text-inherit group-hover:text-[var(--color-secondary-contrast)]">
 {{ link.description }}
 </p>
 {% endif %}
 
 </div>
 
-{% if forloop.counter == block.primary_link %}
-<span class="ig-chip px-3 py-1 text-xs font-medium text-[#227c81] rounded-full">
+{% if forloop.counter == linkhub.primary_link %}
+<span class="ig-chip px-3 py-1 text-xs font-medium text-[var(--color-primary-contrast)] rounded-full">
 Featured
 </span>
 {% endif %}

@@ -97,16 +97,16 @@
    (Djangify eBuilder brand colors)
 ---------------------------------- */
 @theme {
-  --color-primary: #0f172a;
+  --color-primary: #365272;
   /* deep slate */
   --color-primary-contrast: #ffffff;
 
-  --color-secondary: #85a2cc;
+  --color-secondary: #d6c6b3;
   /* dusty blue */
 
-  --color-secondary-contrast: #f8fafc;
+  --color-secondary-contrast: #ffffff;
 
-  --color-accent: #475569;
+  --color-accent: #b85c3b;
 
   --color-accent-contrast: #ffffff;
 
