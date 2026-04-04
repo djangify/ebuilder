@@ -23,7 +23,7 @@
 </h1>
 
 {% if linkhub.description %}
-<div class=" text-center mb-8">
+<div class="text-md text-center mb-8">
 {{ linkhub.description }}
 </div>
 {% endif %}
@@ -70,7 +70,7 @@
 <div class="space-y-4">
 
 
-{% for link in links|slice:":4" %}
+{% for link in links|slice:":7" %}
 
 <a
 href="{{ link.url }}"
