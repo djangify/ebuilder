@@ -1,20 +1,14 @@
 {% extends "base.html" %}
 {% load instance_utils %}
 
-{% block extra_head %}
-<link rel="canonical" href="{{ site_url }}">
+{% block canonical_url %}{{ site_url }}{% endblock %}
 
+{% block extra_head %}
 <!-- Open Graph -->
 {% include "includes/seo/og_meta.html" with 
     og_title=site_name
     og_description=site_settings.default_meta_description
 %}
-
-<!-- WebPage Schema -->
-{% include "includes/seo/schema_webpage.html" %}
-
-<!-- Organization Schema -->
-{% include "includes/seo/schema_organization.html" %}
 {% endblock %}
 
 {% block content %}
@@ -35,4 +29,9 @@
     {% include "pages/sections/blog_posts.html" %}
 {% endif %}
 
+{% endblock %}
+
+{% block page_schema %}
+{% include "includes/seo/schema_webpage.html" %}
+{% include "includes/seo/schema_organization.html" %}
 {% endblock %}

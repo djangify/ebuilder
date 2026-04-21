@@ -3,7 +3,7 @@
 {% load currency_tags %}
 
 {% block extra_head %}
-<link rel="canonical" href="{{ request.build_absolute_uri }}">
+
 
 <!-- AI Search Metadata -->
 <meta name="ai-page-type" content="product-detail">
@@ -18,7 +18,7 @@
 %}
 
 <!-- Product Schema -->
-{% include "includes/seo/schema_product.html" with product=product %}
+
 {% endblock %}
 
 {% block content %}
@@ -128,4 +128,23 @@
   </script>
 
   <script src="{% static 'js/favourite-products.js' %}"></script>
+{% endblock %}
+
+{% block page_schema %}
+    {% include "includes/seo/schema_product.html" with product=product %}
+{% endblock %}
+
+{% block breadcrumb_schema %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {"@type": "ListItem", "position": 1, "name": "Home", "item": "{{ site_url }}"},
+    {"@type": "ListItem", "position": 2, "name": "Shop", "item": "{{ site_url }}/shop/"},
+    {"@type": "ListItem", "position": 3, "name": "{{ product.category.name }}", "item": "{{ site_url }}/shop/{{ product.category.slug }}/"},
+    {"@type": "ListItem", "position": 4, "name": "{{ product.title }}"}
+  ]
+}
+</script>
 {% endblock %}

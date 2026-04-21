@@ -1,10 +1,8 @@
 {% load static %}
-
 <!DOCTYPE html>
-
 <html lang="en-GB">
 <head>
-   <!-- Preconnect & Prefetch -->
+  <!-- Preconnect & Prefetch -->
   <link rel="preconnect" href="{{ site_url }}" crossorigin>
   <link rel="dns-prefetch" href="{{ site_url }}">
   <meta charset="UTF-8" />
@@ -33,8 +31,9 @@
   <meta property="fb:app_id" content="{{ site_settings.facebook_app_id }}">
   {% endif %}
   {% endblock %}
+
   <!-- Canonical URL -->
-  <link rel="canonical" href="{{ request.build_absolute_uri }}">
+  <link rel="canonical" href="{% block canonical_url %}{{ request.scheme }}://{{ request.get_host }}{{ request.path }}{% endblock %}">
 
   <!-- Stylesheets -->
   <link rel="stylesheet" href="{% static 'css/output.css' %}">
@@ -87,9 +86,19 @@
       "@type": "SearchAction",
       "target": "{{ site_url }}/shop/search/?q={search_term_string}",
       "query-input": "required name=search_term_string"
-    }
+    },
+    "isPartOf": {
+      "@type": "WebSite",
+      "name": "Djangify",
+      "url": "https://www.djangify.com"
+    },
+    "sameAs": [
+      "https://www.djangify.com"
+    ]
   }
   </script>
+
+  {% block extra_head %}{% endblock %}
 
 </head>
 
@@ -99,10 +108,13 @@
     {% block content %}{% endblock %}
   </main>
 
+  {% block page_schema %}{% endblock %}
+  {% block breadcrumb_schema %}{% endblock %}
+
   <!-- ARIA Live Region for dynamic announcements -->
-  <div id="a11y-announcer" 
-       role="status" 
-       aria-live="polite" 
+  <div id="a11y-announcer"
+       role="status"
+       aria-live="polite"
        aria-atomic="true"
        class="sr-only">
   </div>

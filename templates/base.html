@@ -33,7 +33,7 @@
   {% endblock %}
 
   <!-- Canonical URL -->
-  <link rel="canonical" href="{{ request.build_absolute_uri }}">
+  <link rel="canonical" href="{% block canonical_url %}{{ request.scheme }}://{{ request.get_host }}{{ request.path }}{% endblock %}">
   <!-- Stylesheets -->
   <link rel="stylesheet" href="{% static 'css/output.css' %}">
   <!-- Favicon -->
@@ -83,9 +83,19 @@
       "@type": "SearchAction",
       "target": "{{ site_url }}/shop/search/?q={search_term_string}",
       "query-input": "required name=search_term_string"
-    }
+    },
+    "isPartOf": {
+      "@type": "WebSite",
+      "name": "Djangify",
+      "url": "https://www.djangify.com"
+    },
+    "sameAs": [
+      "https://www.djangify.com"
+    ]
   }
   </script>
+  {% block breadcrumb_schema %}{% endblock %}
+  {% block page_schema %}{% endblock %}
   {% if site_settings and site_settings.google_search_console_verification %}
     <meta name="google-site-verification" content="{{ site_settings.google_search_console_verification }}">
     {% endif %}

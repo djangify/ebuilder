@@ -1,11 +1,24 @@
+<!--blog/category_hub.html-->
 {% extends "base.html" %}
 {% load static %}
+
+{% block title %}Blog Categories – {{ site_name }}{% endblock %}
+
+{% block meta_description %}
+<meta name="description" content="Browse all blog categories on {{ site_name }}. Find articles by topic.">
+{% endblock %}
+
+{% block extra_head %}
+<!-- AI Search Metadata -->
+<meta name="ai-page-type" content="blog-category-hub">
+<meta name="ai-topics" content="blog, articles, categories">
+{% endblock %}
 
 {% block content %}
 <section class="px-6 md:px-16 py-12 bg-[--color-light] text-[--color-font-main]">
   <div class="max-w-7xl mx-auto">
 
-    <!-- Page header -->
+    <!-- Page Header -->
     <header class="mb-12 text-center">
       <h1 class="text-4xl font-bold text-[--color-primary] mb-2">
         Blog Categories
@@ -17,13 +30,14 @@
 
     {% if categories_with_posts %}
       <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-
         {% for item in categories_with_posts %}
         <div class="border border-[--color-accent] p-6 bg-white">
 
           <!-- Category title -->
           <h2 class="text-lg font-semibold text-[--color-primary] mb-1">
-            {{ item.category.name }}
+            <a href="{{ item.category.get_absolute_url }}" class="hover:text-[--color-accent] transition">
+              {{ item.category.name }}
+            </a>
           </h2>
 
           <p class="text-sm text-[--color-font-main]/70 mb-4">
@@ -44,8 +58,7 @@
 
           {% if item.posts.count > 7 %}
             <p class="mt-4 text-xs">
-              <a href="{{ item.category.get_absolute_url }}"
-                 class="hover:underline">
+              <a href="{{ item.category.get_absolute_url }}" class="hover:underline">
                 View all →
               </a>
             </p>
@@ -53,7 +66,6 @@
 
         </div>
         {% endfor %}
-
       </div>
     {% else %}
       <p class="text-center text-[--color-font-main]/70">
@@ -63,4 +75,35 @@
 
   </div>
 </section>
+{% endblock %}
+
+{% block page_schema %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  "name": "Blog Categories – {{ site_name }}",
+  "url": "{{ request.scheme }}://{{ request.get_host }}{{ request.path }}",
+  "description": "Browse all blog categories on {{ site_name }}",
+  "isPartOf": {
+    "@type": "WebSite",
+    "name": "{{ site_name }}",
+    "url": "{{ site_url }}"
+  }
+}
+</script>
+{% endblock %}
+
+{% block breadcrumb_schema %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {"@type": "ListItem", "position": 1, "name": "Home", "item": "{{ site_url }}"},
+    {"@type": "ListItem", "position": 2, "name": "Blog", "item": "{{ site_url }}/blog/"},
+    {"@type": "ListItem", "position": 3, "name": "Categories"}
+  ]
+}
+</script>
 {% endblock %}

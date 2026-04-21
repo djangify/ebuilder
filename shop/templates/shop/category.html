@@ -1,47 +1,37 @@
+<!--shop/category.html-->
 {% extends "base.html" %}
 {% load static %}
 {% load currency_tags %}
 
+{% block title %}{{ category.name }} – {{ site_name }}{% endblock %}
 
-
-{% block extra_head %}
-<link rel="canonical" href="{{ request.build_absolute_uri }}">
-
-<meta name="ai-page-type" content="shop-category" />
-<meta name="ai-category" content="{{ category.name }}" />
-
-<!-- JSON-LD ItemList -->
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "ItemList",
-  "name": "{{ category.name }} – Product List",
-  "url": "{{ request.build_absolute_uri }}",
-  "itemListElement": [
-    {% for product in products %}
-    {
-      "@type": "ListItem",
-      "position": {{ forloop.counter }},
-      "url": "{{ product.get_absolute_url }}"
-    }{% if not forloop.last %},{% endif %}
-    {% endfor %}
-  ]
-}
-</script>
+{% block meta_description %}
+<meta name="description" content="Browse {{ category.name }} digital products on {{ site_name }}. {{ category.description|default:'Downloadable guides, workbooks and toolkits.' }}">
 {% endblock %}
 
+{% block extra_head %}
+<!-- AI Search Metadata -->
+<meta name="ai-page-type" content="shop-category">
+<meta name="ai-category" content="{{ category.name }}">
+<meta name="ai-topics" content="{{ category.name }}, digital downloads, shop">
+
+<!-- Open Graph -->
+{% include "includes/seo/og_meta.html" with 
+    og_title=category.name|add:" – Shop"
+    og_description=category.description|default:"Browse products in this category"
+%}
+{% endblock %}
 
 {% block content %}
-<section class="w-full  py-12">
+<section class="w-full py-12">
   <div class="max-w-6xl mx-auto px-6 bg-white rounded-xl shadow-md p-10">
-    
 
     <!-- Category Header -->
     <div class="mb-10 text-center">
       <h1 class="text-3xl font-bold text-[color:var(--color-primary)] mb-3">
         {{ category.name }}
       </h1>
-      <a href="{% url 'shop:category_hub' %}" 
+      <a href="{% url 'shop:category_hub' %}"
          class="text-[color:var(--color-secondary)] hover:text-[color:var(--color-accent)] underline transition">
         ← Back to Categories
       </a>
@@ -53,9 +43,9 @@
       <article class="bg-white border border-[color:var(--color-accent)]/40 rounded-lg overflow-hidden shadow-sm hover:shadow-md transition flex flex-col">
         <a href="{{ product.get_absolute_url }}">
           {% if product.get_image_url %}
-          <img src="{{ product.get_image_url }}" 
-               alt="{{ product.title }}" 
-               width="700" height="900" 
+          <img src="{{ product.get_image_url }}"
+               alt="{{ product.title }}"
+               width="700" height="900"
                loading="lazy" decoding="async"
                class="w-full h-56 object-cover">
           {% else %}
@@ -75,9 +65,9 @@
 
           <div class="flex items-center justify-between mt-auto">
             <span class="text-lg font-semibold text-[color:var(--color-font-main)]">
-              {{ product.current_price|currency}}
+              {{ product.current_price|currency }}
             </span>
-            <a href="{{ product.get_absolute_url }}" 
+            <a href="{{ product.get_absolute_url }}"
                class="text-[color:var(--color-secondary)] hover:text-[color:var(--color-accent)] font-semibold text-sm transition">
               View Details →
             </a>
@@ -97,27 +87,25 @@
     {% if products.has_other_pages %}
     <div class="flex justify-center items-center gap-2 mt-12 flex-wrap">
       {% if products.has_previous %}
-      <a href="?page={{ products.previous_page_number }}" 
+      <a href="?page={{ products.previous_page_number }}"
          class="px-4 py-2 border border-[color:var(--color-primary)] text-[color:var(--color-primary)] rounded hover:bg-[color:var(--color-primary)] hover:text-[var(--color-primary-contrast)] transition">
         Previous
       </a>
       {% endif %}
-
       {% for i in products.paginator.page_range %}
       {% if products.number == i %}
       <span class="px-4 py-2 bg-[color:var(--color-primary)] text-[var(--color-primary-contrast)] border border-[color:var(--color-primary)] rounded">
         {{ i }}
       </span>
       {% else %}
-      <a href="?page={{ i }}" 
+      <a href="?page={{ i }}"
          class="px-4 py-2 border border-[color:var(--color-primary)] text-[color:var(--color-primary)] rounded hover:bg-[color:var(--color-primary)] hover:text-[var(--color-primary-contrast)] transition">
         {{ i }}
       </a>
       {% endif %}
       {% endfor %}
-
       {% if products.has_next %}
-      <a href="?page={{ products.next_page_number }}" 
+      <a href="?page={{ products.next_page_number }}"
          class="px-4 py-2 border border-[color:var(--color-primary)] text-[color:var(--color-primary)] rounded hover:bg-[color:var(--color-primary)] hover:text-[var(--color-primary-contrast)] transition">
         Next
       </a>
@@ -127,7 +115,7 @@
 
     <!-- Back to Shop -->
     <div class="mt-12 text-center">
-      <a href="{% url 'shop:product_list' %}" 
+      <a href="{% url 'shop:product_list' %}"
          class="inline-block px-6 py-3 rounded-lg bg-[color:var(--color-accent)] text-[var(--color-accent-contrast)] font-semibold hover:opacity-90 transition">
         Back to Shop
       </a>
@@ -135,4 +123,38 @@
 
   </div>
 </section>
+{% endblock %}
+
+{% block page_schema %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  "name": "{{ category.name }} – Product List",
+  "url": "{{ request.scheme }}://{{ request.get_host }}{{ request.path }}",
+  "itemListElement": [
+    {% for product in products %}
+    {
+      "@type": "ListItem",
+      "position": {{ forloop.counter }},
+      "url": "{{ site_url }}{{ product.get_absolute_url }}"
+    }{% if not forloop.last %},{% endif %}
+    {% endfor %}
+  ]
+}
+</script>
+{% endblock %}
+
+{% block breadcrumb_schema %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {"@type": "ListItem", "position": 1, "name": "Home", "item": "{{ site_url }}"},
+    {"@type": "ListItem", "position": 2, "name": "Shop", "item": "{{ site_url }}/shop/"},
+    {"@type": "ListItem", "position": 3, "name": "{{ category.name }}"}
+  ]
+}
+</script>
 {% endblock %}

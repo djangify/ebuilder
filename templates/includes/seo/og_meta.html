@@ -1,25 +1,5 @@
 {# templates/includes/seo/og_meta.html #}
-{# 
-  Reusable Open Graph metadata include
-  
-  USAGE:
-  {% include "includes/seo/og_meta.html" with 
-      og_title="Page Title" 
-      og_description="Description here" 
-      og_type="article"
-      og_image=product.image.url
-  %}
-  
-  PARAMETERS (all optional):
-  - og_title: Title for social sharing (falls back to page title or site_name)
-  - og_description: Description (falls back to meta description or default)
-  - og_type: article, product, website (default: website)
-  - og_image: Full image URL or object with .url attribute
-  - og_url: Canonical URL (falls back to request.build_absolute_uri)
-#}
-
 {% load static %}
-
 <!-- Open Graph / Facebook -->
 <meta property="og:type" content="{{ og_type|default:'website' }}">
 <meta property="og:title" content="{{ og_title|default:page.meta_title|default:page.title|default:site_name }}">
