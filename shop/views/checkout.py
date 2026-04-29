@@ -55,7 +55,7 @@ def checkout(request):
         intent = stripe.PaymentIntent.create(
             amount=int(total_price * 100),
             currency=currency,  # Now uses database setting
-            automatic_payment_methods={"enabled": True},
+            automatic_payment_methods={"enabled": False},
             metadata={
                 "user_id": str(request.user.id),
             },

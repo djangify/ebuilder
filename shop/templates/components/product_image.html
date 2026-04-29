@@ -1,27 +1,44 @@
-        <!-- Main Product Image -->
-        <div class="relative border border-[color:var(--color-light)] overflow-hidden rounded-lg">
+<!-- Main Product Image -->
+        <div class="relative group border border-[color:var(--color-light)] overflow-hidden rounded-lg">
           <img
             id="main-product-image"
             src="{{ product.get_image_url|default:'/static/images/placeholder.webp' }}"
             alt="{{ product.title }}"
-            class="block w-full h-full object-contain  transition duration-300" width="600" height="800" loading="lazy"
+            class="block w-full h-full object-contain transition duration-300" width="600" height="800" loading="lazy"
           />
+          {% with pin_image=product.get_image_url pin_description=product.title %}
+            {% if pin_image %}
+              {% include "includes/social/pinterest_button.html" %}
+            {% endif %}
+          {% endwith %}
         </div>
 
         <!-- Thumbnails -->
         <div class="flex mt-4 gap-4 justify-center">
-          <img
-            src="{{ product.get_image_url|default:'/static/images/placeholder.webp' }}"
-            data-src="{{ product.get_image_url|default:'/static/images/placeholder.webp' }}"
-            alt="{{ product.title }}"
-            class="w-20 h-20 object-cover border-2 border-[color:var(--color-primary)] rounded hover:shadow-md cursor-pointer product-thumbnail active-thumbnail"
-          />
+          <div class="relative group">
+            <img
+              src="{{ product.get_image_url|default:'/static/images/placeholder.webp' }}"
+              data-src="{{ product.get_image_url|default:'/static/images/placeholder.webp' }}"
+              alt="{{ product.title }}"
+              class="w-20 h-20 object-cover border-2 border-[color:var(--color-primary)] rounded hover:shadow-md cursor-pointer product-thumbnail active-thumbnail"
+            />
+            {% with pin_image=product.get_image_url pin_description=product.title %}
+              {% if pin_image %}
+                {% include "includes/social/pinterest_button.html" %}
+              {% endif %}
+            {% endwith %}
+          </div>
           {% for img in product.images.all %}
-          <img
-            src="{{ img.image.url }}"
-            data-src="{{ img.image.url }}"
-            alt="{{ img.alt_text|default:product.title }}"
-            class="w-20 h-20 object-cover border border-[color:var(--color-accent)] rounded hover:shadow-md cursor-pointer product-thumbnail"
-          />
+          <div class="relative group">
+            <img
+              src="{{ img.image.url }}"
+              data-src="{{ img.image.url }}"
+              alt="{{ img.alt_text|default:product.title }}"
+              class="w-20 h-20 object-cover border border-[color:var(--color-accent)] rounded hover:shadow-md cursor-pointer product-thumbnail"
+            />
+            {% with pin_image=img.image.url pin_description=img.alt_text|default:product.title %}
+              {% include "includes/social/pinterest_button.html" %}
+            {% endwith %}
+          </div>
           {% endfor %}
         </div>

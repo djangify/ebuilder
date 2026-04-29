@@ -50,6 +50,11 @@
 
             </a>
 
+            {% with pin_image=image.image.url pin_description=image.title|default:image.caption %}
+              {% include "includes/social/pinterest_button.html" %}
+            {% endwith %}
+
+
             {% if image.caption %}
             <figcaption class="pointer-events-none absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/60 to-transparent">
               <span class="text-white text-lg font-medium">
